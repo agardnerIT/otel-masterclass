@@ -61,7 +61,6 @@ def create_order(product_id: int, quantity: int = 1):
         span.set_attribute("order.id", order_id)
         span.set_attribute("order.quantity", quantity)
         # TODO 1: add the attribute "order.value" (the variable order_value).
-        span.set_attribute("order.value", order_value)
         span.set_attribute("product.name", product["name"])
 
         # An event: a point in time inside the span.
@@ -71,16 +70,13 @@ def create_order(product_id: int, quantity: int = 1):
         #   Hints: use "with tracer.start_as_current_span(...) as payment_span:".
         #   Set the attribute "payment.amount" on it.
         #   Record the error on payment_span, not only on span.
-        with tracer.start_as_current_span("charge_payment") as payment_span:
-            try:
-                charge_payment(order_value)
-            except PaymentDeclined as exc:
-                # Record the error by hand: an exception event and an ERROR status.
-                span.record_exception(exc)
-                payment_span.record_exception(exc)
-                span.set_status(Status(StatusCode.ERROR, "payment declined"))
-                payment_span.set_status(Status(StatusCode.ERROR, "payment declined"))
-                declined = True
+        try:
+            charge_payment(order_value)
+        except PaymentDeclined as exc:
+            # Record the error by hand: an exception event and an ERROR status.
+            span.record_exception(exc)
+            span.set_status(Status(StatusCode.ERROR, "payment declined"))
+            declined = True
 
         # This log line is inside the span, so it gets the trace ID and span ID.
         if declined:
