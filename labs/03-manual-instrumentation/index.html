@@ -1,0 +1,1813 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="A hands-on OpenTelemetry workshop with Python and Dynatrace">
+      
+      
+      
+      
+        <link rel="prev" href="../02-auto-expanded/">
+      
+      
+        <link rel="next" href="../../discussion/injector/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Lab 03: Manual instrumentation - OpenTelemetry Masterclass</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Inter";--md-code-font:"JetBrains Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#lab-03-manual-instrumentation" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="OpenTelemetry Masterclass" class="md-header__button md-logo" aria-label="OpenTelemetry Masterclass" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            OpenTelemetry Masterclass
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Lab 03: Manual instrumentation
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../setup/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Setup
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../concepts/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Concepts
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../01-auto-instrumentation/" class="md-tabs__link">
+          
+  
+  
+  Generate
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../05-collector-basics/" class="md-tabs__link">
+          
+  
+  
+  Collect and capture
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../07-semantic-conventions/" class="md-tabs__link">
+          
+  
+  
+  Standardise
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../09-opamp/" class="md-tabs__link">
+          
+  
+  
+  Control plane
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../facilitator/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Facilitator guide
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../next-steps/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Next steps
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../contributing-lab-template/" class="md-tabs__link">
+          
+  
+  
+  Contributing
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="OpenTelemetry Masterclass" class="md-nav__button md-logo" aria-label="OpenTelemetry Masterclass" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    OpenTelemetry Masterclass
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../setup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Setup
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Concepts
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Generate
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Generate
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../01-auto-instrumentation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 01: Auto instrumentation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../02-auto-expanded/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 02: Auto instrumentation expanded
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 03: Manual instrumentation
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 03: Manual instrumentation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#goal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Goal
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why-it-matters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why it matters
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#steps" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Steps
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Steps">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#exercise-add-one-attribute-and-one-span" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exercise: add one attribute and one span
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#expected-result" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Expected result
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#auto-or-manual" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Auto or manual?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#stuck" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stuck?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#going-further" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Going further
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../discussion/injector/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Discussion: OTel Injector
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Collect and capture
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Collect and capture
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../05-collector-basics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 05: Collector basics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../06-processors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 06: Processors
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../06b-ocb/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 06b: Custom collector (optional)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Standardise
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Standardise
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../07-semantic-conventions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Semantic conventions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../08-weaver/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 08: Weaver
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Control plane
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Control plane
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../09-opamp/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 09: OpAMP
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../discussion/bindplane/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Discussion: Bindplane
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../facilitator/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Facilitator guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../next-steps/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Next steps
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_10" >
+        
+          
+          <label class="md-nav__link" for="__nav_10" id="__nav_10_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Contributing
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Contributing
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contributing-lab-template/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab page template
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../notes/brief/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Original brief
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#goal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Goal
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why-it-matters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why it matters
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#steps" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Steps
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Steps">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#exercise-add-one-attribute-and-one-span" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exercise: add one attribute and one span
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#expected-result" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Expected result
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#auto-or-manual" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Auto or manual?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#stuck" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stuck?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#going-further" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Going further
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="lab-03-manual-instrumentation">Lab 03: Manual instrumentation<a class="headerlink" href="#lab-03-manual-instrumentation" title="Permanent link">&para;</a></h1>
+<p><strong>Time: 25 minutes</strong></p>
+<h2 id="goal">Goal<a class="headerlink" href="#goal" title="Permanent link">&para;</a></h2>
+<p>Add your own spans, attributes, events, errors, metrics and correlated logs to the backend. Then compare this with what auto instrumentation gave you for free.</p>
+<h2 id="why-it-matters">Why it matters<a class="headerlink" href="#why-it-matters" title="Permanent link">&para;</a></h2>
+<p>Auto instrumentation knows about HTTP, databases and other libraries. It does not know about <strong>your business</strong>: an order, its value, a declined payment. Manual instrumentation adds that. It costs effort and needs care, so you must know what you gain and what you pay.</p>
+<h2 id="steps">Steps<a class="headerlink" href="#steps" title="Permanent link">&para;</a></h2>
+<p>The lab files are in <code>labs/03-manual-instrumentation/</code>. Docker must be running. Stop Lab 02 first, because both labs use ports 9000 and 9001.</p>
+<ul>
+<li><code>frontend/</code>: the same frontend as Lab 02. It is auto instrumented. It has a new <code>quantity</code> parameter.</li>
+<li><code>starter/backend/app.py</code>: the backend with manual instrumentation. <strong>Two <code>TODO</code> markers are for you.</strong></li>
+<li><code>solution/backend/app.py</code>: the finished backend.</li>
+</ul>
+<p>The agent (<code>opentelemetry-instrument</code>) still sets up the SDK from environment variables. The code only uses the <strong>API</strong> (<code>trace.get_tracer</code>, <code>metrics.get_meter</code>). That is the normal way to mix auto and manual.</p>
+<ol>
+<li>
+<p>Go to the lab folder and start the <strong>starter</strong>:
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nb">cd</span><span class="w"> </span>labs/03-manual-instrumentation
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>docker<span class="w"> </span>compose<span class="w"> </span>--env-file<span class="w"> </span>../../.env<span class="w"> </span>up<span class="w"> </span>--build
+</code></pre></div>
+   Compared with Lab 02, <code>docker-compose.yaml</code> also turns on metrics and logs (<code>OTEL_METRICS_EXPORTER=otlp</code>, <code>OTEL_LOGS_EXPORTER=otlp</code>). It sets <code>OTEL_EXPORTER_OTLP_METRICS_TEMPORALITY_PREFERENCE=delta</code>, because Dynatrace wants <strong>delta</strong> values for counters and histograms.</p>
+<details class="note">
+<summary>No Dynatrace tenant? Print telemetry in the console</summary>
+<p><div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nb">export</span><span class="w"> </span><span class="nv">DT_ENDPOINT</span><span class="o">=</span>x<span class="w"> </span><span class="nv">DT_API_TOKEN</span><span class="o">=</span>x
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>docker<span class="w"> </span>compose<span class="w"> </span>-f<span class="w"> </span>docker-compose.yaml<span class="w"> </span>-f<span class="w"> </span>docker-compose.console.yaml<span class="w"> </span>up<span class="w"> </span>--build
+</code></pre></div>
+Metrics print every 5 seconds in this mode.</p>
+</details>
+</li>
+<li>
+<p>In a second terminal, send three orders:
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>curl<span class="w"> </span><span class="s2">"localhost:9000/order/1?quantity=2"</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>curl<span class="w"> </span>-i<span class="w"> </span><span class="s2">"localhost:9000/order/3?quantity=2"</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>curl<span class="w"> </span>-i<span class="w"> </span>localhost:9000/order/99
+</code></pre></div></p>
+</li>
+<li>The first order works: 2 keyboards cost 98.</li>
+<li>The second is declined: 2 monitors cost 600, and the payment limit is 500. You get a <code>402</code>.</li>
+<li>The third returns <code>404</code>, because the product does not exist.</li>
+<li>
+<p>Open <code>starter/backend/app.py</code> and read it. Each feature is marked in the code:</p>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>Code</th>
+<th>What you see</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Custom span</strong></td>
+<td><code>tracer.start_as_current_span("process_order")</code></td>
+<td>A new child span under the FastAPI span</td>
+</tr>
+<tr>
+<td><strong>Attributes</strong></td>
+<td><code>span.set_attribute("order.id", ...)</code></td>
+<td>Business data you can filter on</td>
+</tr>
+<tr>
+<td><strong>Span event</strong></td>
+<td><code>span.add_event("stock.checked", ...)</code></td>
+<td>A time stamp inside the span</td>
+</tr>
+<tr>
+<td><strong>Error</strong></td>
+<td><code>record_exception(...)</code> and <code>set_status(ERROR)</code></td>
+<td>A red span, with the exception details</td>
+</tr>
+<tr>
+<td><strong>Counter</strong></td>
+<td><code>orders_counter.add(1, {...})</code></td>
+<td><code>shop.orders</code>: how many orders, by product and outcome</td>
+</tr>
+<tr>
+<td><strong>Histogram</strong></td>
+<td><code>order_value_histogram.record(...)</code></td>
+<td><code>shop.order.value</code>: the spread of order values</td>
+</tr>
+<tr>
+<td><strong>Log correlation</strong></td>
+<td><code>logger.info(...)</code> inside the span</td>
+<td>The log line carries the trace ID and span ID</td>
+</tr>
+</tbody>
+</table>
+</li>
+</ol>
+<h3 id="exercise-add-one-attribute-and-one-span">Exercise: add one attribute and one span<a class="headerlink" href="#exercise-add-one-attribute-and-one-span" title="Permanent link">&para;</a></h3>
+<p>In the starter, the order value is <strong>not</strong> on the span, and the payment call has <strong>no span of its own</strong>. Fix both.</p>
+<ol>
+<li><strong>TODO 1:</strong> add the attribute <code>order.value</code> to the <code>process_order</code> span.</li>
+<li><strong>TODO 2:</strong> put <code>charge_payment(order_value)</code> in its own span <code>charge_payment</code>. Set <code>payment.amount</code> on it. Record the error on this new span.</li>
+<li>Restart with <code>docker compose --env-file ../../.env up --build</code>, and send the same three orders again.</li>
+<li>Stuck? Compare with <code>solution/backend/app.py</code>. You can run it with:
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>--env-file<span class="w"> </span>../../.env<span class="w"> </span>-f<span class="w"> </span>docker-compose.yaml<span class="w"> </span>-f<span class="w"> </span>docker-compose.solution.yaml<span class="w"> </span>up<span class="w"> </span>--build
+</code></pre></div></li>
+</ol>
+<h2 id="expected-result">Expected result<a class="headerlink" href="#expected-result" title="Permanent link">&para;</a></h2>
+<p>For the declined order, one trace with:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>frontend-lab03  GET /order/{product_id}
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>frontend-lab03    GET                              (client span)
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>backend-lab03       GET /orders/{product_id}       (server span, 402)
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>backend-lab03         process_order                (ERROR, order.id, order.value ...)
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>backend-lab03           charge_payment             (ERROR, exception event)
+</code></pre></div>
+<ul>
+<li>In Dynatrace, open <strong>Distributed Tracing</strong>, filter by service <code>backend-lab03</code>, and open the <code>process_order</code> span. Look at the attributes and the <code>stock.checked</code> event.</li>
+<li>Open <strong>Notebooks</strong> (or <strong>Metrics</strong>) and search for <code>shop.orders</code> and <code>shop.order.value</code>. Split <code>shop.orders</code> by <code>order.outcome</code>.</li>
+<li>Open <strong>Logs</strong> and find <code>order ... declined</code>. Open the trace from the log line (it has the same trace ID).</li>
+</ul>
+<!-- TODO: screenshot of the trace, the metric and the correlated log. Save as docs/assets/lab03-trace.png and link it here. -->
+
+<p><em>Screenshot placeholder: the <code>process_order</code> span with attributes, and the <code>shop.orders</code> metric.</em></p>
+<div class="admonition note">
+<p class="admonition-title">A 402 is not a server error</p>
+<p>The FastAPI span stays without an error status, because a 4xx is the client's problem (Lab 01). But <strong>your</strong> span says "payment declined" and is an <code>ERROR</code>. Only your code knows that this matters to the business.</p>
+</div>
+<h2 id="auto-or-manual">Auto or manual?<a class="headerlink" href="#auto-or-manual" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Auto instrumentation</th>
+<th>Manual instrumentation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Effort</strong></td>
+<td>Almost none</td>
+<td>Real work: someone must write and review it</td>
+</tr>
+<tr>
+<td><strong>Detail</strong></td>
+<td>HTTP, database, framework level</td>
+<td>Business level: orders, values, decisions</td>
+</tr>
+<tr>
+<td><strong>Maintenance</strong></td>
+<td>Update the library</td>
+<td>Update your code when the logic changes</td>
+</tr>
+<tr>
+<td><strong>Risk of noise</strong></td>
+<td>High: it traces everything it finds</td>
+<td>Low if you are careful. High if you add a span to every function.</td>
+</tr>
+<tr>
+<td><strong>Cardinality</strong></td>
+<td>Controlled by the library</td>
+<td><strong>You control it, so you can break it</strong></td>
+</tr>
+<tr>
+<td><strong>PII risk</strong></td>
+<td>Low, but URLs and queries can leak data</td>
+<td>Higher: you choose the attribute values (emails, names, card numbers)</td>
+</tr>
+</tbody>
+</table>
+<p>Rules of thumb:</p>
+<ul>
+<li>Start with auto. Add manual spans only where the business question needs it.</li>
+<li>Do not wrap every function in a span. A span should mean "an operation worth seeing on its own".</li>
+<li>Put business data on <strong>spans</strong> (<code>order.id</code> is fine here). Keep <strong>metric</strong> attributes to a small set of values.</li>
+</ul>
+<div class="admonition warning">
+<p class="admonition-title">Cardinality</p>
+<p>Every different combination of metric attribute values makes a new time series. Look at the counter in the code: it uses <code>product.name</code> and <code>order.outcome</code>. A handful of products and two outcomes is fine. If you used <code>order.id</code> or a <strong>user ID</strong>, you would create one series for each order or user. This makes metrics slow and expensive. Put such IDs on spans or logs, never on metric attributes.</p>
+</div>
+<h2 id="stuck">Stuck?<a class="headerlink" href="#stuck" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong><code>port is already allocated</code>:</strong> Lab 02 is still running. Run <code>docker compose down</code> in <code>labs/02-auto-expanded</code>.</li>
+<li><strong>No metrics in Dynatrace:</strong> the metric export interval is 10 seconds. Wait, then check the token has <code>metrics.ingest</code>. Logs need <code>logs.ingest</code>. See <a href="../../setup/">Setup</a>.</li>
+<li><strong>Metrics are there but histogram is empty or odd:</strong> check that <code>OTEL_EXPORTER_OTLP_METRICS_TEMPORALITY_PREFERENCE</code> is <code>delta</code>.</li>
+<li><strong>Logs have no trace ID:</strong> the log call must run <strong>inside</strong> the <code>with tracer.start_as_current_span(...)</code> block.</li>
+<li><strong>Changed the code but nothing changed:</strong> run <code>docker compose up --build</code>.</li>
+<li><strong><code>required variable DT_ENDPOINT is missing a value</code>:</strong> add <code>--env-file ../../.env</code> to the command.</li>
+</ul>
+<h2 id="going-further">Going further<a class="headerlink" href="#going-further" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Add a <code>quantity</code> attribute to the <code>shop.orders</code> counter. Is this safe for cardinality? Why or why not?</li>
+<li>Add a second span event when the payment is declined. What data would help the person who gets paged?</li>
+<li>Look at the <code>traceparent</code> between the two services (Lab 02). Your custom spans did not need any propagation code. Why?</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../02-auto-expanded/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Lab 02: Auto instrumentation expanded">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Lab 02: Auto instrumentation expanded
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../../discussion/injector/" class="md-footer__link md-footer__link--next" aria-label="Next: Discussion: OTel Injector">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Discussion: OTel Injector
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.expand", "navigation.footer", "content.code.annotate", "content.tabs.link", "content.code.copy", "navigation.sections", "navigation.top", "search.highlight", "search.suggest"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>
