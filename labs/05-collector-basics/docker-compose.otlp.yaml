@@ -1,0 +1,7 @@
+# Exercise: also receive OTLP from apps. Add this file to the default one:
+#   docker compose --env-file ../../.env -f docker-compose.yaml -f docker-compose.otlp.yaml up
+services:
+  collector:
+    command: ["--config=/etc/otelcol/collector.otlp.yaml"]
+    volumes:
+      - ./collector.otlp.yaml:/etc/otelcol/collector.otlp.yaml:ro

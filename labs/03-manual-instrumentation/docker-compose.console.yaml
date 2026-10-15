@@ -1,0 +1,16 @@
+# Fallback for no tenant: add this file to print telemetry in the container logs.
+# Compose still reads the variables, so give them dummy values:
+#   DT_ENDPOINT=x DT_API_TOKEN=x docker compose -f docker-compose.yaml -f docker-compose.console.yaml up --build
+x-console-env: &console-env
+  OTEL_TRACES_EXPORTER: console
+  OTEL_METRICS_EXPORTER: console
+  OTEL_LOGS_EXPORTER: console
+  OTEL_METRIC_EXPORT_INTERVAL: "5000"
+  OTEL_EXPORTER_OTLP_ENDPOINT: ""
+  OTEL_EXPORTER_OTLP_HEADERS: ""
+
+services:
+  frontend:
+    environment: *console-env
+  backend:
+    environment: *console-env

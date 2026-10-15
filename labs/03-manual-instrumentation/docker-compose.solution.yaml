@@ -1,0 +1,4 @@
+# Add this file to run the backend solution instead of the starter.
+services:
+  backend:
+    build: ./solution/backend

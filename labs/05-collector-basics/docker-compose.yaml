@@ -1,0 +1,14 @@
+# Default: send logs to Dynatrace. Run with: --env-file ../../.env
+services:
+  collector:
+    image: ghcr.io/dynatrace/dynatrace-otel-collector/dynatrace-otel-collector:0.58.0
+    command: ["--config=/etc/otelcol/collector.yaml"]
+    environment:
+      DT_ENDPOINT: ${DT_ENDPOINT:-}
+      DT_API_TOKEN: ${DT_API_TOKEN:-}
+    volumes:
+      - ./collector.yaml:/etc/otelcol/collector.yaml:ro
+      - ./collector.console.yaml:/etc/otelcol/collector.console.yaml:ro
+      - ./live.log:/logs/live.log:ro
+    ports:
+      - "4318:4318" # OTLP over HTTP, used in the "other receivers" exercise

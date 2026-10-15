@@ -1,0 +1,5 @@
+# Fallback for no tenant. No .env needed:
+#   docker compose -f docker-compose.yaml -f docker-compose.console.yaml up
+services:
+  collector:
+    command: ["--config=/etc/otelcol/collector.console.yaml"]

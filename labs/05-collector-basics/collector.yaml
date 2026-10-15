@@ -1,0 +1,19 @@
+# Lab 05: read a log file and send it to Dynatrace. Also print it with the debug exporter.
+receivers:
+  file_log:
+    include: [/logs/live.log]
+    start_at: beginning
+
+exporters:
+  otlp_http/dynatrace:
+    endpoint: ${env:DT_ENDPOINT}/api/v2/otlp
+    headers:
+      Authorization: "Api-Token ${env:DT_API_TOKEN}"
+  debug:
+    verbosity: basic
+
+service:
+  pipelines:
+    logs:
+      receivers: [file_log]
+      exporters: [otlp_http/dynatrace, debug]

@@ -1,0 +1,13 @@
+# Default: send logs to Dynatrace and print them. Run with: --env-file ../../.env
+# Uses the contrib image, because the Dynatrace distro has no log_dedup processor.
+services:
+  collector:
+    image: otel/opentelemetry-collector-contrib:0.162.0
+    command: ["--config=/etc/otelcol/collector.yaml"]
+    environment:
+      DT_ENDPOINT: ${DT_ENDPOINT:-}
+      DT_API_TOKEN: ${DT_API_TOKEN:-}
+    volumes:
+      - ./collector.yaml:/etc/otelcol/collector.yaml:ro
+      - ./collector.solution.yaml:/etc/otelcol/collector.solution.yaml:ro
+      - ./sample.log:/logs/sample.log:ro

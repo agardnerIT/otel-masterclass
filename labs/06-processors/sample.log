@@ -1,0 +1,11 @@
+INFO order-service GET /api/orders/48214 status=200 duration_ms=142
+INFO order-service GET /health status=200 duration_ms=3
+INFO order-service GET /health status=200 duration_ms=1
+WARN payment-service Connection reset by peer while calling downstream billing-api
+WARN payment-service Connection reset by peer while calling downstream billing-api
+WARN payment-service Connection reset by peer while calling downstream billing-api
+DEBUG order-service Cache lookup for key=order:48214 result=miss
+INFO account-service password reset for uid=jsmith email=john.smith999@gmail.com
+INFO payment-service Payment for txn tCode=PYMT-7784-AU amount=129.50 currency=AUD status=200
+INFO order-service GET /api/orders/48214 status=500
+INFO order-service GET /health status=200 duration_ms=2

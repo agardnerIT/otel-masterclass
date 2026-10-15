@@ -1,0 +1,15 @@
+# Fallback for no tenant: the same pipeline, without the Dynatrace exporter.
+receivers:
+  file_log:
+    include: [/logs/live.log]
+    start_at: beginning
+
+exporters:
+  debug:
+    verbosity: detailed
+
+service:
+  pipelines:
+    logs:
+      receivers: [file_log]
+      exporters: [debug]

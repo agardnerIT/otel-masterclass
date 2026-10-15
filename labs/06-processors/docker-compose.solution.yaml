@@ -1,0 +1,4 @@
+# Run the finished config: docker compose --env-file ../../.env -f docker-compose.yaml -f docker-compose.solution.yaml up -d
+services:
+  collector:
+    command: ["--config=/etc/otelcol/collector.solution.yaml"]

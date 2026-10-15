@@ -1,0 +1,4 @@
+# Add this file to run the frontend with OpenTelemetry set up in code (no agent).
+services:
+  frontend:
+    command: ["uvicorn", "app_in_code:app", "--host", "0.0.0.0", "--port", "8000"]

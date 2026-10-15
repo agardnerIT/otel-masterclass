@@ -1,0 +1,16 @@
+# Lab 05 exercise: send telemetry to the local collector instead of straight to Dynatrace.
+# Start the Lab 05 collector first (with docker-compose.otlp.yaml), then run:
+#   docker compose --env-file ../../.env -f docker-compose.yaml -f docker-compose.collector.yaml up --build
+x-collector-env: &collector-env
+  OTEL_EXPORTER_OTLP_ENDPOINT: http://host.docker.internal:4318
+  OTEL_EXPORTER_OTLP_HEADERS: ""
+
+services:
+  frontend:
+    environment: *collector-env
+    extra_hosts:
+      - "host.docker.internal:host-gateway" # needed on Linux, harmless on Docker Desktop
+  backend:
+    environment: *collector-env
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
