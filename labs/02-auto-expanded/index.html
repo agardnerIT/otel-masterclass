@@ -1605,7 +1605,9 @@
 <div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>--env-file<span class="w"> </span>../../.env<span class="w"> </span><span class="se">\</span>
 <a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="w">  </span>-f<span class="w"> </span>docker-compose.yaml<span class="w"> </span>-f<span class="w"> </span>docker-compose.code.yaml<span class="w"> </span>up<span class="w"> </span>--build
 </code></pre></div>
-<p>Run <code>curl localhost:9000/order/1</code> again. You get the same trace.</p>
+<p>Call the app again. You get the same trace:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>curl<span class="w"> </span>localhost:9000/order/1
+</code></pre></div>
 <table>
 <thead>
 <tr>
@@ -1639,9 +1641,9 @@
 </table>
 <h2 id="expected-result">Expected result<a class="headerlink" href="#expected-result" title="Permanent link">&para;</a></h2>
 <p>One trace with spans from <strong>two services</strong>:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>frontend-lab02  GET /order/{product_id}      (server span)
-<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>frontend-lab02    GET                         (client span, the call made by requests)
-<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>backend-lab02       GET /products/{product_id} (server span)
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>frontend-lab02  GET /order/{product_id}      (server span)
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>frontend-lab02    GET                         (client span, the call made by requests)
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>backend-lab02       GET /products/{product_id} (server span)
 </code></pre></div>
 <p>All of them have the same trace ID. The backend span is a child of the frontend's client span. FastAPI also adds small <code>http send</code> and <code>http receive</code> child spans.</p>
 <!-- TODO: screenshot of the Dynatrace trace (frontend-lab02 and backend-lab02). Save as docs/assets/lab02-trace.png and link it here. -->
@@ -1653,42 +1655,55 @@
 <li><strong><code>curl: connection refused</code>:</strong> the containers are still starting. Wait a few seconds.</li>
 <li><strong>Two separate traces, not one:</strong> the <code>traceparent</code> header was lost. Check that the frontend logs show <code>frontend sent traceparent: ...</code> and not <code>None</code>.</li>
 <li><strong>No spans in console mode:</strong> spans are printed in batches. Wait about 5 seconds after a request.</li>
-<li><strong><code>required variable DT_ENDPOINT is missing a value</code>:</strong> add <code>--env-file ../../.env</code> to the command, and check that <code>.env</code> has both values.</li>
+<li><strong><code>required variable DT_ENDPOINT is missing a value</code>:</strong> add the env file to the command, and check that <code>.env</code> has both values:
+  <div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>--env-file<span class="w"> </span>../../.env<span class="w"> </span>up
+</code></pre></div></li>
 <li><strong>Nothing in Dynatrace:</strong> check <code>DT_ENDPOINT</code> (no <code>/api/...</code> at the end) and the token scopes. See Lab 01.</li>
-<li><strong>Changed a file but nothing changed:</strong> run <code>docker compose up --build</code> to rebuild the image.</li>
+<li><strong>Changed a file but nothing changed:</strong> rebuild the image:
+  <div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>up<span class="w"> </span>--build
+</code></pre></div></li>
 </ul>
 <h2 id="going-further">Going further<a class="headerlink" href="#going-further" title="Permanent link">&para;</a></h2>
 <p>Exercise: <strong>find an error in a trace.</strong></p>
 <ol>
-<li>Run <code>curl -i localhost:9000/order/13</code>. The backend raises an exception for product 13.</li>
+<li>Call product 13. The backend raises an exception for it:
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>curl<span class="w"> </span>-i<span class="w"> </span>localhost:9000/order/13
+</code></pre></div></li>
 <li>Find this trace. Which span has the error? The backend server span has status <code>ERROR</code> and an exception event. The frontend returns <code>502</code>.</li>
-<li>Run <code>curl -i localhost:9000/order/99</code>. This is a <code>404</code>. Compare it: is any span marked as an error? (Remember Lab 01: a 4xx is not a server error.)</li>
+<li>Call product 99:
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>curl<span class="w"> </span>-i<span class="w"> </span>localhost:9000/order/99
+</code></pre></div>
+   This is a <code>404</code>. Compare it: is any span marked as an error? (Remember Lab 01: a 4xx is not a server error.)</li>
 </ol>
 <p>Exercise: <strong>add a third hop.</strong></p>
 <p>The folder <code>inventory/</code> is ready. It is a third FastAPI service with <code>GET /stock/{id}</code> on port 8002. It is not in <code>docker-compose.yaml</code> yet. Your job is to wire it in, so the trace has three services.</p>
 <ol>
 <li>Add the service to <code>docker-compose.yaml</code>, below <code>backend</code>:
-   <div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="w">  </span><span class="nt">inventory</span><span class="p">:</span>
-<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="w">    </span><span class="nt">build</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">./inventory</span>
-<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="w">    </span><span class="nt">environment</span><span class="p">:</span>
-<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="w">      </span><span class="nt">&lt;&lt;</span><span class="p">:</span><span class="w"> </span><span class="nv">*otel-env</span>
-<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="w">      </span><span class="nt">OTEL_SERVICE_NAME</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">inventory-lab02</span>
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="w">  </span><span class="nt">inventory</span><span class="p">:</span>
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="w">    </span><span class="nt">build</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">./inventory</span>
+<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="w">    </span><span class="nt">environment</span><span class="p">:</span>
+<a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a><span class="w">      </span><span class="nt">&lt;&lt;</span><span class="p">:</span><span class="w"> </span><span class="nv">*otel-env</span>
+<a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a><span class="w">      </span><span class="nt">OTEL_SERVICE_NAME</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">inventory-lab02</span>
 </code></pre></div></li>
 <li>Tell the backend where it is. In the <code>backend</code> service, add this to <code>environment</code>, and add a <code>depends_on</code> for <code>inventory</code>:
-   <div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="w">      </span><span class="nt">INVENTORY_URL</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">http://inventory:8002</span>
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="w">      </span><span class="nt">INVENTORY_URL</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">http://inventory:8002</span>
 </code></pre></div></li>
 <li>In <code>backend/requirements.txt</code>, add <code>requests==2.32.5</code>. The backend will make an outgoing call, so it needs <code>requests</code>. Bootstrap installs the matching instrumentation for you when the image builds.</li>
 <li>In <code>backend/app.py</code>, call the inventory service before <code>return PRODUCTS[product_id]</code>:
-   <div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="n">stock</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">INVENTORY_URL</span><span class="si">}</span><span class="s2">/stock/</span><span class="si">{</span><span class="n">product_id</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
-<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="k">return</span> <span class="p">{</span><span class="o">**</span><span class="n">PRODUCTS</span><span class="p">[</span><span class="n">product_id</span><span class="p">],</span> <span class="s2">"in_stock"</span><span class="p">:</span> <span class="n">stock</span><span class="p">[</span><span class="s2">"in_stock"</span><span class="p">]}</span>
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="n">stock</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">INVENTORY_URL</span><span class="si">}</span><span class="s2">/stock/</span><span class="si">{</span><span class="n">product_id</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a><span class="k">return</span> <span class="p">{</span><span class="o">**</span><span class="n">PRODUCTS</span><span class="p">[</span><span class="n">product_id</span><span class="p">],</span> <span class="s2">"in_stock"</span><span class="p">:</span> <span class="n">stock</span><span class="p">[</span><span class="s2">"in_stock"</span><span class="p">]}</span>
 </code></pre></div>
    You also need these lines at the top of the file:
-   <div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
-<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
-<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>
-<a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="n">INVENTORY_URL</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">"INVENTORY_URL"</span><span class="p">,</span> <span class="s2">"http://localhost:8002"</span><span class="p">)</span>
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a><span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
+<a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a>
+<a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a><span class="n">INVENTORY_URL</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">"INVENTORY_URL"</span><span class="p">,</span> <span class="s2">"http://localhost:8002"</span><span class="p">)</span>
 </code></pre></div></li>
-<li>Run <code>docker compose --env-file ../../.env up --build</code> and call <code>curl localhost:9000/order/1</code>.</li>
+<li>Rebuild and start, then call the app:
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>--env-file<span class="w"> </span>../../.env<span class="w"> </span>up<span class="w"> </span>--build
+</code></pre></div>
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a>curl<span class="w"> </span>localhost:9000/order/1
+</code></pre></div></li>
 <li>Check the result. The response has <code>in_stock</code>. The logs of all three services show the <strong>same trace ID</strong> in the <code>traceparent</code>. The parent span ID is different in each, because each hop makes a new client span. In Dynatrace, you see <code>inventory-lab02</code> as a third service in the trace.</li>
 </ol>
 

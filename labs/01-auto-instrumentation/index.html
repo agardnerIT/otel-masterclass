@@ -1566,15 +1566,11 @@
 <li>Go to the lab folder:
    <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nb">cd</span><span class="w"> </span>labs/01-auto-instrumentation
 </code></pre></div></li>
-<li>Make a virtual environment (a private folder for this lab's Python packages) and turn it on:
-   <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>python3<span class="w"> </span>-m<span class="w"> </span>venv<span class="w"> </span>.venv
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="nb">source</span><span class="w"> </span>.venv/bin/activate
+<li>Turn on the virtual environment you made in <a href="../../setup/#4-python-environment">Setup</a>. It is in the repo root, so from this folder:
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nb">source</span><span class="w"> </span>../../.venv/bin/activate
 </code></pre></div></li>
 <li>
-<p>Install the app and the OpenTelemetry packages:
-   <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>pip<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </span>requirements.txt
-</code></pre></div>
-   Read <code>requirements.txt</code>. It has FastAPI, uvicorn, and two OpenTelemetry packages:</p>
+<p>Check that the packages are installed. Read <code>requirements.txt</code> in the repo root. Among others, it has FastAPI, uvicorn, and two OpenTelemetry packages this lab uses:</p>
 <ul>
 <li><code>opentelemetry-distro</code> gives you the <code>opentelemetry-instrument</code> and <code>opentelemetry-bootstrap</code> commands.</li>
 <li><code>opentelemetry-exporter-otlp</code> can send data with OTLP.</li>
@@ -1582,9 +1578,11 @@
 </li>
 <li>
 <p>Install the instrumentation libraries. <code>opentelemetry-bootstrap</code> looks at the packages in your environment and installs a matching instrumentation library for each one it knows (for example, FastAPI):
-   <div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>opentelemetry-bootstrap<span class="w"> </span>-a<span class="w"> </span>install
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>opentelemetry-bootstrap<span class="w"> </span>-a<span class="w"> </span>install
 </code></pre></div>
-   To see what it would install without installing, run <code>opentelemetry-bootstrap -a requirements</code>.</p>
+   To see what it would install without installing, run:
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>opentelemetry-bootstrap<span class="w"> </span>-a<span class="w"> </span>requirements
+</code></pre></div></p>
 </li>
 <li>
 <p>Tell OpenTelemetry what to do. You do this with <strong>environment variables</strong>, not code. Pick one:</p>
@@ -1669,7 +1667,9 @@
 </ol>
 <div class="admonition tip">
 <p class="admonition-title">New terminal?</p>
-<p>Environment variables and the virtual environment belong to one terminal. If you open a new one, run <code>source .venv/bin/activate</code> and the <code>export</code> lines again.</p>
+<p>Environment variables and the virtual environment belong to one terminal. If you open a new one, activate the environment and run the <code>export</code> lines again:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="nb">source</span><span class="w"> </span>../../.venv/bin/activate
+</code></pre></div>
 </div>
 <h3 id="token-scopes">Token scopes<a class="headerlink" href="#token-scopes" title="Permanent link">&para;</a></h3>
 <p>For this lab, the Dynatrace API token needs the scope <code>openTelemetryTrace.ingest</code>. The later labs also send metrics and logs, so we ask for all three:</p>
@@ -1741,7 +1741,9 @@
 <h2 id="stuck">Stuck?<a class="headerlink" href="#stuck" title="Permanent link">&para;</a></h2>
 <ul>
 <li><strong><code>python3: command not found</code> or <code>No module named venv</code>:</strong> install Python 3.11 or newer. See <a href="../../setup/">Setup</a>.</li>
-<li><strong><code>opentelemetry-instrument: command not found</code>:</strong> the virtual environment is not on. Run <code>source .venv/bin/activate</code>.</li>
+<li><strong><code>opentelemetry-instrument: command not found</code>:</strong> the virtual environment is not on (see <a href="../../setup/#4-python-environment">Setup</a>). Turn it on:
+  <div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="nb">source</span><span class="w"> </span>../../.venv/bin/activate
+</code></pre></div></li>
 <li><strong>Port 8000 is busy</strong> (for example, <code>mkdocs serve</code> also uses it): stop the other program, or use another port, such as <code>--port 8001</code>. Then use the same port in the <code>curl</code> commands.</li>
 <li><strong>Nothing in Dynatrace, no errors:</strong> wait 30 seconds. Check that <code>DT_ENDPOINT</code> has no <code>/api/...</code> at the end. Step 5 adds <code>/api/v2/otlp</code>.</li>
 <li><strong>401 or 403 from Dynatrace:</strong> the token is wrong or lacks the <code>openTelemetryTrace.ingest</code> scope.</li>
@@ -1750,7 +1752,9 @@
 <h2 id="going-further">Going further<a class="headerlink" href="#going-further" title="Permanent link">&para;</a></h2>
 <ul>
 <li>Remove <code>OTEL_SEMCONV_STABILITY_OPT_IN</code> and run again. The attribute names change (<code>http.method</code>, <code>http.status_code</code>). These are the old names. Standard names are the topic of Lab 08.</li>
-<li>Set <code>OTEL_TRACES_EXPORTER=console,otlp</code> to send to both.</li>
+<li>Send to both console and OTLP:
+  <div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="nb">export</span><span class="w"> </span><span class="nv">OTEL_TRACES_EXPORTER</span><span class="o">=</span>console,otlp
+</code></pre></div></li>
 </ul>
 
 

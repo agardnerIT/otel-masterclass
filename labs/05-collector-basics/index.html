@@ -1757,15 +1757,17 @@ This uses <code>collector.console.yaml</code>: the same pipeline without the Dyn
 <li>Watch the first terminal. Each <code>log records: 1</code> line is one log line that was read and exported.</li>
 <li>Open Dynatrace, open the <strong>Logs</strong> app, and filter with <code>content = *"order-service"*</code>. Your lines appear after a few seconds.</li>
 </ol>
-<p>Stop the program with <code>Ctrl+C</code>. Stop the collector with <code>Ctrl+C</code>, then run <code>docker compose down</code>.</p>
+<p>Stop the program with <code>Ctrl+C</code>. Stop the collector with <code>Ctrl+C</code>, then clean up:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>down
+</code></pre></div>
 <h2 id="expected-result">Expected result<a class="headerlink" href="#expected-result" title="Permanent link">&para;</a></h2>
 <p>In the collector terminal:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>info  Logs  {"otelcol.component.id": "debug", "otelcol.signal": "logs", "log records": 1}
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>info  Logs  {"otelcol.component.id": "debug", "otelcol.signal": "logs", "log records": 1}
 </code></pre></div>
 <p>In Dynatrace, log lines like these:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>INFO order-service GET /api/orders/48214 status=200 duration_ms=142
-<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>WARN payment-service Connection reset by peer while calling downstream billing-api
-<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>INFO account-service password reset for uid=jsmith email=john.smith999@gmail.com
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>INFO order-service GET /api/orders/48214 status=200 duration_ms=142
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>WARN payment-service Connection reset by peer while calling downstream billing-api
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>INFO account-service password reset for uid=jsmith email=john.smith999@gmail.com
 </code></pre></div>
 <div class="admonition warning">
 <p class="admonition-title">Look at that last line</p>
@@ -1806,17 +1808,19 @@ This uses <code>collector.console.yaml</code>: the same pipeline without the Dyn
 <h3 id="exercise-send-the-lab-03-app-through-the-collector">Exercise: send the Lab 03 app through the collector<a class="headerlink" href="#exercise-send-the-lab-03-app-through-the-collector" title="Permanent link">&para;</a></h3>
 <p>Now the collector also receives OTLP. We add an <code>otlp</code> receiver and a pipeline for each signal (<code>collector.otlp.yaml</code>).</p>
 <ol>
-<li>Stop the collector from the steps above (<code>docker compose down</code>).</li>
+<li>Stop the collector from the steps above:
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>down
+</code></pre></div></li>
 <li>Start it again with the extra config. It publishes port <code>4318</code> (OTLP over HTTP) to your machine:
-   <div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>--env-file<span class="w"> </span>../../.env<span class="w"> </span>-f<span class="w"> </span>docker-compose.yaml<span class="w"> </span>-f<span class="w"> </span>docker-compose.otlp.yaml<span class="w"> </span>up
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>--env-file<span class="w"> </span>../../.env<span class="w"> </span>-f<span class="w"> </span>docker-compose.yaml<span class="w"> </span>-f<span class="w"> </span>docker-compose.otlp.yaml<span class="w"> </span>up
 </code></pre></div></li>
 <li>In a second terminal, start Lab 03 and point it at the collector instead of Dynatrace. The file <code>docker-compose.collector.yaml</code> only changes the endpoint:
-   <div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="nb">cd</span><span class="w"> </span>../03-manual-instrumentation
-<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>docker<span class="w"> </span>compose<span class="w"> </span>--env-file<span class="w"> </span>../../.env<span class="w"> </span>-f<span class="w"> </span>docker-compose.yaml<span class="w"> </span>-f<span class="w"> </span>docker-compose.collector.yaml<span class="w"> </span>up<span class="w"> </span>--build
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="nb">cd</span><span class="w"> </span>../03-manual-instrumentation
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>docker<span class="w"> </span>compose<span class="w"> </span>--env-file<span class="w"> </span>../../.env<span class="w"> </span>-f<span class="w"> </span>docker-compose.yaml<span class="w"> </span>-f<span class="w"> </span>docker-compose.collector.yaml<span class="w"> </span>up<span class="w"> </span>--build
 </code></pre></div>
    The apps run in containers. They reach the collector on your machine at <code>host.docker.internal</code>.</li>
 <li>Send an order:
-   <div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>curl<span class="w"> </span><span class="s2">"localhost:9000/order/1?quantity=2"</span>
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>curl<span class="w"> </span><span class="s2">"localhost:9000/order/1?quantity=2"</span>
 </code></pre></div></li>
 <li>In the collector terminal, you see <code>traces</code>, <code>metrics</code> and <code>logs</code>. In Dynatrace, you see the same trace as in Lab 03.</li>
 </ol>

@@ -1995,14 +1995,17 @@ Then run:</p>
 <ul>
 <li><strong><code>unsupported protocol scheme ""</code> errors:</strong> <code>DT_ENDPOINT</code> is empty. Use <code>--env-file ../../.env</code>. Your records are still counted correctly.</li>
 <li><strong>The count is lower than expected (for example 3):</strong> the collector did not wait for <code>log_dedup</code>. Wait 15 seconds, then measure.</li>
-<li><strong>The count is the same as before:</strong> you did not use <code>--force-recreate</code>, so the old config is still running. Run <code>docker compose down</code>, then <code>up -d</code> again.</li>
+<li><strong>The count is the same as before:</strong> you did not use <code>--force-recreate</code>, so the old config is still running. Reset and start again:
+  <div class="highlight"><pre><span></span><code><a id="__codelineno-33-1" name="__codelineno-33-1" href="#__codelineno-33-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>down
+<a id="__codelineno-33-2" name="__codelineno-33-2" href="#__codelineno-33-2"></a>docker<span class="w"> </span>compose<span class="w"> </span>up<span class="w"> </span>-d
+</code></pre></div></li>
 <li><strong><code>'processors' ... unknown type</code>:</strong> check that you spelled the name as in the <code>processors:</code> section, like <code>filter/health</code>.</li>
 <li><strong>YAML errors:</strong> indentation is part of YAML. Use spaces, not tabs. The config in some older material has wrong indentation (<code>log_record</code> must be under <code>logs</code>, which is under the processor name).</li>
 <li><strong>The email is still visible:</strong> you ran stage 1, 2 or 3 only. Add stage 4 or 5.</li>
 <li><strong>Validate before you run:</strong>
-  <div class="highlight"><pre><span></span><code><a id="__codelineno-33-1" name="__codelineno-33-1" href="#__codelineno-33-1"></a>docker<span class="w"> </span>run<span class="w"> </span>--rm<span class="w"> </span>-e<span class="w"> </span><span class="nv">DT_ENDPOINT</span><span class="o">=</span>https://x.live.dynatrace.com<span class="w"> </span>-e<span class="w"> </span><span class="nv">DT_API_TOKEN</span><span class="o">=</span>x<span class="w"> </span><span class="se">\</span>
-<a id="__codelineno-33-2" name="__codelineno-33-2" href="#__codelineno-33-2"></a><span class="w">  </span>-v<span class="w"> </span><span class="s2">"</span><span class="nv">$PWD</span><span class="s2">/collector.yaml:/c.yaml:ro"</span><span class="w"> </span>otel/opentelemetry-collector-contrib:0.162.0<span class="w"> </span><span class="se">\</span>
-<a id="__codelineno-33-3" name="__codelineno-33-3" href="#__codelineno-33-3"></a><span class="w">  </span>validate<span class="w"> </span>--config<span class="o">=</span>/c.yaml
+  <div class="highlight"><pre><span></span><code><a id="__codelineno-34-1" name="__codelineno-34-1" href="#__codelineno-34-1"></a>docker<span class="w"> </span>run<span class="w"> </span>--rm<span class="w"> </span>-e<span class="w"> </span><span class="nv">DT_ENDPOINT</span><span class="o">=</span>https://x.live.dynatrace.com<span class="w"> </span>-e<span class="w"> </span><span class="nv">DT_API_TOKEN</span><span class="o">=</span>x<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-34-2" name="__codelineno-34-2" href="#__codelineno-34-2"></a><span class="w">  </span>-v<span class="w"> </span><span class="s2">"</span><span class="nv">$PWD</span><span class="s2">/collector.yaml:/c.yaml:ro"</span><span class="w"> </span>otel/opentelemetry-collector-contrib:0.162.0<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-34-3" name="__codelineno-34-3" href="#__codelineno-34-3"></a><span class="w">  </span>validate<span class="w"> </span>--config<span class="o">=</span>/c.yaml
 </code></pre></div></li>
 </ul>
 <h2 id="going-further">Going further<a class="headerlink" href="#going-further" title="Permanent link">&para;</a></h2>

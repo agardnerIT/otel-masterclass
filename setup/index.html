@@ -573,10 +573,21 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#4-check-everything" class="md-nav__link">
+  <a href="#4-python-environment" class="md-nav__link">
     <span class="md-ellipsis">
       
-        4. Check everything
+        4. Python environment
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-check-everything" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Check everything
       
     </span>
   </a>
@@ -1423,10 +1434,21 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#4-check-everything" class="md-nav__link">
+  <a href="#4-python-environment" class="md-nav__link">
     <span class="md-ellipsis">
       
-        4. Check everything
+        4. Python environment
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-check-everything" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Check everything
       
     </span>
   </a>
@@ -1527,10 +1549,25 @@
 <p class="admonition-title">Warning</p>
 <p>Never commit <code>.env</code>. It is already in <code>.gitignore</code>.</p>
 </div>
-<h2 id="4-check-everything">4. Check everything<a class="headerlink" href="#4-check-everything" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>./scripts/check-prereqs.sh
+<h2 id="4-python-environment">4. Python environment<a class="headerlink" href="#4-python-environment" title="Permanent link">&para;</a></h2>
+<p>Create one virtual environment for <strong>all</strong> the labs and install every Python package once. Do this from the repo root:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>python3<span class="w"> </span>-m<span class="w"> </span>venv<span class="w"> </span>.venv
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="nb">source</span><span class="w"> </span>.venv/bin/activate
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>pip<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </span>requirements.txt
 </code></pre></div>
-<p>(or <code>make check</code>). Fix anything marked <code>[FAIL]</code>. A <code>[WARN]</code> is fine.</p>
+<p>On Windows PowerShell, activate with:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="p">.</span><span class="n">venv</span><span class="p">\</span><span class="n">Scripts</span><span class="p">\</span><span class="n">activate</span>
+</code></pre></div>
+<p>Labs 01, 08 and 09 run Python on your machine and use this environment. Turn it on in every new terminal by running this from the repo root. Labs that run in Docker build their own images and do not need it.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="nb">source</span><span class="w"> </span>.venv/bin/activate
+</code></pre></div>
+<h2 id="5-check-everything">5. Check everything<a class="headerlink" href="#5-check-everything" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>./scripts/check-prereqs.sh
+</code></pre></div>
+<p>Or run:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>make<span class="w"> </span>check
+</code></pre></div>
+<p>Fix anything marked <code>[FAIL]</code>. A <code>[WARN]</code> is fine.</p>
 <h2 id="stuck">Stuck?<a class="headerlink" href="#stuck" title="Permanent link">&para;</a></h2>
 <ul>
 <li><strong>Docker is installed but not running:</strong> start Docker Desktop.</li>

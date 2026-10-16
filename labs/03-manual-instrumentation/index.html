@@ -1614,18 +1614,20 @@ Metrics print every 5 seconds in this mode.</p>
 <ol>
 <li><strong>TODO 1:</strong> add the attribute <code>order.value</code> to the <code>process_order</code> span.</li>
 <li><strong>TODO 2:</strong> put <code>charge_payment(order_value)</code> in its own span <code>charge_payment</code>. Set <code>payment.amount</code> on it. Record the error on this new span.</li>
-<li>Restart with <code>docker compose --env-file ../../.env up --build</code>, and send the same three orders again.</li>
+<li>Restart, and send the same three orders again:
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>--env-file<span class="w"> </span>../../.env<span class="w"> </span>up<span class="w"> </span>--build
+</code></pre></div></li>
 <li>Stuck? Compare with <code>solution/backend/app.py</code>. You can run it with:
-   <div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>--env-file<span class="w"> </span>../../.env<span class="w"> </span>-f<span class="w"> </span>docker-compose.yaml<span class="w"> </span>-f<span class="w"> </span>docker-compose.solution.yaml<span class="w"> </span>up<span class="w"> </span>--build
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>--env-file<span class="w"> </span>../../.env<span class="w"> </span>-f<span class="w"> </span>docker-compose.yaml<span class="w"> </span>-f<span class="w"> </span>docker-compose.solution.yaml<span class="w"> </span>up<span class="w"> </span>--build
 </code></pre></div></li>
 </ol>
 <h2 id="expected-result">Expected result<a class="headerlink" href="#expected-result" title="Permanent link">&para;</a></h2>
 <p>For the declined order, one trace with:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>frontend-lab03  GET /order/{product_id}
-<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>frontend-lab03    GET                              (client span)
-<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>backend-lab03       GET /orders/{product_id}       (server span, 402)
-<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>backend-lab03         process_order                (ERROR, order.id, order.value ...)
-<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>backend-lab03           charge_payment             (ERROR, exception event)
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>frontend-lab03  GET /order/{product_id}
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>frontend-lab03    GET                              (client span)
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>backend-lab03       GET /orders/{product_id}       (server span, 402)
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>backend-lab03         process_order                (ERROR, order.id, order.value ...)
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>backend-lab03           charge_payment             (ERROR, exception event)
 </code></pre></div>
 <ul>
 <li>In Dynatrace, open <strong>Distributed Tracing</strong>, filter by service <code>backend-lab03</code>, and open the <code>process_order</code> span. Look at the attributes and the <code>stock.checked</code> event.</li>
@@ -1694,12 +1696,18 @@ Metrics print every 5 seconds in this mode.</p>
 </div>
 <h2 id="stuck">Stuck?<a class="headerlink" href="#stuck" title="Permanent link">&para;</a></h2>
 <ul>
-<li><strong><code>port is already allocated</code>:</strong> Lab 02 is still running. Run <code>docker compose down</code> in <code>labs/02-auto-expanded</code>.</li>
+<li><strong><code>port is already allocated</code>:</strong> Lab 02 is still running. Stop it from <code>labs/02-auto-expanded</code>:
+  <div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>down
+</code></pre></div></li>
 <li><strong>No metrics in Dynatrace:</strong> the metric export interval is 10 seconds. Wait, then check the token has <code>metrics.ingest</code>. Logs need <code>logs.ingest</code>. See <a href="../../setup/">Setup</a>.</li>
 <li><strong>Metrics are there but histogram is empty or odd:</strong> check that <code>OTEL_EXPORTER_OTLP_METRICS_TEMPORALITY_PREFERENCE</code> is <code>delta</code>.</li>
 <li><strong>Logs have no trace ID:</strong> the log call must run <strong>inside</strong> the <code>with tracer.start_as_current_span(...)</code> block.</li>
-<li><strong>Changed the code but nothing changed:</strong> run <code>docker compose up --build</code>.</li>
-<li><strong><code>required variable DT_ENDPOINT is missing a value</code>:</strong> add <code>--env-file ../../.env</code> to the command.</li>
+<li><strong>Changed the code but nothing changed:</strong> rebuild:
+  <div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>up<span class="w"> </span>--build
+</code></pre></div></li>
+<li><strong><code>required variable DT_ENDPOINT is missing a value</code>:</strong> add the env file to the command:
+  <div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>--env-file<span class="w"> </span>../../.env<span class="w"> </span>up<span class="w"> </span>--build
+</code></pre></div></li>
 </ul>
 <h2 id="going-further">Going further<a class="headerlink" href="#going-further" title="Permanent link">&para;</a></h2>
 <ul>

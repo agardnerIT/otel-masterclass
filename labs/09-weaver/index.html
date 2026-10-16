@@ -997,10 +997,49 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#why-it-matters" class="md-nav__link">
+  <a href="#the-scenario" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Why it matters
+        The scenario
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="The scenario">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#part-1-exercise-5-minutes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Part 1: Exercise (5 minutes)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#part-2-discuss-5-minutes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Part 2: Discuss (5 minutes)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why-weaver" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why Weaver
       
     </span>
   </a>
@@ -1008,17 +1047,18 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#the-story" class="md-nav__link">
+  <a href="#part-3-define-it-and-check-it" class="md-nav__link">
     <span class="md-ellipsis">
       
-        The story
+        Part 3: Define it and check it
       
     </span>
   </a>
   
-</li>
-      
-        <li class="md-nav__item">
+    <nav class="md-nav" aria-label="Part 3: Define it and check it">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
   <a href="#the-files" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1028,8 +1068,8 @@
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
+        
+          <li class="md-nav__item">
   <a href="#steps" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1037,6 +1077,11 @@
       
     </span>
   </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -1437,10 +1482,49 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#why-it-matters" class="md-nav__link">
+  <a href="#the-scenario" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Why it matters
+        The scenario
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="The scenario">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#part-1-exercise-5-minutes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Part 1: Exercise (5 minutes)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#part-2-discuss-5-minutes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Part 2: Discuss (5 minutes)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why-weaver" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why Weaver
       
     </span>
   </a>
@@ -1448,17 +1532,18 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#the-story" class="md-nav__link">
+  <a href="#part-3-define-it-and-check-it" class="md-nav__link">
     <span class="md-ellipsis">
       
-        The story
+        Part 3: Define it and check it
       
     </span>
   </a>
   
-</li>
-      
-        <li class="md-nav__item">
+    <nav class="md-nav" aria-label="Part 3: Define it and check it">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
   <a href="#the-files" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1468,8 +1553,8 @@
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
+        
+          <li class="md-nav__item">
   <a href="#steps" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1477,6 +1562,11 @@
       
     </span>
   </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -1553,11 +1643,37 @@
 
 
 <h1 id="lab-09-weaver">Lab 09: Weaver<a class="headerlink" href="#lab-09-weaver" title="Permanent link">&para;</a></h1>
-<p><strong>Time: 20 minutes</strong></p>
+<p><strong>Time: 25 minutes</strong></p>
 <h2 id="goal">Goal<a class="headerlink" href="#goal" title="Permanent link">&para;</a></h2>
-<p>Define your own semantic convention. Then use <strong>Weaver</strong> to check live telemetry against it, and see what a good, a bad and a wrong record look like.</p>
-<h2 id="why-it-matters">Why it matters<a class="headerlink" href="#why-it-matters" title="Permanent link">&para;</a></h2>
-<p>A list of names in a wiki does not work. Nobody reads it, and nobody checks it. <strong>Weaver</strong> is an OpenTelemetry tool that turns the names into a <strong>schema</strong> (a registry) that a machine can read. With one schema you can:</p>
+<p>Invent a custom attribute that OpenTelemetry does not have, write it down as a machine-readable convention, then use <strong>Weaver</strong> to check live telemetry against it. You will see what a good, a bad and a wrong record look like.</p>
+<h2 id="the-scenario">The scenario<a class="headerlink" href="#the-scenario" title="Permanent link">&para;</a></h2>
+<p>Imagine you work for <strong>ACME Corporation</strong>. ACME runs a shared observability platform, and many teams send their telemetry to it. That platform costs money, and Finance wants to <strong>charge each team for what it sends</strong>.</p>
+<p>To do that, Finance must answer one question: <strong>which team sent this telemetry?</strong></p>
+<div class="admonition warning">
+<p class="admonition-title">Do the exercise first</p>
+<p>Think about it for a few minutes before reading on. The rest of the lab reveals one possible answer.</p>
+</div>
+<h3 id="part-1-exercise-5-minutes">Part 1: Exercise (5 minutes)<a class="headerlink" href="#part-1-exercise-5-minutes" title="Permanent link">&para;</a></h3>
+<p>Look at the <a href="https://opentelemetry.io/docs/specs/semconv/attributes-registry/">OpenTelemetry attribute registry</a>. Is there a standard attribute for "the internal cost code of the team that owns this service"? There is not. It is specific to ACME, so the OpenTelemetry project will never define it.</p>
+<p>So you have to invent one. On paper or in a text editor, decide:</p>
+<ol>
+<li><strong>The name.</strong> Something like <code>cost.code</code> or <code>acme.cost.code</code>. Which is better, and why?</li>
+<li><strong>The format.</strong> What does a valid value look like? Free text? A number? A fixed pattern?</li>
+<li><strong>Which signals need it.</strong> Logs, traces, metrics, or all of them?</li>
+<li><strong>Who enforces it.</strong> Finance cannot read every log. How do you know teams really send it, and send it correctly?</li>
+</ol>
+<p>Compare with the person next to you.</p>
+<h3 id="part-2-discuss-5-minutes">Part 2: Discuss (5 minutes)<a class="headerlink" href="#part-2-discuss-5-minutes" title="Permanent link">&para;</a></h3>
+<p>Some things to think about:</p>
+<ul>
+<li><strong>Use a prefix you own.</strong> <code>acme.cost.code</code> is better than <code>cost.code</code>. OpenTelemetry may add its own <code>cost.code</code> one day with a different meaning, and your data would clash with it. The OpenTelemetry guidance is to put your own attributes in your own namespace, here <code>acme.</code>.</li>
+<li><strong>The name is not enough.</strong> If one team sends <code>acme.cost.code</code>, another sends <code>cost-code</code> and a third sends <code>acme.costcode</code>, Finance cannot group anything. This is the same problem you saw in <a href="../08-semantic-conventions/">Lab 08</a>.</li>
+<li><strong>The value must be valid.</strong> <code>abc-12</code> or <code>Marketing</code> is useless for charging. We need a rule for the format.</li>
+<li><strong>A wiki page does not work.</strong> Nobody reads it, and nobody checks it.</li>
+</ul>
+<p>We will use these decisions in this lab: the name is <code>acme.cost.code</code>, and the format is three capital letters and four digits, for example <code>ABC1234</code>. Every log record must have it.</p>
+<h2 id="why-weaver">Why Weaver<a class="headerlink" href="#why-weaver" title="Permanent link">&para;</a></h2>
+<p><strong>Weaver</strong> is an OpenTelemetry tool that turns your convention into a <strong>schema</strong> (a registry) that a machine can read. With one schema you can:</p>
 <ul>
 <li><strong>check</strong> that telemetry follows the rules (we do this in this lab)</li>
 <li><strong>generate</strong> documentation and code</li>
@@ -1567,9 +1683,8 @@
     Reg["Registry&lt;br/&gt;(one definition)"] --&gt; Check["Check live telemetry"]
     Reg --&gt; Gen["Generate code and docs"]
     Check --&gt; CI["CI/CD"]</code></pre>
-<h2 id="the-story">The story<a class="headerlink" href="#the-story" title="Permanent link">&para;</a></h2>
-<p>We work for <code>ACME Corporation</code>. Finance says: <strong>every log record must have an attribute <code>acme.cost.code</code></strong>, so they can charge the cost to the right team. The format is three capital letters and four digits, for example <code>ABC1234</code>.</p>
-<h2 id="the-files">The files<a class="headerlink" href="#the-files" title="Permanent link">&para;</a></h2>
+<h2 id="part-3-define-it-and-check-it">Part 3: Define it and check it<a class="headerlink" href="#part-3-define-it-and-check-it" title="Permanent link">&para;</a></h2>
+<h3 id="the-files">The files<a class="headerlink" href="#the-files" title="Permanent link">&para;</a></h3>
 <p>The lab files are in <code>labs/09-weaver/</code>.</p>
 <table>
 <thead>
@@ -1605,15 +1720,13 @@
 <p class="admonition-title">The registry and the policy do different jobs</p>
 <p><code>cost.yaml</code> says the key <strong>exists</strong> and what it means. The descriptions and examples are for humans. The <strong>format</strong> of the value is checked by the policy in <code>cost_code.rego</code> (written in a language called Rego). Weaver does not read the regex from the YAML.</p>
 </div>
-<h2 id="steps">Steps<a class="headerlink" href="#steps" title="Permanent link">&para;</a></h2>
+<h3 id="steps">Steps<a class="headerlink" href="#steps" title="Permanent link">&para;</a></h3>
 <p>Docker must be running. You need Python 3.11+.</p>
 <ol>
-<li>Go to the lab folder, create a Python environment and pull the Weaver image:
+<li>Go to the lab folder, turn on the virtual environment from <a href="../../setup/#4-python-environment">Setup</a> and pull the Weaver image:
    <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nb">cd</span><span class="w"> </span>labs/09-weaver
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>python3<span class="w"> </span>-m<span class="w"> </span>venv<span class="w"> </span>.venv
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="nb">source</span><span class="w"> </span>.venv/bin/activate
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>pip<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </span>requirements.txt
-<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>docker<span class="w"> </span>pull<span class="w"> </span>otel/weaver:v0.28.0
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="nb">source</span><span class="w"> </span>../../.venv/bin/activate
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>docker<span class="w"> </span>pull<span class="w"> </span>otel/weaver:v0.28.0
 </code></pre></div></li>
 <li>Check that the registry is valid:
    <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>docker<span class="w"> </span>run<span class="w"> </span>--rm<span class="w"> </span>-v<span class="w"> </span><span class="s2">"</span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span><span class="s2">"</span>:/work<span class="w"> </span>-w<span class="w"> </span>/work<span class="w"> </span>otel/weaver:v0.28.0<span class="w"> </span>registry<span class="w"> </span>check<span class="w"> </span>-r<span class="w"> </span>/work/model
@@ -1625,74 +1738,75 @@
 <a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">  </span>--otlp-grpc-address<span class="w"> </span><span class="m">0</span>.0.0.0<span class="w"> </span>--inactivity-timeout<span class="w"> </span><span class="m">30</span>
 </code></pre></div>
    Wait until you see <code>OTLP gRPC listener started</code>.</li>
-<li>In <strong>terminal 2</strong>, activate the environment (<code>source .venv/bin/activate</code>) and send the 3 test logs:
-   <div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>python<span class="w"> </span>emit_test_logs.py
+<li>In <strong>terminal 2</strong>, activate the environment and send the 3 test logs:
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="nb">source</span><span class="w"> </span>../../.venv/bin/activate
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>python<span class="w"> </span>emit_test_logs.py
 </code></pre></div></li>
 <li>Go back to terminal 1. Wait for Weaver to stop, or press <code>Ctrl+C</code>. It prints a report.</li>
 </ol>
 <details class="note">
 <summary>On Windows?</summary>
-<p>Use PowerShell and replace <code>$(pwd)</code> with <code>${PWD}</code>, and <code>source .venv/bin/activate</code> with <code>.venv\Scripts\activate</code>.</p>
+<p>Use PowerShell. Replace <code>$(pwd)</code> with <code>${PWD}</code>, and activate the environment with:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="p">..\..\.</span><span class="n">venv</span><span class="p">\</span><span class="n">Scripts</span><span class="p">\</span><span class="n">activate</span>
+</code></pre></div>
 </details>
 <h2 id="expected-result">Expected result<a class="headerlink" href="#expected-result" title="Permanent link">&para;</a></h2>
 <p>Weaver prints one block per log. Read the <code>Log</code> part of each block. Colours in the terminal: green is fine, red is a violation.</p>
 <p><strong>Log 1: <code>good</code></strong> is compliant. Every attribute is green.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>Log
-<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>    acme.cost.code = ABC1234
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>Log
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>    acme.cost.code = ABC1234
 </code></pre></div>
 <p><strong>Log 2: <code>bad-format</code></strong> has the right key, but a wrong value:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>Log
-<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>    acme.cost.code = abc-12
-<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>        - [violation] acme.cost.code value 'abc-12' does not match ^[A-Z]{3}[0-9]{4}$
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>Log
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>    acme.cost.code = abc-12
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>        - [violation] acme.cost.code value 'abc-12' does not match ^[A-Z]{3}[0-9]{4}$
 </code></pre></div>
 <p><strong>Log 3: <code>wrong-key</code></strong> has the right value, but the wrong key. Two violations: the key is not in the registry, and the required key is missing:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>Log
-<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>    - [violation] Log record is missing required attribute 'acme.cost.code'
-<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>    cost-code = ABC1234
-<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>        - [violation] Attribute 'cost-code' does not exist in the registry.
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>Log
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>    - [violation] Log record is missing required attribute 'acme.cost.code'
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>    cost-code = ABC1234
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>        - [violation] Attribute 'cost-code' does not exist in the registry.
 </code></pre></div>
 <p>At the end is a summary. We got <strong>3 violations</strong> (one per bad log) and 3 <code>improvement</code> messages:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>Advisories given
-<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>  - total: 6
-<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>  - advice level:
-<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>    - improvement: 3
-<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>    - violation: 3
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>Advisories given
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>  - total: 6
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>  - advice level:
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>    - improvement: 3
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>    - violation: 3
 </code></pre></div>
 <div class="admonition info">
 <p class="admonition-title">What are the 3 improvements?</p>
 <p>Each log also has <code>service.instance.id</code>, which the SDK adds. In this OpenTelemetry version it is not <code>stable</code> yet, so Weaver says so. It is only advice. You can ignore it.</p>
 </div>
 <p>Weaver has levels: <code>violation</code> (must fix), <code>improvement</code> (should fix) and <code>information</code> (FYI). You choose the level in your policy.</p>
-<!-- TODO: screenshot of Weaver live-check output. Save as docs/assets/lab09-weaver.png and link it here. -->
-
-<p><em>Screenshot placeholder: the Weaver report with one green log and two logs with violations.</em></p>
+<p><img alt="Weaver live-check report: the good log is clean, bad-format has an invalid cost code violation, and wrong-key has a missing attribute violation and an unknown attribute violation" src="../../assets/weaver-output.png" /></p>
 <h2 id="exercise-add-an-enum-attribute">Exercise: add an enum attribute<a class="headerlink" href="#exercise-add-an-enum-attribute" title="Permanent link">&para;</a></h2>
 <p>ACME also wants an attribute <code>acme.environment</code>. Only two values are allowed: <code>prod</code> and <code>staging</code>.</p>
 <ol>
 <li>Add this to the end of <code>model/cost.yaml</code>, under <code>attributes:</code> (keep the indentation: it lines up with <code>- id: acme.cost.code</code>):
-   <div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">acme.environment</span>
-<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="w">        </span><span class="nt">type</span><span class="p">:</span>
-<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="w">          </span><span class="nt">members</span><span class="p">:</span>
-<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">production</span>
-<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="w">              </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">prod</span>
-<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="w">              </span><span class="nt">stability</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">stable</span>
-<a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a><span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">staging</span>
-<a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a><span class="w">              </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">staging</span>
-<a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a><span class="w">              </span><span class="nt">stability</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">stable</span>
-<a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a><span class="w">        </span><span class="nt">stability</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">stable</span>
-<a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a><span class="w">        </span><span class="nt">brief</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Environment the telemetry came from.</span>
-<a id="__codelineno-8-12" name="__codelineno-8-12" href="#__codelineno-8-12"></a><span class="w">        </span><span class="nt">examples</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">"prod"</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">"staging"</span><span class="p p-Indicator">]</span>
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">acme.environment</span>
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="w">        </span><span class="nt">type</span><span class="p">:</span>
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="w">          </span><span class="nt">members</span><span class="p">:</span>
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">production</span>
+<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="w">              </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">prod</span>
+<a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a><span class="w">              </span><span class="nt">stability</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">stable</span>
+<a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a><span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">staging</span>
+<a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a><span class="w">              </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">staging</span>
+<a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a><span class="w">              </span><span class="nt">stability</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">stable</span>
+<a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a><span class="w">        </span><span class="nt">stability</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">stable</span>
+<a id="__codelineno-9-11" name="__codelineno-9-11" href="#__codelineno-9-11"></a><span class="w">        </span><span class="nt">brief</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Environment the telemetry came from.</span>
+<a id="__codelineno-9-12" name="__codelineno-9-12" href="#__codelineno-9-12"></a><span class="w">        </span><span class="nt">examples</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">"prod"</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">"staging"</span><span class="p p-Indicator">]</span>
 </code></pre></div></li>
 <li>Check the registry again (step 2).</li>
 <li>In <code>emit_test_logs.py</code>, change the <code>good</code> and <code>bad-format</code> lines to:
-   <div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="s2">"good"</span><span class="p">:</span> <span class="p">(</span><span class="s2">"team-a"</span><span class="p">,</span> <span class="p">{</span><span class="s2">"acme.cost.code"</span><span class="p">:</span> <span class="s2">"ABC1234"</span><span class="p">,</span> <span class="s2">"acme.environment"</span><span class="p">:</span> <span class="s2">"prod"</span><span class="p">}),</span>
-<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="s2">"bad-format"</span><span class="p">:</span> <span class="p">(</span><span class="s2">"team-b"</span><span class="p">,</span> <span class="p">{</span><span class="s2">"acme.cost.code"</span><span class="p">:</span> <span class="s2">"abc-12"</span><span class="p">,</span> <span class="s2">"acme.environment"</span><span class="p">:</span> <span class="s2">"production"</span><span class="p">}),</span>
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="s2">"good"</span><span class="p">:</span> <span class="p">(</span><span class="s2">"team-a"</span><span class="p">,</span> <span class="p">{</span><span class="s2">"acme.cost.code"</span><span class="p">:</span> <span class="s2">"ABC1234"</span><span class="p">,</span> <span class="s2">"acme.environment"</span><span class="p">:</span> <span class="s2">"prod"</span><span class="p">}),</span>
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="s2">"bad-format"</span><span class="p">:</span> <span class="p">(</span><span class="s2">"team-b"</span><span class="p">,</span> <span class="p">{</span><span class="s2">"acme.cost.code"</span><span class="p">:</span> <span class="s2">"abc-12"</span><span class="p">,</span> <span class="s2">"acme.environment"</span><span class="p">:</span> <span class="s2">"production"</span><span class="p">}),</span>
 </code></pre></div></li>
 <li>Run Weaver (step 3), then send the logs (step 4).</li>
 </ol>
 <p>You should see that <code>acme.environment = prod</code> is clean, and for <code>production</code> Weaver says:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>acme.environment = production
-<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>    - [information] Enum attribute 'acme.environment' has value 'production' which is not documented.
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>acme.environment = production
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>    - [information] Enum attribute 'acme.environment' has value 'production' which is not documented.
 </code></pre></div>
 <p>An enum is checked by Weaver <strong>without</strong> a policy. You only had to define it. Notice the level is <code>information</code>, not <code>violation</code>. To make it a hard failure, you would write a Rego rule like the one in <code>cost_code.rego</code>.</p>
 <h2 id="weaver-in-a-pipeline">Weaver in a pipeline<a class="headerlink" href="#weaver-in-a-pipeline" title="Permanent link">&para;</a></h2>
@@ -1700,7 +1814,9 @@
 <h2 id="stuck">Stuck?<a class="headerlink" href="#stuck" title="Permanent link">&para;</a></h2>
 <ul>
 <li><strong><code>Cannot connect to the Docker daemon</code>:</strong> start Docker.</li>
-<li><strong><code>port is already allocated</code> (4317):</strong> a collector from another lab is running. Run <code>docker compose down</code> in that lab's folder.</li>
+<li><strong><code>port is already allocated</code> (4317):</strong> a collector from another lab is running. Stop it from that lab's folder:
+  <div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>down
+</code></pre></div></li>
 <li><strong>The Python script prints errors about the connection:</strong> Weaver is not ready yet. Wait for <code>OTLP gRPC listener started</code>, then run it again.</li>
 <li><strong>Weaver stops before you send logs:</strong> the 30 second timeout ran out. Start it again.</li>
 <li><strong><code>registry check</code> fails with a YAML error:</strong> indentation. Use spaces, not tabs. The new attribute must line up with the first one.</li>
