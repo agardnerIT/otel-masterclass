@@ -1,0 +1,40 @@
+# The collector's LOCAL config: tail a log file, parse the level, drop DEBUG (normal production state), print the rest.
+# The server's remote config is merged on top of this.
+extensions:
+  file_storage:
+    directory: /var/lib/otelcol/filelog
+
+receivers:
+  file_log:
+    include: [/var/log/demo/file.log]
+    start_at: beginning
+    storage: file_storage   # remember how far we've read, across collector restarts
+    operators:
+      # "DEBUG some message" -> attributes.level=DEBUG, attributes.message="some message"
+      - type: regex_parser
+        regex: '^(?P<level>\w+)\s+(?P<message>.*)$'
+        severity:
+          parse_from: attributes.level
+      - type: move
+        from: attributes.message
+        to: body
+
+processors:
+  # Production default: don't capture anything below INFO (saves cost and noise)
+  filter/drop_debug:
+    error_mode: ignore
+    logs:
+      log_record:
+        - severity_number < SEVERITY_NUMBER_INFO
+
+exporters:
+  debug:
+    verbosity: detailed
+
+service:
+  extensions: [file_storage]
+  pipelines:
+    logs:
+      receivers: [file_log]
+      processors: [filter/drop_debug]
+      exporters: [debug]

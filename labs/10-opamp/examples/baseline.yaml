@@ -1,0 +1,5 @@
+# Remote config: normal production state. Keep the local filter, so DEBUG and TRACE are dropped.
+service:
+  pipelines:
+    logs:
+      processors: [filter/drop_debug]

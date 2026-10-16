@@ -1,0 +1,6 @@
+# Remote config: incident mode. Remove the filter from the logs pipeline, so DEBUG and TRACE are captured again.
+# (Lists are replaced when configs are merged, so an empty list removes the local filter from the pipeline.)
+service:
+  pipelines:
+    logs:
+      processors: []

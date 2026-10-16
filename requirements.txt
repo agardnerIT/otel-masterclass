@@ -1,0 +1,11 @@
+# One virtual environment for all labs that run Python on your machine
+# (labs 01, 08, 09 and 10). Labs that run in Docker pin their own packages.
+fastapi==0.143.0
+uvicorn==0.54.0
+websockets==17.2  # WebSocket support for uvicorn (lab 10)
+protobuf==7.36.2  # decodes OpAMP messages (lab 10)
+opentelemetry-distro==0.66b1
+opentelemetry-exporter-otlp==1.45.1
+opentelemetry-sdk==1.45.1
+opentelemetry-exporter-otlp-proto-http==1.45.1
+opentelemetry-exporter-otlp-proto-grpc==1.45.1

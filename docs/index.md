@@ -19,7 +19,7 @@ We start with the basics and move quickly. All code is open source, so you can r
 | 7 | [Custom collector with OCB](labs/07-ocb.md) | Collect and process | Lab | 10-15 |
 | 8 | [Semantic conventions](labs/08-semantic-conventions.md) | Standardise | Lab | 15 |
 | 9 | [Weaver](labs/09-weaver.md) | Standardise | Lab | 20 |
-| 10 | [Control plane: OpAMP](labs/10-opamp.md) | Control plane | Lab | 15 |
+| 10 | [Control plane: OpAMP](labs/10-opamp.md) | Control plane | Lab | 20 |
 | 11 | [Bindplane](labs/11-bindplane.md) | Control plane | Discussion + Demo | 5 |
 | | **Total** | | **~180** |
 

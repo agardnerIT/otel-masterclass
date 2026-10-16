@@ -1,14 +1,47 @@
 # Lab 09: Weaver
 
-**Time: 20 minutes**
+**Time: 25 minutes**
 
 ## Goal
 
-Define your own semantic convention. Then use **Weaver** to check live telemetry against it, and see what a good, a bad and a wrong record look like.
+Invent a custom attribute that OpenTelemetry does not have, write it down as a machine-readable convention, then use **Weaver** to check live telemetry against it. You will see what a good, a bad and a wrong record look like.
 
-## Why it matters
+## The scenario
 
-A list of names in a wiki does not work. Nobody reads it, and nobody checks it. **Weaver** is an OpenTelemetry tool that turns the names into a **schema** (a registry) that a machine can read. With one schema you can:
+Imagine you work for **ACME Corporation**. ACME runs a shared observability platform, and many teams send their telemetry to it. That platform costs money, and Finance wants to **charge each team for what it sends**.
+
+To do that, Finance must answer one question: **which team sent this telemetry?**
+
+!!! warning "Do the exercise first"
+    Think about it for a few minutes before reading on. The rest of the lab reveals one possible answer.
+
+### Part 1: Exercise (5 minutes)
+
+Look at the [OpenTelemetry attribute registry](https://opentelemetry.io/docs/specs/semconv/attributes-registry/). Is there a standard attribute for "the internal cost code of the team that owns this service"? There is not. It is specific to ACME, so the OpenTelemetry project will never define it.
+
+So you have to invent one. On paper or in a text editor, decide:
+
+1. **The name.** Something like `cost.code` or `acme.cost.code`. Which is better, and why?
+2. **The format.** What does a valid value look like? Free text? A number? A fixed pattern?
+3. **Which signals need it.** Logs, traces, metrics, or all of them?
+4. **Who enforces it.** Finance cannot read every log. How do you know teams really send it, and send it correctly?
+
+Compare with the person next to you.
+
+### Part 2: Discuss (5 minutes)
+
+Some things to think about:
+
+- **Use a prefix you own.** `acme.cost.code` is better than `cost.code`. OpenTelemetry may add its own `cost.code` one day with a different meaning, and your data would clash with it. The OpenTelemetry guidance is to put your own attributes in your own namespace, here `acme.`.
+- **The name is not enough.** If one team sends `acme.cost.code`, another sends `cost-code` and a third sends `acme.costcode`, Finance cannot group anything. This is the same problem you saw in [Lab 08](08-semantic-conventions.md).
+- **The value must be valid.** `abc-12` or `Marketing` is useless for charging. We need a rule for the format.
+- **A wiki page does not work.** Nobody reads it, and nobody checks it.
+
+We will use these decisions in this lab: the name is `acme.cost.code`, and the format is three capital letters and four digits, for example `ABC1234`. Every log record must have it.
+
+## Why Weaver
+
+**Weaver** is an OpenTelemetry tool that turns your convention into a **schema** (a registry) that a machine can read. With one schema you can:
 
 - **check** that telemetry follows the rules (we do this in this lab)
 - **generate** documentation and code
@@ -21,11 +54,9 @@ flowchart LR
     Check --> CI["CI/CD"]
 ```
 
-## The story
+## Part 3: Define it and check it
 
-We work for `ACME Corporation`. Finance says: **every log record must have an attribute `acme.cost.code`**, so they can charge the cost to the right team. The format is three capital letters and four digits, for example `ABC1234`.
-
-## The files
+### The files
 
 The lab files are in `labs/09-weaver/`.
 
@@ -40,16 +71,14 @@ The lab files are in `labs/09-weaver/`.
 !!! note "The registry and the policy do different jobs"
     `cost.yaml` says the key **exists** and what it means. The descriptions and examples are for humans. The **format** of the value is checked by the policy in `cost_code.rego` (written in a language called Rego). Weaver does not read the regex from the YAML.
 
-## Steps
+### Steps
 
 Docker must be running. You need Python 3.11+.
 
-1. Go to the lab folder, create a Python environment and pull the Weaver image:
+1. Go to the lab folder, turn on the virtual environment from [Setup](../setup.md#4-python-environment) and pull the Weaver image:
    ```bash
    cd labs/09-weaver
-   python3 -m venv .venv
-   source .venv/bin/activate
-   pip install -r requirements.txt
+   source ../../.venv/bin/activate
    docker pull otel/weaver:v0.28.0
    ```
 2. Check that the registry is valid:
@@ -64,14 +93,19 @@ Docker must be running. You need Python 3.11+.
      --otlp-grpc-address 0.0.0.0 --inactivity-timeout 30
    ```
    Wait until you see `OTLP gRPC listener started`.
-4. In **terminal 2**, activate the environment (`source .venv/bin/activate`) and send the 3 test logs:
+4. In **terminal 2**, activate the environment and send the 3 test logs:
    ```bash
+   source ../../.venv/bin/activate
    python emit_test_logs.py
    ```
 5. Go back to terminal 1. Wait for Weaver to stop, or press `Ctrl+C`. It prints a report.
 
 ??? note "On Windows?"
-    Use PowerShell and replace `$(pwd)` with `${PWD}`, and `source .venv/bin/activate` with `.venv\Scripts\activate`.
+    Use PowerShell. Replace `$(pwd)` with `${PWD}`, and activate the environment with:
+
+    ```powershell
+    ..\..\.venv\Scripts\activate
+    ```
 
 ## Expected result
 
@@ -116,9 +150,7 @@ Advisories given
 
 Weaver has levels: `violation` (must fix), `improvement` (should fix) and `information` (FYI). You choose the level in your policy.
 
-<!-- TODO: screenshot of Weaver live-check output. Save as docs/assets/lab09-weaver.png and link it here. -->
-
-*Screenshot placeholder: the Weaver report with one green log and two logs with violations.*
+![Weaver live-check report: the good log is clean, bad-format has an invalid cost code violation, and wrong-key has a missing attribute violation and an unknown attribute violation](../assets/weaver-output.png)
 
 ## Exercise: add an enum attribute
 
@@ -163,7 +195,10 @@ Weaver can write its report as JSON or YAML (`--output`), so a CI/CD job can rea
 ## Stuck?
 
 - **`Cannot connect to the Docker daemon`:** start Docker.
-- **`port is already allocated` (4317):** a collector from another lab is running. Run `docker compose down` in that lab's folder.
+- **`port is already allocated` (4317):** a collector from another lab is running. Stop it from that lab's folder:
+  ```bash
+  docker compose down
+  ```
 - **The Python script prints errors about the connection:** Weaver is not ready yet. Wait for `OTLP gRPC listener started`, then run it again.
 - **Weaver stops before you send logs:** the 30 second timeout ran out. Start it again.
 - **`registry check` fails with a YAML error:** indentation. Use spaces, not tabs. The new attribute must line up with the first one.

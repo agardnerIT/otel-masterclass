@@ -1,0 +1,18 @@
+# A minimal collector whose only job is to speak OpAMP to the server.
+receivers:
+  nop:
+exporters:
+  nop:
+extensions:
+  opamp:
+    server:
+      http:
+        endpoint: http://host.docker.internal:4320/v1/opamp
+        tls:
+          insecure: true
+service:
+  extensions: [opamp]
+  pipelines:
+    traces:
+      receivers: [nop]
+      exporters: [nop]

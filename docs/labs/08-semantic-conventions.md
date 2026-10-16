@@ -8,7 +8,10 @@ Find out for yourself why shared attribute names matter. Write one log line, com
 
 ## Why it matters
 
-Your company has many teams, and every team writes telemetry. Does it all look the same? Let's find out. **Do the exercise first. Do not read ahead.**
+Your company has many teams, and every team writes telemetry. Does it all look the same? Let's find out.
+
+!!! warning "Do the exercise first"
+    Do not read past Part 1 until you have finished it. Later parts reveal the point of the exercise.
 
 ## Part 1: Exercise (5 minutes)
 
@@ -53,12 +56,10 @@ Now see the problem in a real backend. You send the **same 7 requests** to Dynat
 
 You need Python 3.11+, a Dynatrace tenant and `dtctl`. See [Setup](../setup.md#3-dynatrace-optional). The token needs the `logs.ingest` scope. No tenant? Use the fallback at the end of this part.
 
-1. Go to the folder and install the Python packages:
+1. Go to the folder and turn on the virtual environment from [Setup](../setup.md#4-python-environment):
    ```bash
    cd labs/08-semantic-conventions
-   python3 -m venv .venv
-   source .venv/bin/activate
-   pip install -r requirements.txt
+   source ../../.venv/bin/activate
    ```
 2. Read `messy.log`. These are 7 logs from 7 "teams". All 7 are the same kind of event: a handled HTTP request.
    ```text
@@ -78,7 +79,11 @@ You need Python 3.11+, a Dynatrace tenant and `dtctl`. See [Setup](../setup.md#3
    python3 send_logs.py standardised.log
    ```
    You should see `Sent 7 logs` twice. Wait about 30 seconds for the logs to arrive.
-4. First check that the messy logs arrived. If `dtctl` says `token ... not found`, run `dtctl auth login` first.
+4. First check that the messy logs arrived. If `dtctl` says `token ... not found`, log in first:
+   ```bash
+   dtctl auth login
+   ```
+   Then run the query:
    ```bash
    dtctl query 'fetch logs
    | filter service.name == "semconv-messy"
@@ -125,7 +130,10 @@ To make the first one work, you would need a different rule for every team, and 
 - **`python3: command not found`:** use `python`.
 - **The standardised query finds nothing:** the logs can take a minute to arrive. Check the time range, and that the token has `logs.ingest`. Check that `toLong(...)` is in the query: without it, text is compared to a number and nothing matches.
 - **You get 6 or 9 records, not 3:** you ran `send_logs.py` more than once. Each run adds the same logs again. Add `from:-10m` after `fetch logs` to see only the latest.
-- **`send_logs.py` fails with `KeyError: 'DT_ENDPOINT'`:** run the `set -a; source ../../.env; set +a` line first.
+- **`send_logs.py` fails with `KeyError: 'DT_ENDPOINT'`:** load the env file first:
+  ```bash
+  set -a; source ../../.env; set +a
+  ```
 - **The messy query returns records:** you changed `messy.log`, or you sent a file twice with a different name.
 
 ## Going further

@@ -318,7 +318,11 @@ In Dynatrace, search for `order-service` again. The email line shows `email=***@
 
 - **`unsupported protocol scheme ""` errors:** `DT_ENDPOINT` is empty. Use `--env-file ../../.env`. Your records are still counted correctly.
 - **The count is lower than expected (for example 3):** the collector did not wait for `log_dedup`. Wait 15 seconds, then measure.
-- **The count is the same as before:** you did not use `--force-recreate`, so the old config is still running. Run `docker compose down`, then `up -d` again.
+- **The count is the same as before:** you did not use `--force-recreate`, so the old config is still running. Reset and start again:
+  ```bash
+  docker compose down
+  docker compose up -d
+  ```
 - **`'processors' ... unknown type`:** check that you spelled the name as in the `processors:` section, like `filter/health`.
 - **YAML errors:** indentation is part of YAML. Use spaces, not tabs. The config in some older material has wrong indentation (`log_record` must be under `logs`, which is under the processor name).
 - **The email is still visible:** you ran stage 1, 2 or 3 only. Add stage 4 or 5.

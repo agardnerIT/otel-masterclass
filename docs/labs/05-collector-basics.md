@@ -131,7 +131,11 @@ The lab files are in `labs/05-collector-basics/`. Docker must be running.
 6. Watch the first terminal. Each `log records: 1` line is one log line that was read and exported.
 7. Open Dynatrace, open the **Logs** app, and filter with `content = *"order-service"*`. Your lines appear after a few seconds.
 
-Stop the program with `Ctrl+C`. Stop the collector with `Ctrl+C`, then run `docker compose down`.
+Stop the program with `Ctrl+C`. Stop the collector with `Ctrl+C`, then clean up:
+
+```bash
+docker compose down
+```
 
 ## Expected result
 
@@ -172,7 +176,10 @@ These are only a few. There are many more receivers for all kinds of cloud platf
 
 Now the collector also receives OTLP. We add an `otlp` receiver and a pipeline for each signal (`collector.otlp.yaml`).
 
-1. Stop the collector from the steps above (`docker compose down`).
+1. Stop the collector from the steps above:
+   ```bash
+   docker compose down
+   ```
 2. Start it again with the extra config. It publishes port `4318` (OTLP over HTTP) to your machine:
    ```bash
    docker compose --env-file ../../.env -f docker-compose.yaml -f docker-compose.otlp.yaml up

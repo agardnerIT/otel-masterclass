@@ -1,0 +1,18 @@
+# The OpAMP Supervisor: owns the OpAMP connection and runs the collector as a child process.
+server:
+  endpoint: ws://host.docker.internal:4320/v1/opamp
+
+capabilities:
+  accepts_remote_config: true
+  reports_effective_config: true
+  reports_health: true
+  reports_own_metrics: false
+
+agent:
+  executable: /otelcol-contrib
+  passthrough_logs: true  # show the collector's own log in the container output
+  config_files:
+    - /etc/opampsupervisor/collector.yaml
+
+storage:
+  directory: /var/lib/otelcol/supervisor

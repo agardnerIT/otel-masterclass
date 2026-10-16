@@ -87,7 +87,11 @@ docker compose --env-file ../../.env \
   -f docker-compose.yaml -f docker-compose.code.yaml up --build
 ```
 
-Run `curl localhost:9000/order/1` again. You get the same trace.
+Call the app again. You get the same trace:
+
+```bash
+curl localhost:9000/order/1
+```
 
 | | Agent (`opentelemetry-instrument`) | In code |
 |---|---|---|
@@ -118,17 +122,30 @@ All of them have the same trace ID. The backend span is a child of the frontend'
 - **`curl: connection refused`:** the containers are still starting. Wait a few seconds.
 - **Two separate traces, not one:** the `traceparent` header was lost. Check that the frontend logs show `frontend sent traceparent: ...` and not `None`.
 - **No spans in console mode:** spans are printed in batches. Wait about 5 seconds after a request.
-- **`required variable DT_ENDPOINT is missing a value`:** add `--env-file ../../.env` to the command, and check that `.env` has both values.
+- **`required variable DT_ENDPOINT is missing a value`:** add the env file to the command, and check that `.env` has both values:
+  ```bash
+  docker compose --env-file ../../.env up
+  ```
 - **Nothing in Dynatrace:** check `DT_ENDPOINT` (no `/api/...` at the end) and the token scopes. See Lab 01.
-- **Changed a file but nothing changed:** run `docker compose up --build` to rebuild the image.
+- **Changed a file but nothing changed:** rebuild the image:
+  ```bash
+  docker compose up --build
+  ```
 
 ## Going further
 
 Exercise: **find an error in a trace.**
 
-1. Run `curl -i localhost:9000/order/13`. The backend raises an exception for product 13.
+1. Call product 13. The backend raises an exception for it:
+   ```bash
+   curl -i localhost:9000/order/13
+   ```
 2. Find this trace. Which span has the error? The backend server span has status `ERROR` and an exception event. The frontend returns `502`.
-3. Run `curl -i localhost:9000/order/99`. This is a `404`. Compare it: is any span marked as an error? (Remember Lab 01: a 4xx is not a server error.)
+3. Call product 99:
+   ```bash
+   curl -i localhost:9000/order/99
+   ```
+   This is a `404`. Compare it: is any span marked as an error? (Remember Lab 01: a 4xx is not a server error.)
 
 Exercise: **add a third hop.**
 
@@ -159,5 +176,11 @@ The folder `inventory/` is ready. It is a third FastAPI service with `GET /stock
 
    INVENTORY_URL = os.getenv("INVENTORY_URL", "http://localhost:8002")
    ```
-5. Run `docker compose --env-file ../../.env up --build` and call `curl localhost:9000/order/1`.
+5. Rebuild and start, then call the app:
+   ```bash
+   docker compose --env-file ../../.env up --build
+   ```
+   ```bash
+   curl localhost:9000/order/1
+   ```
 6. Check the result. The response has `in_stock`. The logs of all three services show the **same trace ID** in the `traceparent`. The parent span ID is different in each, because each hop makes a new client span. In Dynatrace, you see `inventory-lab02` as a third service in the trace.

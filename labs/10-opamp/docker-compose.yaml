@@ -1,0 +1,14 @@
+# Two kinds of agent that connect to the OpAMP server running on your machine (port 4320).
+services:
+  # A plain collector. Its opamp extension reports status, but cannot be reconfigured.
+  plain:
+    image: otel/opentelemetry-collector-contrib:0.162.0
+    command: ["--config=/etc/otelcol-contrib/config.yaml"]
+    volumes:
+      - ./plain-collector.yaml:/etc/otelcol-contrib/config.yaml:ro
+
+  # An OpAMP Supervisor that runs a collector as a child process and applies remote config.
+  agent:
+    build: agent
+    volumes:
+      - ./logs:/var/log/demo   # the log file the collector tails

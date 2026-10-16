@@ -18,16 +18,11 @@ The lab files are in `labs/01-auto-instrumentation/`. The app (`app.py`) is a sm
    ```bash
    cd labs/01-auto-instrumentation
    ```
-2. Make a virtual environment (a private folder for this lab's Python packages) and turn it on:
+2. Turn on the virtual environment you made in [Setup](../setup.md#4-python-environment). It is in the repo root, so from this folder:
    ```bash
-   python3 -m venv .venv
-   source .venv/bin/activate
+   source ../../.venv/bin/activate
    ```
-3. Install the app and the OpenTelemetry packages:
-   ```bash
-   pip install -r requirements.txt
-   ```
-   Read `requirements.txt`. It has FastAPI, uvicorn, and two OpenTelemetry packages:
+3. Check that the packages are installed. Read `requirements.txt` in the repo root. Among others, it has FastAPI, uvicorn, and two OpenTelemetry packages this lab uses:
 
     - `opentelemetry-distro` gives you the `opentelemetry-instrument` and `opentelemetry-bootstrap` commands.
     - `opentelemetry-exporter-otlp` can send data with OTLP.
@@ -36,7 +31,10 @@ The lab files are in `labs/01-auto-instrumentation/`. The app (`app.py`) is a sm
    ```bash
    opentelemetry-bootstrap -a install
    ```
-   To see what it would install without installing, run `opentelemetry-bootstrap -a requirements`.
+   To see what it would install without installing, run:
+   ```bash
+   opentelemetry-bootstrap -a requirements
+   ```
 5. Tell OpenTelemetry what to do. You do this with **environment variables**, not code. Pick one:
 
     === "Dynatrace"
@@ -92,7 +90,11 @@ The lab files are in `labs/01-auto-instrumentation/`. The app (`app.py`) is a sm
 8. Look at the spans. In console mode, they print in the first terminal. In Dynatrace, open **Distributed Tracing** and filter by service `shop-lab01`.
 
 !!! tip "New terminal?"
-    Environment variables and the virtual environment belong to one terminal. If you open a new one, run `source .venv/bin/activate` and the `export` lines again.
+    Environment variables and the virtual environment belong to one terminal. If you open a new one, activate the environment and run the `export` lines again:
+
+    ```bash
+    source ../../.venv/bin/activate
+    ```
 
 ### Token scopes
 
@@ -140,7 +142,10 @@ Lab 03 shows how manual instrumentation adds this.
 ## Stuck?
 
 - **`python3: command not found` or `No module named venv`:** install Python 3.11 or newer. See [Setup](../setup.md).
-- **`opentelemetry-instrument: command not found`:** the virtual environment is not on. Run `source .venv/bin/activate`.
+- **`opentelemetry-instrument: command not found`:** the virtual environment is not on (see [Setup](../setup.md#4-python-environment)). Turn it on:
+  ```bash
+  source ../../.venv/bin/activate
+  ```
 - **Port 8000 is busy** (for example, `mkdocs serve` also uses it): stop the other program, or use another port, such as `--port 8001`. Then use the same port in the `curl` commands.
 - **Nothing in Dynatrace, no errors:** wait 30 seconds. Check that `DT_ENDPOINT` has no `/api/...` at the end. Step 5 adds `/api/v2/otlp`.
 - **401 or 403 from Dynatrace:** the token is wrong or lacks the `openTelemetryTrace.ingest` scope.
@@ -149,4 +154,7 @@ Lab 03 shows how manual instrumentation adds this.
 ## Going further
 
 - Remove `OTEL_SEMCONV_STABILITY_OPT_IN` and run again. The attribute names change (`http.method`, `http.status_code`). These are the old names. Standard names are the topic of Lab 08.
-- Set `OTEL_TRACES_EXPORTER=console,otlp` to send to both.
+- Send to both console and OTLP:
+  ```bash
+  export OTEL_TRACES_EXPORTER=console,otlp
+  ```

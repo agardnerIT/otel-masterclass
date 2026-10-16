@@ -7,3 +7,4 @@ pyvenv.cfg
 requirements-docs.txt
 .DS_Store
 .venv/
+__pycache__/

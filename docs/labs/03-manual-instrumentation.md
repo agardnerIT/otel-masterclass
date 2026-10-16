@@ -61,7 +61,10 @@ In the starter, the order value is **not** on the span, and the payment call has
 
 1. **TODO 1:** add the attribute `order.value` to the `process_order` span.
 2. **TODO 2:** put `charge_payment(order_value)` in its own span `charge_payment`. Set `payment.amount` on it. Record the error on this new span.
-3. Restart with `docker compose --env-file ../../.env up --build`, and send the same three orders again.
+3. Restart, and send the same three orders again:
+   ```bash
+   docker compose --env-file ../../.env up --build
+   ```
 4. Stuck? Compare with `solution/backend/app.py`. You can run it with:
    ```bash
    docker compose --env-file ../../.env -f docker-compose.yaml -f docker-compose.solution.yaml up --build
@@ -113,12 +116,21 @@ Rules of thumb:
 
 ## Stuck?
 
-- **`port is already allocated`:** Lab 02 is still running. Run `docker compose down` in `labs/02-auto-expanded`.
+- **`port is already allocated`:** Lab 02 is still running. Stop it from `labs/02-auto-expanded`:
+  ```bash
+  docker compose down
+  ```
 - **No metrics in Dynatrace:** the metric export interval is 10 seconds. Wait, then check the token has `metrics.ingest`. Logs need `logs.ingest`. See [Setup](../setup.md).
 - **Metrics are there but histogram is empty or odd:** check that `OTEL_EXPORTER_OTLP_METRICS_TEMPORALITY_PREFERENCE` is `delta`.
 - **Logs have no trace ID:** the log call must run **inside** the `with tracer.start_as_current_span(...)` block.
-- **Changed the code but nothing changed:** run `docker compose up --build`.
-- **`required variable DT_ENDPOINT is missing a value`:** add `--env-file ../../.env` to the command.
+- **Changed the code but nothing changed:** rebuild:
+  ```bash
+  docker compose up --build
+  ```
+- **`required variable DT_ENDPOINT is missing a value`:** add the env file to the command:
+  ```bash
+  docker compose --env-file ../../.env up --build
+  ```
 
 ## Going further
 
