@@ -11,7 +11,7 @@
       
       
       
-        <link rel="prev" href="../../discussion/injector/">
+        <link rel="prev" href="../04-injector/">
       
       
         <link rel="next" href="../06-processors/">
@@ -296,7 +296,7 @@
           
   
   
-  Collect and capture
+  Collect and process
 
         </a>
       </li>
@@ -312,7 +312,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../07-semantic-conventions/" class="md-tabs__link">
+        <a href="../08-semantic-conventions/" class="md-tabs__link">
           
   
   
@@ -332,7 +332,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../09-opamp/" class="md-tabs__link">
+        <a href="../10-opamp/" class="md-tabs__link">
           
   
   
@@ -661,14 +661,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../../discussion/injector/" class="md-nav__link">
+      <a href="../04-injector/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Discussion: OTel Injector
+    Lab 04: OTel Injector (discussion)
   
 
     
@@ -724,7 +724,7 @@
   <span class="md-ellipsis">
     
   
-    Collect and capture
+    Collect and process
   
 
     
@@ -740,7 +740,7 @@
             <span class="md-nav__icon md-icon"></span>
             
   
-    Collect and capture
+    Collect and process
   
 
           </label>
@@ -972,14 +972,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../06b-ocb/" class="md-nav__link">
+      <a href="../07-ocb/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Lab 06b: Custom collector (optional)
+    Lab 07: Custom collector
   
 
     
@@ -1061,14 +1061,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../07-semantic-conventions/" class="md-nav__link">
+      <a href="../08-semantic-conventions/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Semantic conventions
+    Lab 08: Semantic conventions
   
 
     
@@ -1089,14 +1089,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../08-weaver/" class="md-nav__link">
+      <a href="../09-weaver/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Lab 08: Weaver
+    Lab 09: Weaver
   
 
     
@@ -1178,14 +1178,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../09-opamp/" class="md-nav__link">
+      <a href="../10-opamp/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Lab 09: OpAMP
+    Lab 10: OpAMP
   
 
     
@@ -1206,14 +1206,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../../discussion/bindplane/" class="md-nav__link">
+      <a href="../11-bindplane/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Discussion: Bindplane
+    Lab 11: Bindplane (discussion)
   
 
     
@@ -1569,7 +1569,7 @@
 <h2 id="goal">Goal<a class="headerlink" href="#goal" title="Permanent link">&para;</a></h2>
 <p>Run an OpenTelemetry Collector that reads a log file and sends the lines to Dynatrace. Then send the telemetry of your Lab 03 app through the same collector.</p>
 <h2 id="why-it-matters">Why it matters<a class="headerlink" href="#why-it-matters" title="Permanent link">&para;</a></h2>
-<p>So far, every app sent data straight to Dynatrace. That works for a lab. In real life you want one place between your apps and the backend. The <strong>collector</strong> is that place. It can read files, receive data from apps, change data, and send it to one or more backends. Your apps do not need to change when the backend changes.</p>
+<p>So far, every app sent data straight to Dynatrace. That works for a lab. Many setups put one component between the apps and the backend. The <strong>collector</strong> is that component. It can read files, receive data from apps, change data, and send it to one or more backends. Your apps do not need to change when the backend changes.</p>
 <h2 id="how-a-collector-works">How a collector works<a class="headerlink" href="#how-a-collector-works" title="Permanent link">&para;</a></h2>
 <p>A collector is a set of <strong>pipelines</strong>. Each pipeline handles one signal (logs, metrics or traces) and has three kinds of parts:</p>
 <pre class="mermaid"><code>flowchart LR
@@ -1678,15 +1678,25 @@
 <td style="text-align: center;">yes</td>
 </tr>
 <tr>
-<td>Image size</td>
+<td>Image size on disk</td>
 <td style="text-align: center;">220 MB</td>
 <td style="text-align: center;">482 MB</td>
+</tr>
+<tr>
+<td>Image size compressed</td>
+<td style="text-align: center;">45 MB</td>
+<td style="text-align: center;">103 MB</td>
 </tr>
 </tbody>
 </table>
 <p>The table comes from running <code>components</code> on both images. You can repeat it:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>docker<span class="w"> </span>run<span class="w"> </span>--rm<span class="w"> </span>ghcr.io/dynatrace/dynatrace-otel-collector/dynatrace-otel-collector:0.58.0<span class="w"> </span>components
 </code></pre></div>
+<p>To see the sizes on your machine, pull the images and list them:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>docker<span class="w"> </span>images<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-E<span class="w"> </span><span class="s2">"dynatrace-otel-collector|opentelemetry-collector-contrib"</span>
+</code></pre></div>
+<p><strong>DISK USAGE</strong> is the unpacked size on your machine. <strong>CONTENT SIZE</strong> is the compressed size, close to what you download from a registry.</p>
+<p>Both images are big, because they contain many components you will never use. Can we ship only the parts we need? Yes. In <a href="../07-ocb/">Lab 07</a> you build your own collector that is a fraction of this size.</p>
 <p><strong>This lab uses the Dynatrace distro</strong>, because it has every component we need and it is smaller. <strong>Lab 06 uses contrib</strong>, because it needs <code>log_dedup</code>.</p>
 <div class="admonition note">
 <p class="admonition-title">Component names</p>
@@ -1696,66 +1706,66 @@
 <p>The lab files are in <code>labs/05-collector-basics/</code>. Docker must be running.</p>
 <ol>
 <li>Go to the lab folder and create the file the collector will read:
-   <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nb">cd</span><span class="w"> </span>labs/05-collector-basics
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>touch<span class="w"> </span>live.log
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nb">cd</span><span class="w"> </span>labs/05-collector-basics
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>touch<span class="w"> </span>live.log
 </code></pre></div></li>
 <li>Look at <code>collector.yaml</code>. It has one receiver, two exporters and one pipeline:
-   <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nt">receivers</span><span class="p">:</span>
-<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">  </span><span class="nt">file_log</span><span class="p">:</span>
-<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">    </span><span class="nt">include</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">/logs/live.log</span><span class="p p-Indicator">]</span>
-<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">    </span><span class="nt">start_at</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">beginning</span>
-<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="nt">exporters</span><span class="p">:</span>
-<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="w">  </span><span class="nt">otlp_http/dynatrace</span><span class="p">:</span>
-<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="w">    </span><span class="nt">endpoint</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${env:DT_ENDPOINT}/api/v2/otlp</span>
-<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="w">    </span><span class="nt">headers</span><span class="p">:</span>
-<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="w">      </span><span class="nt">Authorization</span><span class="p">:</span><span class="w"> </span><span class="s">"Api-Token</span><span class="nv"> </span><span class="s">${env:DT_API_TOKEN}"</span>
-<a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="w">  </span><span class="nt">debug</span><span class="p">:</span>
-<a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a><span class="w">    </span><span class="nt">verbosity</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">basic</span>
-<a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a><span class="nt">service</span><span class="p">:</span>
-<a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a><span class="w">  </span><span class="nt">pipelines</span><span class="p">:</span>
-<a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a><span class="w">    </span><span class="nt">logs</span><span class="p">:</span>
-<a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a><span class="w">      </span><span class="nt">receivers</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">file_log</span><span class="p p-Indicator">]</span>
-<a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a><span class="w">      </span><span class="nt">exporters</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">otlp_http/dynatrace</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">debug</span><span class="p p-Indicator">]</span>
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="nt">receivers</span><span class="p">:</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="w">  </span><span class="nt">file_log</span><span class="p">:</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">    </span><span class="nt">include</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">/logs/live.log</span><span class="p p-Indicator">]</span>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">    </span><span class="nt">start_at</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">beginning</span>
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="nt">exporters</span><span class="p">:</span>
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="w">  </span><span class="nt">otlp_http/dynatrace</span><span class="p">:</span>
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="w">    </span><span class="nt">endpoint</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${env:DT_ENDPOINT}/api/v2/otlp</span>
+<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="w">    </span><span class="nt">headers</span><span class="p">:</span>
+<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="w">      </span><span class="nt">Authorization</span><span class="p">:</span><span class="w"> </span><span class="s">"Api-Token</span><span class="nv"> </span><span class="s">${env:DT_API_TOKEN}"</span>
+<a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="w">  </span><span class="nt">debug</span><span class="p">:</span>
+<a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="w">    </span><span class="nt">verbosity</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">basic</span>
+<a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a><span class="nt">service</span><span class="p">:</span>
+<a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a><span class="w">  </span><span class="nt">pipelines</span><span class="p">:</span>
+<a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a><span class="w">    </span><span class="nt">logs</span><span class="p">:</span>
+<a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a><span class="w">      </span><span class="nt">receivers</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">file_log</span><span class="p p-Indicator">]</span>
+<a id="__codelineno-3-16" name="__codelineno-3-16" href="#__codelineno-3-16"></a><span class="w">      </span><span class="nt">exporters</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">otlp_http/dynatrace</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">debug</span><span class="p p-Indicator">]</span>
 </code></pre></div></li>
 <li><code>${env:NAME}</code> reads an environment variable. Your token stays out of the file.</li>
 <li>The collector adds <code>/v1/logs</code> to the endpoint by itself.</li>
 <li><code>otlp_http/dynatrace</code> is a <strong>named instance</strong>: <code>type/name</code>. You can have many exporters of the same type.</li>
 <li>Check that the config is valid. This is the same check you would run in a build pipeline:
-   <div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>docker<span class="w"> </span>run<span class="w"> </span>--rm<span class="w"> </span><span class="se">\</span>
-<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="w">  </span>-e<span class="w"> </span><span class="nv">DT_ENDPOINT</span><span class="o">=</span>https://example.live.dynatrace.com<span class="w"> </span>-e<span class="w"> </span><span class="nv">DT_API_TOKEN</span><span class="o">=</span>x<span class="w"> </span><span class="se">\</span>
-<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">  </span>-v<span class="w"> </span><span class="s2">"</span><span class="nv">$PWD</span><span class="s2">/collector.yaml:/c.yaml:ro"</span><span class="w"> </span><span class="se">\</span>
-<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">  </span>ghcr.io/dynatrace/dynatrace-otel-collector/dynatrace-otel-collector:0.58.0<span class="w"> </span><span class="se">\</span>
-<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="w">  </span>validate<span class="w"> </span>--config<span class="o">=</span>/c.yaml
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>docker<span class="w"> </span>run<span class="w"> </span>--rm<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="w">  </span>-e<span class="w"> </span><span class="nv">DT_ENDPOINT</span><span class="o">=</span>https://example.live.dynatrace.com<span class="w"> </span>-e<span class="w"> </span><span class="nv">DT_API_TOKEN</span><span class="o">=</span>x<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="w">  </span>-v<span class="w"> </span><span class="s2">"</span><span class="nv">$PWD</span><span class="s2">/collector.yaml:/c.yaml:ro"</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="w">  </span>ghcr.io/dynatrace/dynatrace-otel-collector/dynatrace-otel-collector:0.58.0<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="w">  </span>validate<span class="w"> </span>--config<span class="o">=</span>/c.yaml
 </code></pre></div>
    No output means the config is valid.</li>
 <li>
 <p>Start the collector:
-   <div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>--env-file<span class="w"> </span>../../.env<span class="w"> </span>up
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>--env-file<span class="w"> </span>../../.env<span class="w"> </span>up
 </code></pre></div></p>
 <details class="note">
 <summary>No Dynatrace tenant? Print the logs in the console</summary>
-<p><div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>-f<span class="w"> </span>docker-compose.yaml<span class="w"> </span>-f<span class="w"> </span>docker-compose.console.yaml<span class="w"> </span>up
+<p><div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>-f<span class="w"> </span>docker-compose.yaml<span class="w"> </span>-f<span class="w"> </span>docker-compose.console.yaml<span class="w"> </span>up
 </code></pre></div>
 This uses <code>collector.console.yaml</code>: the same pipeline without the Dynatrace exporter. The debug exporter prints every log line in full.</p>
 </details>
 </li>
 <li>
 <p>Open a <strong>second terminal</strong>, go to the same folder, and start a program that writes one log line per second. It repeats the lines of <code>sample.log</code>:
-   <div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>python3<span class="w"> </span>append_logs.py
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>python3<span class="w"> </span>append_logs.py
 </code></pre></div></p>
 </li>
 <li>Watch the first terminal. Each <code>log records: 1</code> line is one log line that was read and exported.</li>
-<li>Open Dynatrace, open the <strong>Logs</strong> app, and search for <code>order-service</code>. Your lines appear after a few seconds.</li>
+<li>Open Dynatrace, open the <strong>Logs</strong> app, and filter with <code>content = *"order-service"*</code>. Your lines appear after a few seconds.</li>
 </ol>
 <p>Stop the program with <code>Ctrl+C</code>. Stop the collector with <code>Ctrl+C</code>, then run <code>docker compose down</code>.</p>
 <h2 id="expected-result">Expected result<a class="headerlink" href="#expected-result" title="Permanent link">&para;</a></h2>
 <p>In the collector terminal:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>info  Logs  {"otelcol.component.id": "debug", "otelcol.signal": "logs", "log records": 1}
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>info  Logs  {"otelcol.component.id": "debug", "otelcol.signal": "logs", "log records": 1}
 </code></pre></div>
 <p>In Dynatrace, log lines like these:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>INFO order-service GET /api/orders/48214 status=200 duration_ms=142
-<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>WARN payment-service Connection reset by peer while calling downstream billing-api
-<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>INFO account-service password reset for uid=jsmith email=john.smith999@gmail.com
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>INFO order-service GET /api/orders/48214 status=200 duration_ms=142
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>WARN payment-service Connection reset by peer while calling downstream billing-api
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>INFO account-service password reset for uid=jsmith email=john.smith999@gmail.com
 </code></pre></div>
 <div class="admonition warning">
 <p class="admonition-title">Look at that last line</p>
@@ -1792,20 +1802,21 @@ This uses <code>collector.console.yaml</code>: the same pipeline without the Dyn
 </tr>
 </tbody>
 </table>
+<p>These are only a few. There are many more receivers for all kinds of cloud platforms and technologies (databases, message queues, Kubernetes, AWS, Azure, GCP and more). Browse the full list in the <a href="https://dt-url.net/otel-receivers">OpenTelemetry Collector contrib repository</a>.</p>
 <h3 id="exercise-send-the-lab-03-app-through-the-collector">Exercise: send the Lab 03 app through the collector<a class="headerlink" href="#exercise-send-the-lab-03-app-through-the-collector" title="Permanent link">&para;</a></h3>
 <p>Now the collector also receives OTLP. We add an <code>otlp</code> receiver and a pipeline for each signal (<code>collector.otlp.yaml</code>).</p>
 <ol>
 <li>Stop the collector from the steps above (<code>docker compose down</code>).</li>
 <li>Start it again with the extra config. It publishes port <code>4318</code> (OTLP over HTTP) to your machine:
-   <div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>--env-file<span class="w"> </span>../../.env<span class="w"> </span>-f<span class="w"> </span>docker-compose.yaml<span class="w"> </span>-f<span class="w"> </span>docker-compose.otlp.yaml<span class="w"> </span>up
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>--env-file<span class="w"> </span>../../.env<span class="w"> </span>-f<span class="w"> </span>docker-compose.yaml<span class="w"> </span>-f<span class="w"> </span>docker-compose.otlp.yaml<span class="w"> </span>up
 </code></pre></div></li>
 <li>In a second terminal, start Lab 03 and point it at the collector instead of Dynatrace. The file <code>docker-compose.collector.yaml</code> only changes the endpoint:
-   <div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="nb">cd</span><span class="w"> </span>../03-manual-instrumentation
-<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>docker<span class="w"> </span>compose<span class="w"> </span>--env-file<span class="w"> </span>../../.env<span class="w"> </span>-f<span class="w"> </span>docker-compose.yaml<span class="w"> </span>-f<span class="w"> </span>docker-compose.collector.yaml<span class="w"> </span>up<span class="w"> </span>--build
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="nb">cd</span><span class="w"> </span>../03-manual-instrumentation
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>docker<span class="w"> </span>compose<span class="w"> </span>--env-file<span class="w"> </span>../../.env<span class="w"> </span>-f<span class="w"> </span>docker-compose.yaml<span class="w"> </span>-f<span class="w"> </span>docker-compose.collector.yaml<span class="w"> </span>up<span class="w"> </span>--build
 </code></pre></div>
    The apps run in containers. They reach the collector on your machine at <code>host.docker.internal</code>.</li>
 <li>Send an order:
-   <div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>curl<span class="w"> </span><span class="s2">"localhost:9000/order/1?quantity=2"</span>
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>curl<span class="w"> </span><span class="s2">"localhost:9000/order/1?quantity=2"</span>
 </code></pre></div></li>
 <li>In the collector terminal, you see <code>traces</code>, <code>metrics</code> and <code>logs</code>. In Dynatrace, you see the same trace as in Lab 03.</li>
 </ol>
@@ -1824,7 +1835,7 @@ This uses <code>collector.console.yaml</code>: the same pipeline without the Dyn
 <ul>
 <li>Add the <code>host_metrics</code> receiver and a <code>metrics</code> pipeline. What do you see?</li>
 <li>Change <code>verbosity: basic</code> to <code>detailed</code> in the <code>debug</code> exporter. What attributes does the <code>file_log</code> receiver add?</li>
-<li>Add the <code>batch</code> processor to the pipeline. Why do production collectors almost always use it?</li>
+<li>Add the <code>batch</code> processor to the pipeline. Many production collectors use it. What does it do, and what trade-offs does it bring?</li>
 </ul>
 
 
@@ -1863,7 +1874,7 @@ This uses <code>collector.console.yaml</code>: the same pipeline without the Dyn
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../../discussion/injector/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Discussion: OTel Injector">
+          <a href="../04-injector/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Lab 04: OTel Injector (discussion)">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
@@ -1873,7 +1884,7 @@ This uses <code>collector.console.yaml</code>: the same pipeline without the Dyn
                 Previous
               </span>
               <div class="md-ellipsis">
-                Discussion: OTel Injector
+                Lab 04: OTel Injector (discussion)
               </div>
             </div>
           </a>

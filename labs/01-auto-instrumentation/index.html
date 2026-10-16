@@ -296,7 +296,7 @@
           
   
   
-  Collect and capture
+  Collect and process
 
         </a>
       </li>
@@ -312,7 +312,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../07-semantic-conventions/" class="md-tabs__link">
+        <a href="../08-semantic-conventions/" class="md-tabs__link">
           
   
   
@@ -332,7 +332,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../09-opamp/" class="md-tabs__link">
+        <a href="../10-opamp/" class="md-tabs__link">
           
   
   
@@ -822,14 +822,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../../discussion/injector/" class="md-nav__link">
+      <a href="../04-injector/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Discussion: OTel Injector
+    Lab 04: OTel Injector (discussion)
   
 
     
@@ -882,7 +882,7 @@
   <span class="md-ellipsis">
     
   
-    Collect and capture
+    Collect and process
   
 
     
@@ -898,7 +898,7 @@
             <span class="md-nav__icon md-icon"></span>
             
   
-    Collect and capture
+    Collect and process
   
 
           </label>
@@ -967,14 +967,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../06b-ocb/" class="md-nav__link">
+      <a href="../07-ocb/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Lab 06b: Custom collector (optional)
+    Lab 07: Custom collector
   
 
     
@@ -1056,14 +1056,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../07-semantic-conventions/" class="md-nav__link">
+      <a href="../08-semantic-conventions/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Semantic conventions
+    Lab 08: Semantic conventions
   
 
     
@@ -1084,14 +1084,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../08-weaver/" class="md-nav__link">
+      <a href="../09-weaver/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Lab 08: Weaver
+    Lab 09: Weaver
   
 
     
@@ -1173,14 +1173,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../09-opamp/" class="md-nav__link">
+      <a href="../10-opamp/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Lab 09: OpAMP
+    Lab 10: OpAMP
   
 
     
@@ -1201,14 +1201,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../../discussion/bindplane/" class="md-nav__link">
+      <a href="../11-bindplane/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Discussion: Bindplane
+    Lab 11: Bindplane (discussion)
   
 
     
@@ -1737,7 +1737,7 @@
 <li>The <code>404</code> request has status <code>UNSET</code>, not <code>ERROR</code>. For a server, a 4xx is the client's mistake, so OTel does not mark it as an error.</li>
 <li>Any detail inside the function. The 50 ms of "work" is just part of the one span.</li>
 </ul>
-<p>Lab 03 fixes this with manual instrumentation.</p>
+<p>Lab 03 shows how manual instrumentation adds this.</p>
 <h2 id="stuck">Stuck?<a class="headerlink" href="#stuck" title="Permanent link">&para;</a></h2>
 <ul>
 <li><strong><code>python3: command not found</code> or <code>No module named venv</code>:</strong> install Python 3.11 or newer. See <a href="../../setup/">Setup</a>.</li>
@@ -1749,7 +1749,7 @@
 </ul>
 <h2 id="going-further">Going further<a class="headerlink" href="#going-further" title="Permanent link">&para;</a></h2>
 <ul>
-<li>Remove <code>OTEL_SEMCONV_STABILITY_OPT_IN</code> and run again. The attribute names change (<code>http.method</code>, <code>http.status_code</code>). These are the old names. Standard names are the topic of Lab 07.</li>
+<li>Remove <code>OTEL_SEMCONV_STABILITY_OPT_IN</code> and run again. The attribute names change (<code>http.method</code>, <code>http.status_code</code>). These are the old names. Standard names are the topic of Lab 08.</li>
 <li>Set <code>OTEL_TRACES_EXPORTER=console,otlp</code> to send to both.</li>
 </ul>
 

@@ -11,10 +11,10 @@
       
       
       
-        <link rel="prev" href="../06-processors/">
+        <link rel="prev" href="../07-ocb/">
       
       
-        <link rel="next" href="../07-semantic-conventions/">
+        <link rel="next" href="../09-weaver/">
       
       
         
@@ -25,7 +25,7 @@
     
     
       
-        <title>Lab 06b: Custom collector (optional) - OpenTelemetry Masterclass</title>
+        <title>Lab 08: Semantic conventions - OpenTelemetry Masterclass</title>
       
     
     
@@ -76,7 +76,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#lab-06b-custom-collector-with-ocb-optional" class="md-skip">
+        <a href="#lab-08-semantic-conventions" class="md-skip">
           Skip to content
         </a>
       
@@ -110,7 +110,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Lab 06b: Custom collector (optional)
+              Lab 08: Semantic conventions
             
           </span>
         </div>
@@ -286,17 +286,15 @@
   
   
   
-    
-  
   
     
     
-      <li class="md-tabs__item md-tabs__item--active">
+      <li class="md-tabs__item">
         <a href="../05-collector-basics/" class="md-tabs__link">
           
   
   
-  Collect and capture
+  Collect and process
 
         </a>
       </li>
@@ -308,11 +306,13 @@
   
   
   
+    
+  
   
     
     
-      <li class="md-tabs__item">
-        <a href="../07-semantic-conventions/" class="md-tabs__link">
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="./" class="md-tabs__link">
           
   
   
@@ -332,7 +332,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../09-opamp/" class="md-tabs__link">
+        <a href="../10-opamp/" class="md-tabs__link">
           
   
   
@@ -661,14 +661,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../../discussion/injector/" class="md-nav__link">
+      <a href="../04-injector/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Discussion: OTel Injector
+    Lab 04: OTel Injector (discussion)
   
 
     
@@ -693,38 +693,35 @@
       
   
   
-    
   
   
-  
     
     
     
     
-      
-        
-        
       
       
         
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
         
           
-          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
             
   
   
   <span class="md-ellipsis">
     
   
-    Collect and capture
+    Collect and process
   
 
     
@@ -735,12 +732,12 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_5">
             <span class="md-nav__icon md-icon"></span>
             
   
-    Collect and capture
+    Collect and process
   
 
           </label>
@@ -806,26 +803,17 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../07-ocb/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Lab 06b: Custom collector (optional)
+    Lab 07: Custom collector
   
 
     
@@ -834,7 +822,6 @@
   
 
       </a>
-      
     </li>
   
 
@@ -851,28 +838,31 @@
       
   
   
+    
   
   
+  
     
     
     
     
+      
+        
+        
       
       
         
       
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
         
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" checked>
         
           
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
-        
-          
-          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
             
   
   
@@ -890,7 +880,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_6">
             <span class="md-nav__icon md-icon"></span>
             
@@ -905,17 +895,44 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../07-semantic-conventions/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 08: Semantic conventions
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
   <span class="md-ellipsis">
     
   
-    Semantic conventions
+    Lab 08: Semantic conventions
   
 
     
@@ -924,6 +941,114 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#goal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Goal
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why-it-matters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why it matters
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#part-1-exercise-5-minutes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Part 1: Exercise (5 minutes)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#part-2-discuss-5-minutes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Part 2: Discuss (5 minutes)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#part-3-try-one-query-5-minutes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Part 3: Try one query (5 minutes)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#expected-result" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Expected result
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#stuck" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stuck?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#going-further" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Going further
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -936,14 +1061,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../08-weaver/" class="md-nav__link">
+      <a href="../09-weaver/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Lab 08: Weaver
+    Lab 09: Weaver
   
 
     
@@ -1025,14 +1150,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../09-opamp/" class="md-nav__link">
+      <a href="../10-opamp/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Lab 09: OpAMP
+    Lab 10: OpAMP
   
 
     
@@ -1053,14 +1178,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../../discussion/bindplane/" class="md-nav__link">
+      <a href="../11-bindplane/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Discussion: Bindplane
+    Lab 11: Bindplane (discussion)
   
 
     
@@ -1272,6 +1397,102 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#goal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Goal
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why-it-matters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why it matters
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#part-1-exercise-5-minutes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Part 1: Exercise (5 minutes)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#part-2-discuss-5-minutes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Part 2: Discuss (5 minutes)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#part-3-try-one-query-5-minutes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Part 3: Try one query (5 minutes)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#expected-result" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Expected result
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#stuck" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stuck?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#going-further" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Going further
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -1287,12 +1508,155 @@
 
 
 
-<h1 id="lab-06b-custom-collector-with-ocb-optional">Lab 06b: Custom collector with OCB (optional)<a class="headerlink" href="#lab-06b-custom-collector-with-ocb-optional" title="Permanent link">&para;</a></h1>
+<h1 id="lab-08-semantic-conventions">Lab 08: Semantic conventions<a class="headerlink" href="#lab-08-semantic-conventions" title="Permanent link">&para;</a></h1>
+<p><strong>Time: 15 minutes</strong> (discussion and exercise)</p>
+<h2 id="goal">Goal<a class="headerlink" href="#goal" title="Permanent link">&para;</a></h2>
+<p>Find out for yourself why shared attribute names matter. Write one log line, compare it with the rest of the room, then run one query across messy and standard logs.</p>
+<h2 id="why-it-matters">Why it matters<a class="headerlink" href="#why-it-matters" title="Permanent link">&para;</a></h2>
+<p>Your company has many teams, and every team writes telemetry. Does it all look the same? Let's find out. <strong>Do the exercise first. Do not read ahead.</strong></p>
+<h2 id="part-1-exercise-5-minutes">Part 1: Exercise (5 minutes)<a class="headerlink" href="#part-1-exercise-5-minutes" title="Permanent link">&para;</a></h2>
+<p>On paper or in a text editor, write <strong>one log line</strong> for a web server that handled a request. Use the format you normally use at work. Include:</p>
+<ul>
+<li>the HTTP method</li>
+<li>the status that was returned</li>
+<li>the path that was requested</li>
+<li>who the client was (IP address)</li>
+</ul>
+<p>Now compare with the person next to you. Did you use the same order? The same words? The same format?</p>
+<p>Keep your line. You need it in a minute.</p>
+<h2 id="part-2-discuss-5-minutes">Part 2: Discuss (5 minutes)<a class="headerlink" href="#part-2-discuss-5-minutes" title="Permanent link">&para;</a></h2>
+<p>Look at the lines in the room. Different order, different words, different formats. Now imagine one question for all of them: "show me all server errors". You need one query for each team. Dashboards, alerts and AI tools all break the same way.</p>
+<p><strong>Semantic conventions</strong> are the fix. They are a list of standard names and meanings for common things, such as an HTTP request. They are part of OpenTelemetry. If everyone uses the same name, one query works for everyone.</p>
+<p>OpenTelemetry already has conventions for HTTP, databases, messaging, cloud, Kubernetes, GenAI and more. Here are the four we use in this section:</p>
+<table>
+<thead>
+<tr>
+<th>Meaning</th>
+<th>Standard name</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>HTTP method</td>
+<td><code>http.request.method</code></td>
+<td><code>GET</code></td>
+</tr>
+<tr>
+<td>HTTP status code</td>
+<td><code>http.response.status_code</code></td>
+<td><code>500</code></td>
+</tr>
+<tr>
+<td>URL path</td>
+<td><code>url.path</code></td>
+<td><code>/api/orders</code></td>
+</tr>
+<tr>
+<td>Client IP address</td>
+<td><code>client.address</code></td>
+<td><code>10.0.0.5</code></td>
+</tr>
+</tbody>
+</table>
+<p>You have already used them. In <a href="../01-auto-instrumentation/">Lab 01</a>, the auto instrumentation set <code>http.request.method</code> and <code>http.response.status_code</code> on the spans for you. That is why <code>OTEL_SEMCONV_STABILITY_OPT_IN: http</code> is in the Docker Compose files: it selects the new, stable HTTP names.</p>
+<p>Browse the full list: <a href="https://opentelemetry.io/docs/specs/semconv/">opentelemetry.io/docs/specs/semconv</a>.</p>
 <div class="admonition info">
-<p class="admonition-title">Coming soon</p>
-<p>This page is a placeholder. It will follow the <a href="../../contributing-lab-template/">lab template</a>.
-Time: 10-15 minutes.</p>
+<p class="admonition-title">What is in a convention?</p>
+<p>A convention is not only a name. It also says the <strong>type</strong> (string, number), the <strong>meaning</strong>, example values, and how stable it is (<code>stable</code> or <code>development</code>).</p>
 </div>
+<p>Rewrite your own line from Part 1 with these four names. How different is it from what you wrote?</p>
+<h2 id="part-3-try-one-query-5-minutes">Part 3: Try one query (5 minutes)<a class="headerlink" href="#part-3-try-one-query-5-minutes" title="Permanent link">&para;</a></h2>
+<p>Now see the problem in a real backend. You send the <strong>same 7 requests</strong> to Dynatrace twice, once from the messy logs and once from the standardised logs. Then you ask one question of both with DQL (Dynatrace Query Language), using the <code>dtctl</code> command line tool.</p>
+<p>You need Python 3.11+, a Dynatrace tenant and <code>dtctl</code>. See <a href="../../setup/#3-dynatrace-optional">Setup</a>. The token needs the <code>logs.ingest</code> scope. No tenant? Use the fallback at the end of this part.</p>
+<ol>
+<li>Go to the folder and install the Python packages:
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nb">cd</span><span class="w"> </span>labs/08-semantic-conventions
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>python3<span class="w"> </span>-m<span class="w"> </span>venv<span class="w"> </span>.venv
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="nb">source</span><span class="w"> </span>.venv/bin/activate
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>pip<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </span>requirements.txt
+</code></pre></div></li>
+<li>Read <code>messy.log</code>. These are 7 logs from 7 "teams". All 7 are the same kind of event: a handled HTTP request.
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>GET /api/orders 200 from 10.0.0.5
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>[checkout] method=POST path=/pay status_code=500 client=10.0.0.9
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>2026-10-16 INFO order-svc: user at 10.0.0.7 requested GET /api/orders/42 -&gt; HTTP 404
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>{"verb":"GET","uri":"/health","code":200,"ip":"10.0.0.5"}
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>inventory: 10.0.0.8 "PUT /stock/7" 503
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>{"verb":"POST","uri":"/pay","code":502,"ip":"10.0.0.9"}
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>payment-svc: http.request.method=POST url.path=/refund http.response.status_code=200 client.address=10.0.0.9
+</code></pre></div>
+   Three of them are server errors (<code>500</code>, <code>503</code>, <code>502</code>).</li>
+<li>Send both files to Dynatrace. <code>messy.log</code> is sent as plain text, one line per log record. <code>standardised.log</code> has the same 7 requests, but each name becomes an attribute:
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nb">set</span><span class="w"> </span>-a<span class="p">;</span><span class="w"> </span><span class="nb">source</span><span class="w"> </span>../../.env<span class="p">;</span><span class="w"> </span><span class="nb">set</span><span class="w"> </span>+a
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>python3<span class="w"> </span>send_logs.py<span class="w"> </span>messy.log
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>python3<span class="w"> </span>send_logs.py<span class="w"> </span>standardised.log
+</code></pre></div>
+   You should see <code>Sent 7 logs</code> twice. Wait about 30 seconds for the logs to arrive.</li>
+<li>First check that the messy logs arrived. If <code>dtctl</code> says <code>token ... not found</code>, run <code>dtctl auth login</code> first.
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>dtctl<span class="w"> </span>query<span class="w"> </span><span class="s1">'fetch logs</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="s1">| filter service.name == "semconv-messy"</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="s1">| fields timestamp, content'</span>
+</code></pre></div>
+   You should see all 7 lines, as plain text.</li>
+<li>Now ask for the server errors in the <strong>messy</strong> logs. The query uses the standard name <code>http.response.status_code</code> and a value of 500 or more. <code>toLong</code> turns the value into a number, because Dynatrace shows it as text:
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>dtctl<span class="w"> </span>query<span class="w"> </span><span class="s1">'fetch logs</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="s1">| filter service.name == "semconv-messy"</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="s1">| filter toLong(http.response.status_code) &gt;= 500'</span>
+</code></pre></div>
+   You should get <strong>no records</strong> (<code>No resources found.</code>). The 7 logs are there, and 3 of them are real errors, but the query finds none.</li>
+<li>Run the <strong>same query</strong> on the standardised logs. Only the <code>service.name</code> is different:
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>dtctl<span class="w"> </span>query<span class="w"> </span><span class="s1">'fetch logs</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="s1">| filter service.name == "semconv-standardised"</span>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="s1">| filter toLong(http.response.status_code) &gt;= 500</span>
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="s1">| fields timestamp, content, http.request.method, url.path, http.response.status_code'</span>
+</code></pre></div>
+   You should get 3 records: the <code>500</code>, the <code>502</code> and the <code>503</code>.</li>
+</ol>
+<p>The query did not change. Only the names did.</p>
+<details class="note">
+<summary>No Dynatrace tenant? Run the query on your laptop</summary>
+<p><code>count_errors.py</code> runs the same rule on the files, with no network:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>python3<span class="w"> </span>count_errors.py<span class="w"> </span>messy.log
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>python3<span class="w"> </span>count_errors.py<span class="w"> </span>standardised.log
+</code></pre></div>
+You should see <code>Server errors found: 0</code>, then <code>Server errors found: 3</code>.</p>
+</details>
+<h2 id="expected-result">Expected result<a class="headerlink" href="#expected-result" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Data</th>
+<th style="text-align: right;">Server errors found</th>
+<th style="text-align: right;">Real server errors</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>semconv-messy</code></td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">3</td>
+</tr>
+<tr>
+<td><code>semconv-standardised</code></td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">3</td>
+</tr>
+</tbody>
+</table>
+<p>To make the first one work, you would need a different rule for every team, and a new rule every time a new team starts. That does not scale.</p>
+<h2 id="stuck">Stuck?<a class="headerlink" href="#stuck" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong><code>python3: command not found</code>:</strong> use <code>python</code>.</li>
+<li><strong>The standardised query finds nothing:</strong> the logs can take a minute to arrive. Check the time range, and that the token has <code>logs.ingest</code>. Check that <code>toLong(...)</code> is in the query: without it, text is compared to a number and nothing matches.</li>
+<li><strong>You get 6 or 9 records, not 3:</strong> you ran <code>send_logs.py</code> more than once. Each run adds the same logs again. Add <code>from:-10m</code> after <code>fetch logs</code> to see only the latest.</li>
+<li><strong><code>send_logs.py</code> fails with <code>KeyError: 'DT_ENDPOINT'</code>:</strong> run the <code>set -a; source ../../.env; set +a</code> line first.</li>
+<li><strong>The messy query returns records:</strong> you changed <code>messy.log</code>, or you sent a file twice with a different name.</li>
+</ul>
+<h2 id="going-further">Going further<a class="headerlink" href="#going-further" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Look at your own logs. Which standard names could you use? Search the <a href="https://opentelemetry.io/docs/specs/semconv/attributes-registry/">attribute registry</a>.</li>
+<li>You do not have a convention for something, for example a <strong>cost code</strong> or a <strong>team name</strong>? You can write your own. But how do you make sure everyone uses it correctly? Next: <a href="../09-weaver/">Lab 09: Weaver</a>.</li>
+</ul>
 
 
 
@@ -1330,7 +1694,7 @@ Time: 10-15 minutes.</p>
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../06-processors/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Lab 06: Processors">
+          <a href="../07-ocb/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Lab 07: Custom collector">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
@@ -1340,20 +1704,20 @@ Time: 10-15 minutes.</p>
                 Previous
               </span>
               <div class="md-ellipsis">
-                Lab 06: Processors
+                Lab 07: Custom collector
               </div>
             </div>
           </a>
         
         
           
-          <a href="../07-semantic-conventions/" class="md-footer__link md-footer__link--next" aria-label="Next: Semantic conventions">
+          <a href="../09-weaver/" class="md-footer__link md-footer__link--next" aria-label="Next: Lab 09: Weaver">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                Semantic conventions
+                Lab 09: Weaver
               </div>
             </div>
             <div class="md-footer__button md-icon">

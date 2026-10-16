@@ -11,10 +11,10 @@
       
       
       
-        <link rel="prev" href="../../labs/09-opamp/">
+        <link rel="prev" href="../03-manual-instrumentation/">
       
       
-        <link rel="next" href="../../facilitator/">
+        <link rel="next" href="../05-collector-basics/">
       
       
         
@@ -25,7 +25,7 @@
     
     
       
-        <title>Discussion: Bindplane - OpenTelemetry Masterclass</title>
+        <title>Lab 04: OTel Injector (discussion) - OpenTelemetry Masterclass</title>
       
     
     
@@ -76,7 +76,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#discussion-bindplane" class="md-skip">
+        <a href="#lab-04-opentelemetry-injector-discussion" class="md-skip">
           Skip to content
         </a>
       
@@ -110,7 +110,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Discussion: Bindplane
+              Lab 04: OTel Injector (discussion)
             
           </span>
         </div>
@@ -266,11 +266,13 @@
   
   
   
+    
+  
   
     
     
-      <li class="md-tabs__item">
-        <a href="../../labs/01-auto-instrumentation/" class="md-tabs__link">
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../01-auto-instrumentation/" class="md-tabs__link">
           
   
   
@@ -290,11 +292,11 @@
     
     
       <li class="md-tabs__item">
-        <a href="../../labs/05-collector-basics/" class="md-tabs__link">
+        <a href="../05-collector-basics/" class="md-tabs__link">
           
   
   
-  Collect and capture
+  Collect and process
 
         </a>
       </li>
@@ -310,7 +312,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../../labs/07-semantic-conventions/" class="md-tabs__link">
+        <a href="../08-semantic-conventions/" class="md-tabs__link">
           
   
   
@@ -326,13 +328,11 @@
   
   
   
-    
-  
   
     
     
-      <li class="md-tabs__item md-tabs__item--active">
-        <a href="../../labs/09-opamp/" class="md-tabs__link">
+      <li class="md-tabs__item">
+        <a href="../10-opamp/" class="md-tabs__link">
           
   
   
@@ -520,28 +520,31 @@
       
   
   
+    
   
   
+  
     
     
     
     
+      
+        
+        
       
       
         
       
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
         
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
         
           
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
-        
-          
-          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
             
   
   
@@ -559,7 +562,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_4">
             <span class="md-nav__icon md-icon"></span>
             
@@ -577,7 +580,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../labs/01-auto-instrumentation/" class="md-nav__link">
+      <a href="../01-auto-instrumentation/" class="md-nav__link">
         
   
   
@@ -605,7 +608,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../labs/02-auto-expanded/" class="md-nav__link">
+      <a href="../02-auto-expanded/" class="md-nav__link">
         
   
   
@@ -633,7 +636,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../labs/03-manual-instrumentation/" class="md-nav__link">
+      <a href="../03-manual-instrumentation/" class="md-nav__link">
         
   
   
@@ -658,17 +661,44 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../injector/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 04: OTel Injector (discussion)
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
   <span class="md-ellipsis">
     
   
-    Discussion: OTel Injector
+    Lab 04: OTel Injector (discussion)
   
 
     
@@ -677,6 +707,103 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-goal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Goal
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-why-it-matters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Why it matters
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-how-it-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. How it works
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-what-it-supports" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. What it supports
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-limits-and-security-notes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Limits and security notes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-discussion-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Discussion questions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-going-further" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Going further
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -721,7 +848,7 @@
   <span class="md-ellipsis">
     
   
-    Collect and capture
+    Collect and process
   
 
     
@@ -737,7 +864,7 @@
             <span class="md-nav__icon md-icon"></span>
             
   
-    Collect and capture
+    Collect and process
   
 
           </label>
@@ -750,7 +877,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../labs/05-collector-basics/" class="md-nav__link">
+      <a href="../05-collector-basics/" class="md-nav__link">
         
   
   
@@ -778,7 +905,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../labs/06-processors/" class="md-nav__link">
+      <a href="../06-processors/" class="md-nav__link">
         
   
   
@@ -806,14 +933,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../../labs/06b-ocb/" class="md-nav__link">
+      <a href="../07-ocb/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Lab 06b: Custom collector (optional)
+    Lab 07: Custom collector
   
 
     
@@ -895,14 +1022,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../../labs/07-semantic-conventions/" class="md-nav__link">
+      <a href="../08-semantic-conventions/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Semantic conventions
+    Lab 08: Semantic conventions
   
 
     
@@ -923,14 +1050,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../../labs/08-weaver/" class="md-nav__link">
+      <a href="../09-weaver/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Lab 08: Weaver
+    Lab 09: Weaver
   
 
     
@@ -955,31 +1082,28 @@
       
   
   
-    
   
   
-  
     
     
     
     
-      
-        
-        
       
       
         
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" checked>
         
           
-          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="">
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
             
   
   
@@ -997,7 +1121,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_7">
             <span class="md-nav__icon md-icon"></span>
             
@@ -1015,14 +1139,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../../labs/09-opamp/" class="md-nav__link">
+      <a href="../10-opamp/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Lab 09: OpAMP
+    Lab 10: OpAMP
   
 
     
@@ -1040,26 +1164,17 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../11-bindplane/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Discussion: Bindplane
+    Lab 11: Bindplane (discussion)
   
 
     
@@ -1068,7 +1183,6 @@
   
 
       </a>
-      
     </li>
   
 
@@ -1272,6 +1386,91 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-goal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Goal
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-why-it-matters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Why it matters
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-how-it-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. How it works
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-what-it-supports" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. What it supports
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-limits-and-security-notes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Limits and security notes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-discussion-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Discussion questions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-going-further" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Going further
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -1287,11 +1486,123 @@
 
 
 
-<h1 id="discussion-bindplane">Discussion: Bindplane<a class="headerlink" href="#discussion-bindplane" title="Permanent link">&para;</a></h1>
-<div class="admonition info">
-<p class="admonition-title">Coming soon</p>
-<p>This page is a placeholder. It will follow the <a href="../../contributing-lab-template/">lab template</a>.</p>
+<h1 id="lab-04-opentelemetry-injector-discussion">Lab 04: OpenTelemetry Injector (discussion)<a class="headerlink" href="#lab-04-opentelemetry-injector-discussion" title="Permanent link">&para;</a></h1>
+<p><strong>Time:</strong> 10 minutes. Discussion only, no lab.</p>
+<h2 id="1-goal">1. Goal<a class="headerlink" href="#1-goal" title="Permanent link">&para;</a></h2>
+<p>Understand what the OpenTelemetry Injector is, how it adds instrumentation without code changes, and where it fits next to the approaches from Labs 01 to 03.</p>
+<h2 id="2-why-it-matters">2. Why it matters<a class="headerlink" href="#2-why-it-matters" title="Permanent link">&para;</a></h2>
+<p>In Labs 01 and 02 you started the app with <code>opentelemetry-instrument</code>. That still means you change how each app starts. On a host with 200 services, this is a lot of work.</p>
+<p>The OpenTelemetry Injector solves this. You install it once on a host, and it switches on auto instrumentation for the processes on that host. You do not edit each service's start command.</p>
+<p>The injector does not collect any telemetry itself. It only helps the OTel auto instrumentation agent for each runtime (for example the Java agent) load into your processes. You still need those agents.</p>
+<p>If you know the Dynatrace OneAgent, the "install once per host" idea is the same. Put together, the pieces form an open source alternative:</p>
+<ul>
+<li>the <strong>injector</strong> gets the agents loaded,</li>
+<li>the <strong>OTel agents</strong> for each runtime create the telemetry,</li>
+<li>the <strong>collector</strong> receives it and sends it to your backend.</li>
+</ul>
+<p>This is a viable approach, but it is early. It is not a drop-in OneAgent. You assemble and maintain the parts yourself, and the injector is still <code>0.x</code>. It supports Linux only, and Python is off by default. The OneAgent also comes with vendor support, which this setup does not. See section 5 for the full list of limits.</p>
+<h2 id="3-how-it-works">3. How it works<a class="headerlink" href="#3-how-it-works" title="Permanent link">&para;</a></h2>
+<p>The injector is a small shared library (<code>libotelinject.so</code>), written in Zig. It does <strong>not</strong> instrument your code. It only sets environment variables, so that the real OTel agent for your runtime loads.</p>
+<ol>
+<li>A Linux process starts. The dynamic linker loads the injector first, because of <code>LD_PRELOAD</code> or <code>/etc/ld.so.preload</code>.</li>
+<li>The injector finds the process's C library (glibc or musl).</li>
+<li>It uses the library to read and write the process environment.</li>
+<li>It adds variables such as <code>JAVA_TOOL_OPTIONS</code>, <code>NODE_OPTIONS</code>, <code>RUBYOPT</code> or <code>CORECLR_PROFILER</code>. These point to the auto instrumentation agent for that runtime.</li>
+<li>The app starts. The runtime sees these variables and loads the agent. The agent sends OTLP to your collector.</li>
+</ol>
+<p>If any step fails, the injector stops and lets the process start as normal.</p>
+<pre class="mermaid"><code>flowchart LR
+    P["/etc/ld.so.preload&lt;br/&gt;or LD_PRELOAD"] --&gt; I["libotelinject.so"]
+    I --&gt;|"sets env vars&lt;br/&gt;(JAVA_TOOL_OPTIONS,&lt;br/&gt;NODE_OPTIONS, ...)"| R["App process&lt;br/&gt;(Java, Node.js, .NET, ...)"]
+    R --&gt;|loads| A["OTel agent&lt;br/&gt;for that runtime"]
+    A --&gt;|OTLP| C["Collector"]
+    C --&gt; D["Dynatrace"]</code></pre>
+<p>Two things to notice:</p>
+<ul>
+<li><code>/etc/ld.so.preload</code> affects <strong>every</strong> process on the host. <code>LD_PRELOAD</code> affects only one process.</li>
+<li>The injector can also set resource attributes, such as <code>service.name</code> and Kubernetes pod names. It reads them from <code>OTEL_INJECTOR_*</code> variables.</li>
+</ul>
+<h2 id="4-what-it-supports">4. What it supports<a class="headerlink" href="#4-what-it-supports" title="Permanent link">&para;</a></h2>
+<p>Checked against the <a href="https://github.com/open-telemetry/opentelemetry-injector">upstream README</a> (latest release at the time of writing: v0.11.0, August).</p>
+<table>
+<thead>
+<tr>
+<th>Topic</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Runtimes</td>
+<td>Java, Node.js, .NET, Ruby. Python is <strong>off by default</strong>.</td>
+</tr>
+<tr>
+<td>Operating system</td>
+<td>Linux only (it relies on ELF and the dynamic linker).</td>
+</tr>
+<tr>
+<td>C library</td>
+<td>glibc and musl. If it cannot find the libc, it does not inject.</td>
+</tr>
+<tr>
+<td>.NET</td>
+<td>Only .NET 8 or newer by default. It skips apps that already reference <code>OpenTelemetry*</code> packages.</td>
+</tr>
+<tr>
+<td>Installation</td>
+<td>DEB and RPM packages come from <a href="https://github.com/open-telemetry/opentelemetry-packaging">opentelemetry-packaging</a>. The injector repository only publishes the raw <code>.so</code>.</td>
+</tr>
+<tr>
+<td>Config file</td>
+<td><code>/etc/opentelemetry/injector/injector.conf</code> sets the agent path for each runtime.</td>
+</tr>
+<tr>
+<td>Filtering</td>
+<td><code>include_paths</code>, <code>exclude_paths</code>, <code>include_with_arguments</code>, <code>exclude_with_arguments</code>. Exclusions win.</td>
+</tr>
+<tr>
+<td>Opt out</td>
+<td><code>OTEL_INJECTOR_DISABLED=true</code> for one workload. <code>auto_instrumentation_disabled=*</code> for all.</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">Python is off by default</p>
+<p>The README says it is not always safe to add Python packages to a process, because of possible dependency conflicts. This is why our Python labs use <code>opentelemetry-instrument</code> and a pinned <code>requirements.txt</code> instead.</p>
 </div>
+<h2 id="5-limits-and-security-notes">5. Limits and security notes<a class="headerlink" href="#5-limits-and-security-notes" title="Permanent link">&para;</a></h2>
+<p><strong>Limits</strong></p>
+<ul>
+<li>Linux only. No Windows, and no macOS.</li>
+<li>It is young. Releases are still <code>0.x</code>, and the README gives no stability label. Expect changes. For example, v0.10.0 removed DEB and RPM builds from the repository.</li>
+<li>It does not create the agents. You must install the agent for each runtime, or use the packages that bundle them.</li>
+<li>By default it only sets variables that start with <code>OTEL_</code>. Other prefixes need a custom build.</li>
+<li>For .NET it overwrites existing profiler variables. .NET does not support two agents.</li>
+<li>Auto instrumentation gives you framework spans only. It does not know your business logic. Business-level spans need manual instrumentation, as in Lab 03.</li>
+</ul>
+<p><strong>Security</strong></p>
+<ul>
+<li>Turning it on for the whole host needs root.</li>
+<li>A preloaded library runs inside <strong>every</strong> process, with that process's permissions. It carries the same risks as any code that runs on production hosts.</li>
+<li>Raw library releases are signed with Sigstore Cosign. The README says to verify the signature before loading the file: "If verification fails, do not load the artifact."</li>
+<li>A bug in the injector can affect the host process. Release v0.10.1 fixed a crash on older glibc. Many teams test on a staging host first.</li>
+<li>Injected agents change what data leaves the host. Check which attributes they capture.</li>
+</ul>
+<h2 id="6-discussion-questions">6. Discussion questions<a class="headerlink" href="#6-discussion-questions" title="Permanent link">&para;</a></h2>
+<ol>
+<li>You have 200 Java services on VMs. What are the pros and cons of the injector compared with adding <code>-javaagent</code> to each start script?</li>
+<li><code>/etc/ld.so.preload</code> affects every process. When would you rather use <code>LD_PRELOAD</code> for one service?</li>
+<li>The injector is <code>0.x</code>. What would you need to see before you use it in production? (Think: tests, signing, release process, who maintains it.)</li>
+<li>Your team runs Python services. The injector leaves Python off by default. What would you do instead?</li>
+<li>How is this different from the Dynatrace OneAgent? Think about scope, support, and what happens when something breaks.</li>
+<li>In Kubernetes, you could use the OpenTelemetry Operator to inject agents. When would a host-level injector still be useful?</li>
+</ol>
+<h2 id="7-going-further">7. Going further<a class="headerlink" href="#7-going-further" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="https://github.com/open-telemetry/opentelemetry-injector">OpenTelemetry Injector on GitHub</a></li>
+<li><a href="https://github.com/open-telemetry/opentelemetry-packaging">OpenTelemetry packaging (DEB and RPM)</a></li>
+<li>Read the README sections "Design" and "Configuration" to see every setting.</li>
+</ul>
 
 
 
@@ -1329,7 +1640,7 @@
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../../labs/09-opamp/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Lab 09: OpAMP">
+          <a href="../03-manual-instrumentation/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Lab 03: Manual instrumentation">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
@@ -1339,20 +1650,20 @@
                 Previous
               </span>
               <div class="md-ellipsis">
-                Lab 09: OpAMP
+                Lab 03: Manual instrumentation
               </div>
             </div>
           </a>
         
         
           
-          <a href="../../facilitator/" class="md-footer__link md-footer__link--next" aria-label="Next: Facilitator guide">
+          <a href="../05-collector-basics/" class="md-footer__link md-footer__link--next" aria-label="Next: Lab 05: Collector basics">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                Facilitator guide
+                Lab 05: Collector basics
               </div>
             </div>
             <div class="md-footer__button md-icon">

@@ -14,7 +14,7 @@
         <link rel="prev" href="../02-auto-expanded/">
       
       
-        <link rel="next" href="../../discussion/injector/">
+        <link rel="next" href="../04-injector/">
       
       
         
@@ -296,7 +296,7 @@
           
   
   
-  Collect and capture
+  Collect and process
 
         </a>
       </li>
@@ -312,7 +312,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../07-semantic-conventions/" class="md-tabs__link">
+        <a href="../08-semantic-conventions/" class="md-tabs__link">
           
   
   
@@ -332,7 +332,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../09-opamp/" class="md-tabs__link">
+        <a href="../10-opamp/" class="md-tabs__link">
           
   
   
@@ -805,14 +805,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../../discussion/injector/" class="md-nav__link">
+      <a href="../04-injector/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Discussion: OTel Injector
+    Lab 04: OTel Injector (discussion)
   
 
     
@@ -865,7 +865,7 @@
   <span class="md-ellipsis">
     
   
-    Collect and capture
+    Collect and process
   
 
     
@@ -881,7 +881,7 @@
             <span class="md-nav__icon md-icon"></span>
             
   
-    Collect and capture
+    Collect and process
   
 
           </label>
@@ -950,14 +950,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../06b-ocb/" class="md-nav__link">
+      <a href="../07-ocb/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Lab 06b: Custom collector (optional)
+    Lab 07: Custom collector
   
 
     
@@ -1039,14 +1039,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../07-semantic-conventions/" class="md-nav__link">
+      <a href="../08-semantic-conventions/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Semantic conventions
+    Lab 08: Semantic conventions
   
 
     
@@ -1067,14 +1067,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../08-weaver/" class="md-nav__link">
+      <a href="../09-weaver/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Lab 08: Weaver
+    Lab 09: Weaver
   
 
     
@@ -1156,14 +1156,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../09-opamp/" class="md-nav__link">
+      <a href="../10-opamp/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Lab 09: OpAMP
+    Lab 10: OpAMP
   
 
     
@@ -1184,14 +1184,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../../discussion/bindplane/" class="md-nav__link">
+      <a href="../11-bindplane/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Discussion: Bindplane
+    Lab 11: Bindplane (discussion)
   
 
     
@@ -1525,7 +1525,7 @@
 <h2 id="goal">Goal<a class="headerlink" href="#goal" title="Permanent link">&para;</a></h2>
 <p>Add your own spans, attributes, events, errors, metrics and correlated logs to the backend. Then compare this with what auto instrumentation gave you for free.</p>
 <h2 id="why-it-matters">Why it matters<a class="headerlink" href="#why-it-matters" title="Permanent link">&para;</a></h2>
-<p>Auto instrumentation knows about HTTP, databases and other libraries. It does not know about <strong>your business</strong>: an order, its value, a declined payment. Manual instrumentation adds that. It costs effort and needs care, so you must know what you gain and what you pay.</p>
+<p>Auto instrumentation knows about HTTP, databases and other libraries. It does not know about <strong>your business</strong>: an order, its value, a declined payment. Manual instrumentation adds that. It costs effort and needs care, so this lab shows what you gain and what you pay.</p>
 <h2 id="steps">Steps<a class="headerlink" href="#steps" title="Permanent link">&para;</a></h2>
 <p>The lab files are in <code>labs/03-manual-instrumentation/</code>. Docker must be running. Stop Lab 02 first, because both labs use ports 9000 and 9001.</p>
 <ul>
@@ -1683,13 +1683,14 @@ Metrics print every 5 seconds in this mode.</p>
 </table>
 <p>Rules of thumb:</p>
 <ul>
-<li>Start with auto. Add manual spans only where the business question needs it.</li>
-<li>Do not wrap every function in a span. A span should mean "an operation worth seeing on its own".</li>
+<li>Auto and manual are both valid, and they can be combined. Auto gives broad coverage quickly. Manual gives full control over what is created. Some teams use only manual instrumentation, for example to keep tight control over volume, naming, cost or PII.</li>
+<li>Choose based on the questions you need to answer and how much control you need, not on a default order.</li>
+<li>Every span adds data volume and cost. Teams often reserve spans for "an operation worth seeing on its own", rather than wrapping every function.</li>
 <li>Put business data on <strong>spans</strong> (<code>order.id</code> is fine here). Keep <strong>metric</strong> attributes to a small set of values.</li>
 </ul>
 <div class="admonition warning">
 <p class="admonition-title">Cardinality</p>
-<p>Every different combination of metric attribute values makes a new time series. Look at the counter in the code: it uses <code>product.name</code> and <code>order.outcome</code>. A handful of products and two outcomes is fine. If you used <code>order.id</code> or a <strong>user ID</strong>, you would create one series for each order or user. This makes metrics slow and expensive. Put such IDs on spans or logs, never on metric attributes.</p>
+<p>Every different combination of metric attribute values makes a new time series. Look at the counter in the code: it uses <code>product.name</code> and <code>order.outcome</code>. A handful of products and two outcomes is fine. If you used <code>order.id</code> or a <strong>user ID</strong>, you would create one series for each order or user. This makes metrics slow and expensive. Unbounded values like these are usually placed on spans or logs instead of metric attributes.</p>
 </div>
 <h2 id="stuck">Stuck?<a class="headerlink" href="#stuck" title="Permanent link">&para;</a></h2>
 <ul>
@@ -1760,13 +1761,13 @@ Metrics print every 5 seconds in this mode.</p>
         
         
           
-          <a href="../../discussion/injector/" class="md-footer__link md-footer__link--next" aria-label="Next: Discussion: OTel Injector">
+          <a href="../04-injector/" class="md-footer__link md-footer__link--next" aria-label="Next: Lab 04: OTel Injector (discussion)">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                Discussion: OTel Injector
+                Lab 04: OTel Injector (discussion)
               </div>
             </div>
             <div class="md-footer__button md-icon">

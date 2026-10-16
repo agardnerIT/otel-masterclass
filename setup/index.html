@@ -296,7 +296,7 @@
           
   
   
-  Collect and capture
+  Collect and process
 
         </a>
       </li>
@@ -312,7 +312,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../labs/07-semantic-conventions/" class="md-tabs__link">
+        <a href="../labs/08-semantic-conventions/" class="md-tabs__link">
           
   
   
@@ -332,7 +332,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../labs/09-opamp/" class="md-tabs__link">
+        <a href="../labs/10-opamp/" class="md-tabs__link">
           
   
   
@@ -774,14 +774,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../discussion/injector/" class="md-nav__link">
+      <a href="../labs/04-injector/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Discussion: OTel Injector
+    Lab 04: OTel Injector (discussion)
   
 
     
@@ -834,7 +834,7 @@
   <span class="md-ellipsis">
     
   
-    Collect and capture
+    Collect and process
   
 
     
@@ -850,7 +850,7 @@
             <span class="md-nav__icon md-icon"></span>
             
   
-    Collect and capture
+    Collect and process
   
 
           </label>
@@ -919,14 +919,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../labs/06b-ocb/" class="md-nav__link">
+      <a href="../labs/07-ocb/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Lab 06b: Custom collector (optional)
+    Lab 07: Custom collector
   
 
     
@@ -1008,14 +1008,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../labs/07-semantic-conventions/" class="md-nav__link">
+      <a href="../labs/08-semantic-conventions/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Semantic conventions
+    Lab 08: Semantic conventions
   
 
     
@@ -1036,14 +1036,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../labs/08-weaver/" class="md-nav__link">
+      <a href="../labs/09-weaver/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Lab 08: Weaver
+    Lab 09: Weaver
   
 
     
@@ -1125,14 +1125,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../labs/09-opamp/" class="md-nav__link">
+      <a href="../labs/10-opamp/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Lab 09: OpAMP
+    Lab 10: OpAMP
   
 
     
@@ -1153,14 +1153,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../discussion/bindplane/" class="md-nav__link">
+      <a href="../labs/11-bindplane/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Discussion: Bindplane
+    Lab 11: Bindplane (discussion)
   
 
     
@@ -1509,19 +1509,26 @@
 <li><code>logs.ingest</code></li>
 </ul>
 </li>
-<li>Copy the settings file and fill it in:
+<li>
+<p>Copy the settings file and fill it in:
    <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>cp<span class="w"> </span>.env.example<span class="w"> </span>.env
 </code></pre></div>
    <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>DT_ENDPOINT=https://abc12345.live.dynatrace.com
 <a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>DT_API_TOKEN=dt0c01.xxxx.xxxx
-</code></pre></div></li>
+</code></pre></div></p>
+</li>
+<li>
+<p>Install <code>dtctl</code>, the Dynatrace command line tool. Lab 08 (Semantic conventions) uses it to run DQL queries. Follow the instructions at <a href="https://github.com/dynatrace-oss/dtctl">https://github.com/dynatrace-oss/dtctl</a>, then log in:
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>dtctl<span class="w"> </span>auth<span class="w"> </span>login
+</code></pre></div></p>
+</li>
 </ol>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
 <p>Never commit <code>.env</code>. It is already in <code>.gitignore</code>.</p>
 </div>
 <h2 id="4-check-everything">4. Check everything<a class="headerlink" href="#4-check-everything" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>./scripts/check-prereqs.sh
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>./scripts/check-prereqs.sh
 </code></pre></div>
 <p>(or <code>make check</code>). Fix anything marked <code>[FAIL]</code>. A <code>[WARN]</code> is fine.</p>
 <h2 id="stuck">Stuck?<a class="headerlink" href="#stuck" title="Permanent link">&para;</a></h2>

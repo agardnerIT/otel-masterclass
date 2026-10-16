@@ -296,7 +296,7 @@
           
   
   
-  Collect and capture
+  Collect and process
 
         </a>
       </li>
@@ -312,7 +312,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../labs/07-semantic-conventions/" class="md-tabs__link">
+        <a href="../labs/08-semantic-conventions/" class="md-tabs__link">
           
   
   
@@ -332,7 +332,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../labs/09-opamp/" class="md-tabs__link">
+        <a href="../labs/10-opamp/" class="md-tabs__link">
           
   
   
@@ -578,10 +578,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#2-collect-and-capture" class="md-nav__link">
+  <a href="#2-collect-and-process" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2. Collect and capture
+        2. Collect and process
       
     </span>
   </a>
@@ -807,14 +807,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../discussion/injector/" class="md-nav__link">
+      <a href="../labs/04-injector/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Discussion: OTel Injector
+    Lab 04: OTel Injector (discussion)
   
 
     
@@ -867,7 +867,7 @@
   <span class="md-ellipsis">
     
   
-    Collect and capture
+    Collect and process
   
 
     
@@ -883,7 +883,7 @@
             <span class="md-nav__icon md-icon"></span>
             
   
-    Collect and capture
+    Collect and process
   
 
           </label>
@@ -952,14 +952,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../labs/06b-ocb/" class="md-nav__link">
+      <a href="../labs/07-ocb/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Lab 06b: Custom collector (optional)
+    Lab 07: Custom collector
   
 
     
@@ -1041,14 +1041,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../labs/07-semantic-conventions/" class="md-nav__link">
+      <a href="../labs/08-semantic-conventions/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Semantic conventions
+    Lab 08: Semantic conventions
   
 
     
@@ -1069,14 +1069,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../labs/08-weaver/" class="md-nav__link">
+      <a href="../labs/09-weaver/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Lab 08: Weaver
+    Lab 09: Weaver
   
 
     
@@ -1158,14 +1158,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../labs/09-opamp/" class="md-nav__link">
+      <a href="../labs/10-opamp/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Lab 09: OpAMP
+    Lab 10: OpAMP
   
 
     
@@ -1186,14 +1186,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../discussion/bindplane/" class="md-nav__link">
+      <a href="../labs/11-bindplane/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Discussion: Bindplane
+    Lab 11: Bindplane (discussion)
   
 
     
@@ -1434,10 +1434,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#2-collect-and-capture" class="md-nav__link">
+  <a href="#2-collect-and-process" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2. Collect and capture
+        2. Collect and process
       
     </span>
   </a>
@@ -1533,7 +1533,7 @@
 <p>We can see OTel as five ideas:</p>
 <ol>
 <li><strong>Generate</strong>: software creates telemetry.</li>
-<li><strong>Collect and capture</strong>: telemetry is received, changed, and sent on.</li>
+<li><strong>Collect and process</strong>: telemetry is received, changed, and sent on.</li>
 <li><strong>Store and analyse</strong>: a backend keeps the data and helps you ask questions.</li>
 <li><strong>Standardise</strong>: everyone uses the same names for the same things.</li>
 <li><strong>Control plane</strong>: you manage many collectors from one place.</li>
@@ -1573,7 +1573,7 @@
 </tr>
 </tbody>
 </table>
-<p>The signals work best together. A log line can carry a trace ID. A metric can point to a trace. Then you can move from "something is wrong" to "this is the exact request".</p>
+<p>The signals are linked together. This is one of the key benefits of OTel. A log line carries the trace ID of the request that wrote it. A metric can point to an example trace. Then you can move from "something is wrong" to "this is the exact request".</p>
 <h2 id="1-generate">1. Generate<a class="headerlink" href="#1-generate" title="Permanent link">&para;</a></h2>
 <p>Your code must produce telemetry first. In OTel, you do this with an <strong>SDK</strong> (software development kit). The SDK lives inside your application.</p>
 <p>There are two ways to use it:</p>
@@ -1591,12 +1591,13 @@
     end
     SDK --&gt;|"OTLP (traces, metrics, logs)"| Out["Collector or backend"]</code></pre>
 <p>The SDK sends data with an <strong>exporter</strong>. The most common exporter uses <strong>OTLP</strong>.</p>
-<h2 id="2-collect-and-capture">2. Collect and capture<a class="headerlink" href="#2-collect-and-capture" title="Permanent link">&para;</a></h2>
+<p>Not everything needs an SDK. Existing <strong>Prometheus</strong> metrics and plain <strong>log</strong> files can also feed into OTel, usually through the collector. (Labs 05 and 06.)</p>
+<h2 id="2-collect-and-process">2. Collect and process<a class="headerlink" href="#2-collect-and-process" title="Permanent link">&para;</a></h2>
 <p>The <strong>collector</strong> is a separate program. It sits between your apps and your backend. It can:</p>
 <ul>
 <li><strong>Receive</strong> data from many sources (OTLP, log files, host metrics, Prometheus).</li>
-<li><strong>Process</strong> data: filter noise, remove secrets, add fields.</li>
-<li><strong>Export</strong> data to one or more backends.</li>
+<li><strong>Process</strong> data: filter, redact secrets, sample, transform, and batch.</li>
+<li><strong>Export</strong> data to one or more backends. It can route data to different places, or send the same data to several (multi-casting).</li>
 </ul>
 <p>This is a <strong>pipeline</strong>: receivers, then processors, then exporters.</p>
 <pre class="mermaid"><code>flowchart LR
@@ -1607,13 +1608,14 @@
     end
     P2 --&gt; E1["Exporter&lt;br/&gt;otlphttp"]
     P2 --&gt; E2["Exporter&lt;br/&gt;debug"]</code></pre>
-<p>Why use a collector and not send straight from the app?</p>
+<p>Why use a collector instead of sending straight from the app? These are the common reasons:</p>
 <ul>
 <li>You can change where data goes without changing app code.</li>
 <li>You can remove sensitive data in one place.</li>
 <li>You can cut volume and cost before data leaves your network.</li>
 <li>It can read data from things that cannot run an SDK, like log files. (Labs 05 and 06.)</li>
 </ul>
+<p>A collector is also one more component to deploy, secure and operate. Sending straight from the app is simpler, and is a valid choice for small setups.</p>
 <h2 id="3-store-and-analyse">3. Store and analyse<a class="headerlink" href="#3-store-and-analyse" title="Permanent link">&para;</a></h2>
 <p>The <strong>backend</strong> stores telemetry and lets you search it, chart it, and alert on it. OTel does not include a backend. This is on purpose. You can pick any tool that accepts OTLP.</p>
 <p>In this workshop the backend is <strong>Dynatrace</strong>. It accepts OTLP over HTTP.</p>
@@ -1624,7 +1626,7 @@
     D --&gt; L["Alerts"]</code></pre>
 <p>Because OTLP is an open standard, you can change backend later without re-instrumenting your code.</p>
 <h2 id="4-standardise">4. Standardise<a class="headerlink" href="#4-standardise" title="Permanent link">&para;</a></h2>
-<p>Telemetry is only useful if names are the same everywhere. If one service writes <code>status</code>, another writes <code>http_code</code>, and a third writes <code>response.status</code>, you cannot write one query for all of them.</p>
+<p>Queries are much easier when names are the same everywhere. If one service writes <code>status</code>, another writes <code>http_code</code>, and a third writes <code>response.status</code>, you cannot write one query for all of them.</p>
 <p><strong>Semantic conventions</strong> are the shared names. For example:</p>
 <table>
 <thead>
@@ -1652,14 +1654,15 @@
 </tr>
 </tbody>
 </table>
-<p><strong>Weaver</strong> is a tool that helps your team define, check, and use these names. (Lab 08.)</p>
+<p>Standardisation goes beyond names. OTel also standardises the wire format (<strong>OTLP</strong>) and <strong>context propagation</strong>, so every language and tool can understand each other. (Lab 08.)</p>
+<p><strong>Weaver</strong> is a tool that helps your team define, check, and use these names. (Lab 09.)</p>
 <pre class="mermaid"><code>flowchart LR
     Reg["Schema&lt;br/&gt;(one definition)"] --&gt; Check["Check"]
     Reg --&gt; Gen["Generate code and docs"]
     Reg --&gt; Live["Live check&lt;br/&gt;running telemetry"]</code></pre>
 <h2 id="5-control-plane">5. Control plane<a class="headerlink" href="#5-control-plane" title="Permanent link">&para;</a></h2>
 <p>One collector is easy to manage. Thousands are not. You need a way to see them, send them new config, and upgrade them.</p>
-<p><strong>OpAMP</strong> (Open Agent Management Protocol) is the standard for this. Each collector connects to a server. The server can see its status and push new config. (Lab 09.)</p>
+<p><strong>OpAMP</strong> (Open Agent Management Protocol) is the standard for this. Each collector connects to a server. The server can see its status and push new config. (Lab 10.)</p>
 <pre class="mermaid"><code>flowchart TB
     S["OpAMP server"]
     S &lt;--&gt;|status and config| C1["Collector 1"]
