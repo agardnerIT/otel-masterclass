@@ -1,0 +1,7 @@
+GET /api/orders 200 from 10.0.0.5
+[checkout] method=POST path=/pay status_code=500 client=10.0.0.9
+2026-10-16 INFO order-svc: user at 10.0.0.7 requested GET /api/orders/42 -> HTTP 404
+{"verb":"GET","uri":"/health","code":200,"ip":"10.0.0.5"}
+inventory: 10.0.0.8 "PUT /stock/7" 503
+{"verb":"POST","uri":"/pay","code":502,"ip":"10.0.0.9"}
+payment-svc: http.request.method=POST url.path=/refund http.response.status_code=200 client.address=10.0.0.9

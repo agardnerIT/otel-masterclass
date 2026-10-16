@@ -1,0 +1,4 @@
+# Import everything from OTEL so we're validating against both OTEL and our custom attributes
+imports:
+  attribute_groups:
+    - "*"

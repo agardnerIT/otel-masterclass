@@ -59,17 +59,17 @@ nav:
     - "Lab 01: Auto instrumentation": labs/01-auto-instrumentation.md
     - "Lab 02: Auto instrumentation expanded": labs/02-auto-expanded.md
     - "Lab 03: Manual instrumentation": labs/03-manual-instrumentation.md
-    - "Discussion: OTel Injector": discussion/injector.md
-  - Collect and capture:
+    - "Lab 04: OTel Injector (discussion)": labs/04-injector.md
+  - Collect and process:
     - "Lab 05: Collector basics": labs/05-collector-basics.md
     - "Lab 06: Processors": labs/06-processors.md
-    - "Lab 06b: Custom collector (optional)": labs/06b-ocb.md
+    - "Lab 07: Custom collector": labs/07-ocb.md
   - Standardise:
-    - "Semantic conventions": labs/07-semantic-conventions.md
-    - "Lab 08: Weaver": labs/08-weaver.md
+    - "Lab 08: Semantic conventions": labs/08-semantic-conventions.md
+    - "Lab 09: Weaver": labs/09-weaver.md
   - Control plane:
-    - "Lab 09: OpAMP": labs/09-opamp.md
-    - "Discussion: Bindplane": discussion/bindplane.md
+    - "Lab 10: OpAMP": labs/10-opamp.md
+    - "Lab 11: Bindplane (discussion)": labs/11-bindplane.md
   - Facilitator guide: facilitator.md
   - Next steps: next-steps.md
   - Contributing:

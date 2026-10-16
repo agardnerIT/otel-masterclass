@@ -1,0 +1,38 @@
+# Lab 06 pipeline: drop health checks, DEBUG and personal data, collapse duplicates.
+receivers:
+  file_log:
+    include: [/logs/sample.log]
+    start_at: beginning
+
+processors:
+  # Drop: health checks are noise.
+  filter/health:
+    log_conditions:
+      - 'IsMatch(log.body, ".*GET /health.*")'
+  # Drop: DEBUG lines are low value in production.
+  filter/low_value:
+    log_conditions:
+      - 'IsMatch(log.body, "^DEBUG.*")'
+  # Drop: remove the whole line. Safer than masking, which can miss something.
+  filter/personal_info:
+    log_conditions:
+      - 'IsMatch(log.body, ".*[pP]assword.*")'
+  # Collapse: identical lines in a 10 second window become one record with a count.
+  log_dedup:
+    interval: 10s
+    log_count_attribute: log_duplicates
+
+exporters:
+  otlp_http/dynatrace:
+    endpoint: ${env:DT_ENDPOINT}/api/v2/otlp
+    headers:
+      Authorization: "Api-Token ${env:DT_API_TOKEN}"
+  debug:
+    verbosity: detailed
+
+service:
+  pipelines:
+    logs:
+      receivers: [file_log]
+      processors: [filter/health, filter/low_value, log_dedup, filter/personal_info]
+      exporters: [otlp_http/dynatrace, debug]

@@ -40,6 +40,11 @@ No tenant? Skip this step. Each lab can print telemetry to the console instead.
    DT_API_TOKEN=dt0c01.xxxx.xxxx
    ```
 
+4. Install `dtctl`, the Dynatrace command line tool. Lab 08 (Semantic conventions) uses it to run DQL queries. Follow the instructions at <https://github.com/dynatrace-oss/dtctl>, then log in:
+   ```bash
+   dtctl auth login
+   ```
+
 !!! warning
     Never commit `.env`. It is already in `.gitignore`.
 

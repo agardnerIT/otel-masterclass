@@ -1,0 +1,7 @@
+http.request.method=GET url.path=/api/orders http.response.status_code=200 client.address=10.0.0.5
+http.request.method=POST url.path=/pay http.response.status_code=500 client.address=10.0.0.9
+http.request.method=GET url.path=/api/orders/42 http.response.status_code=404 client.address=10.0.0.7
+http.request.method=GET url.path=/health http.response.status_code=200 client.address=10.0.0.5
+http.request.method=PUT url.path=/stock/7 http.response.status_code=503 client.address=10.0.0.8
+http.request.method=POST url.path=/pay http.response.status_code=502 client.address=10.0.0.9
+http.request.method=POST url.path=/refund http.response.status_code=200 client.address=10.0.0.9

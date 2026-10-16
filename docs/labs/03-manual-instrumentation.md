@@ -8,7 +8,7 @@ Add your own spans, attributes, events, errors, metrics and correlated logs to t
 
 ## Why it matters
 
-Auto instrumentation knows about HTTP, databases and other libraries. It does not know about **your business**: an order, its value, a declined payment. Manual instrumentation adds that. It costs effort and needs care, so you must know what you gain and what you pay.
+Auto instrumentation knows about HTTP, databases and other libraries. It does not know about **your business**: an order, its value, a declined payment. Manual instrumentation adds that. It costs effort and needs care, so this lab shows what you gain and what you pay.
 
 ## Steps
 
@@ -103,12 +103,13 @@ backend-lab03           charge_payment             (ERROR, exception event)
 
 Rules of thumb:
 
-- Start with auto. Add manual spans only where the business question needs it.
-- Do not wrap every function in a span. A span should mean "an operation worth seeing on its own".
+- Auto and manual are both valid, and they can be combined. Auto gives broad coverage quickly. Manual gives full control over what is created. Some teams use only manual instrumentation, for example to keep tight control over volume, naming, cost or PII.
+- Choose based on the questions you need to answer and how much control you need, not on a default order.
+- Every span adds data volume and cost. Teams often reserve spans for "an operation worth seeing on its own", rather than wrapping every function.
 - Put business data on **spans** (`order.id` is fine here). Keep **metric** attributes to a small set of values.
 
 !!! warning "Cardinality"
-    Every different combination of metric attribute values makes a new time series. Look at the counter in the code: it uses `product.name` and `order.outcome`. A handful of products and two outcomes is fine. If you used `order.id` or a **user ID**, you would create one series for each order or user. This makes metrics slow and expensive. Put such IDs on spans or logs, never on metric attributes.
+    Every different combination of metric attribute values makes a new time series. Look at the counter in the code: it uses `product.name` and `order.outcome`. A handful of products and two outcomes is fine. If you used `order.id` or a **user ID**, you would create one series for each order or user. This makes metrics slow and expensive. Unbounded values like these are usually placed on spans or logs instead of metric attributes.
 
 ## Stuck?
 

@@ -1,0 +1,10 @@
+file_format: definition_manifest/2.0
+name: acme
+description: Acme internal semantic conventions.
+semconv_version: 0.1.0
+schema_url: https://acme.example.com/schemas/acme-semconv/0.1.0
+# Also import and validate telemetry against the standard OTEL Semantic Conventions
+dependencies:
+  - name: otel
+    schema_url: https://opentelemetry.io/schemas/1.37.0
+    registry_path: https://github.com/open-telemetry/semantic-conventions/archive/refs/tags/v1.37.0.zip[model]

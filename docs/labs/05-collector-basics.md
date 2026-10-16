@@ -8,7 +8,7 @@ Run an OpenTelemetry Collector that reads a log file and sends the lines to Dyna
 
 ## Why it matters
 
-So far, every app sent data straight to Dynatrace. That works for a lab. In real life you want one place between your apps and the backend. The **collector** is that place. It can read files, receive data from apps, change data, and send it to one or more backends. Your apps do not need to change when the backend changes.
+So far, every app sent data straight to Dynatrace. That works for a lab. Many setups put one component between the apps and the backend. The **collector** is that component. It can read files, receive data from apps, change data, and send it to one or more backends. Your apps do not need to change when the backend changes.
 
 ## How a collector works
 
@@ -49,13 +49,24 @@ A component that is **defined** but not listed in a pipeline does nothing.
 | `otlp_http` exporter | yes | yes |
 | `debug` exporter | yes | yes |
 | `opamp` extension | **no** | yes |
-| Image size | 220 MB | 482 MB |
+| Image size on disk | 220 MB | 482 MB |
+| Image size compressed | 45 MB | 103 MB |
 
 The table comes from running `components` on both images. You can repeat it:
 
 ```bash
 docker run --rm ghcr.io/dynatrace/dynatrace-otel-collector/dynatrace-otel-collector:0.58.0 components
 ```
+
+To see the sizes on your machine, pull the images and list them:
+
+```bash
+docker images | grep -E "dynatrace-otel-collector|opentelemetry-collector-contrib"
+```
+
+**DISK USAGE** is the unpacked size on your machine. **CONTENT SIZE** is the compressed size, close to what you download from a registry.
+
+Both images are big, because they contain many components you will never use. Can we ship only the parts we need? Yes. In [Lab 07](07-ocb.md) you build your own collector that is a fraction of this size.
 
 **This lab uses the Dynatrace distro**, because it has every component we need and it is smaller. **Lab 06 uses contrib**, because it needs `log_dedup`.
 
@@ -118,7 +129,7 @@ The lab files are in `labs/05-collector-basics/`. Docker must be running.
    python3 append_logs.py
    ```
 6. Watch the first terminal. Each `log records: 1` line is one log line that was read and exported.
-7. Open Dynatrace, open the **Logs** app, and search for `order-service`. Your lines appear after a few seconds.
+7. Open Dynatrace, open the **Logs** app, and filter with `content = *"order-service"*`. Your lines appear after a few seconds.
 
 Stop the program with `Ctrl+C`. Stop the collector with `Ctrl+C`, then run `docker compose down`.
 
@@ -154,6 +165,8 @@ The file is one way to get data in. A few more that the Dynatrace distro include
 | `otlp` | Traces, metrics, logs from apps | Your instrumented apps (next exercise) |
 | `host_metrics` | CPU, memory, disk, network | Machine health |
 | `prometheus` | Metrics from `/metrics` endpoints | Apps that already expose Prometheus metrics |
+
+These are only a few. There are many more receivers for all kinds of cloud platforms and technologies (databases, message queues, Kubernetes, AWS, Azure, GCP and more). Browse the full list in the [OpenTelemetry Collector contrib repository](https://dt-url.net/otel-receivers).
 
 ### Exercise: send the Lab 03 app through the collector
 
@@ -192,4 +205,4 @@ The app did not change. Only one environment variable changed: `OTEL_EXPORTER_OT
 
 - Add the `host_metrics` receiver and a `metrics` pipeline. What do you see?
 - Change `verbosity: basic` to `detailed` in the `debug` exporter. What attributes does the `file_log` receiver add?
-- Add the `batch` processor to the pipeline. Why do production collectors almost always use it?
+- Add the `batch` processor to the pipeline. Many production collectors use it. What does it do, and what trade-offs does it bring?

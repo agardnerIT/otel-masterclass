@@ -7,7 +7,7 @@ This page is the reading version of the opening talk. It takes about 15 minutes.
 We can see OTel as five ideas:
 
 1. **Generate**: software creates telemetry.
-2. **Collect and capture**: telemetry is received, changed, and sent on.
+2. **Collect and process**: telemetry is received, changed, and sent on.
 3. **Store and analyse**: a backend keeps the data and helps you ask questions.
 4. **Standardise**: everyone uses the same names for the same things.
 5. **Control plane**: you manage many collectors from one place.
@@ -33,7 +33,7 @@ A **signal** is a type of telemetry. OTel has three main signals:
 | **Metrics** | Numbers measured over time | How many errors per minute? |
 | **Logs** | Text records of events | What happened at 10:42:03? |
 
-The signals work best together. A log line can carry a trace ID. A metric can point to a trace. Then you can move from "something is wrong" to "this is the exact request".
+The signals are linked together. This is one of the key benefits of OTel. A log line carries the trace ID of the request that wrote it. A metric can point to an example trace. Then you can move from "something is wrong" to "this is the exact request".
 
 ## 1. Generate
 
@@ -58,13 +58,15 @@ flowchart LR
 
 The SDK sends data with an **exporter**. The most common exporter uses **OTLP**.
 
-## 2. Collect and capture
+Not everything needs an SDK. Existing **Prometheus** metrics and plain **log** files can also feed into OTel, usually through the collector. (Labs 05 and 06.)
+
+## 2. Collect and process
 
 The **collector** is a separate program. It sits between your apps and your backend. It can:
 
 - **Receive** data from many sources (OTLP, log files, host metrics, Prometheus).
-- **Process** data: filter noise, remove secrets, add fields.
-- **Export** data to one or more backends.
+- **Process** data: filter, redact secrets, sample, transform, and batch.
+- **Export** data to one or more backends. It can route data to different places, or send the same data to several (multi-casting).
 
 This is a **pipeline**: receivers, then processors, then exporters.
 
@@ -79,12 +81,14 @@ flowchart LR
     P2 --> E2["Exporter<br/>debug"]
 ```
 
-Why use a collector and not send straight from the app?
+Why use a collector instead of sending straight from the app? These are the common reasons:
 
 - You can change where data goes without changing app code.
 - You can remove sensitive data in one place.
 - You can cut volume and cost before data leaves your network.
 - It can read data from things that cannot run an SDK, like log files. (Labs 05 and 06.)
+
+A collector is also one more component to deploy, secure and operate. Sending straight from the app is simpler, and is a valid choice for small setups.
 
 ## 3. Store and analyse
 
@@ -104,7 +108,7 @@ Because OTLP is an open standard, you can change backend later without re-instru
 
 ## 4. Standardise
 
-Telemetry is only useful if names are the same everywhere. If one service writes `status`, another writes `http_code`, and a third writes `response.status`, you cannot write one query for all of them.
+Queries are much easier when names are the same everywhere. If one service writes `status`, another writes `http_code`, and a third writes `response.status`, you cannot write one query for all of them.
 
 **Semantic conventions** are the shared names. For example:
 
@@ -115,7 +119,9 @@ Telemetry is only useful if names are the same everywhere. If one service writes
 | URL path | `url.path` |
 | Client IP address | `client.address` |
 
-**Weaver** is a tool that helps your team define, check, and use these names. (Lab 08.)
+Standardisation goes beyond names. OTel also standardises the wire format (**OTLP**) and **context propagation**, so every language and tool can understand each other. (Lab 08.)
+
+**Weaver** is a tool that helps your team define, check, and use these names. (Lab 09.)
 
 ```mermaid
 flowchart LR
@@ -128,7 +134,7 @@ flowchart LR
 
 One collector is easy to manage. Thousands are not. You need a way to see them, send them new config, and upgrade them.
 
-**OpAMP** (Open Agent Management Protocol) is the standard for this. Each collector connects to a server. The server can see its status and push new config. (Lab 09.)
+**OpAMP** (Open Agent Management Protocol) is the standard for this. Each collector connects to a server. The server can see its status and push new config. (Lab 10.)
 
 ```mermaid
 flowchart TB

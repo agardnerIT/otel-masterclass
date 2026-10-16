@@ -6,3 +6,4 @@ lib/
 pyvenv.cfg
 requirements-docs.txt
 .DS_Store
+.venv/

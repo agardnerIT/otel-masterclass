@@ -6,13 +6,15 @@
 
 Add processors to the collector from Lab 05. Drop log lines you do not need, hide an email address, and collapse repeated lines. Measure how much data you save.
 
+Let's reduce log volume by **64%**
+
 ## Why it matters
 
-Backends charge by volume, and most log lines are noise: health checks, debug output, the same error 1000 times. Logs can also hold personal data that must not leave your network. A processor fixes this **before** the data leaves the collector. The app does not change.
+Many backends charge by volume, and some log lines add little value: health checks, debug output, the same error 1000 times. Logs can also hold personal data that must not leave your network. A processor fixes this **before** the data leaves the collector. The app does not change.
 
 ## The logs
 
-`sample.log` has 11 lines. Read them and find the problems:
+`sample.log` (in `labs/06-processors`, which you open in the steps below) has 11 lines. Read them and find the problems:
 
 ```text
 INFO order-service GET /api/orders/48214 status=200 duration_ms=142
@@ -37,7 +39,7 @@ INFO order-service GET /health status=200 duration_ms=2                 <- healt
 | `log_dedup` | **Collapses** identical records into one with a count | The same message repeats |
 
 !!! note "Which image?"
-    This lab uses the **contrib** image (`0.162.0`). The Dynatrace distro has `filter`, `transform` and `redaction`, but not `log_dedup`. See the table in [Lab 05](05-collector-basics.md#which-collector-image). Contrib is bigger, so [Lab 06b](06b-ocb.md) shows how to build your own.
+    This lab uses the **contrib** image (`0.162.0`). The Dynatrace distro has `filter`, `transform` and `redaction`, but not `log_dedup`. See the table in [Lab 05](05-collector-basics.md#which-collector-image). Contrib is bigger, so [Lab 07](07-ocb.md) shows how to build your own.
 
 The rules are written in **OTTL**, the OpenTelemetry Transformation Language. `IsMatch(log.body, "...")` is true when the log text matches a regular expression. A `filter` condition says what to **drop**.
 
@@ -63,7 +65,7 @@ The lab files are in `labs/06-processors/`. Docker must be running.
    ```bash
    docker compose --env-file ../../.env up -d
    ```
-   ??? note "No Dynatrace tenant?"
+??? note "No Dynatrace tenant?"
        ```bash
        export DT_ENDPOINT=http://localhost:1 DT_API_TOKEN=x
        docker compose up -d
@@ -71,7 +73,6 @@ The lab files are in `labs/06-processors/`. Docker must be running.
        The Dynatrace exporter will print errors. Ignore them. The debug output is correct. Use `--force-recreate` and `docker compose down` as in the steps below, without `--env-file`.
 4. Wait 15 seconds. Then measure:
    ```bash
-   sleep 15
    docker compose logs collector --no-log-prefix | python3 measure_reduction.py sample.log
    ```
    The script counts the lines in `sample.log` and the records the collector exported. You should see 11 records, 0% reduction, and `Email visible: YES (leak!)`.
@@ -80,22 +81,184 @@ The lab files are in `labs/06-processors/`. Docker must be running.
    docker compose down
    ```
 
-### Exercise: add one processor at a time
+You will now add each processor one by one and measure the reduction in log volume. The reduction percentage will increase each time we add a new processor.
 
-Edit the `processors:` list in `collector.yaml`. After each change, run `docker compose --env-file ../../.env up -d --force-recreate`, wait 15 seconds, run the measure command, and run `docker compose down`.
+### Exercise 1: Filter out health pings
+
+Edit the `processors:` list in `collector.yaml`. Change:
+
+```yaml
+processors: []
+```
+
+to:
+
+```yaml
+processors: [filter/health]
+```
+
+Then run:
+
+```bash
+docker compose --env-file ../../.env up -d --force-recreate
+```
+
+Now run the measure command:
+
+```bash
+docker compose logs collector --no-log-prefix | python3 measure_reduction.py sample.log
+```
+
+You should see the logs have dropped from 11 to 8 (a 27% reduction) and the /health pings are no longer visible.
+
+
+and run
+
+```bash
+docker compose down
+```
+
+### Exercise 2: Also filter out DEBUG logs
+
+Edit `processors` in `collector.yaml` again and change:
+
+```yaml
+processors: [filter/health]
+```
+
+to:
+
+```yaml
+processors: [filter/health, filter/low_value]
+```
+Then run:
+
+```bash
+docker compose --env-file ../../.env up -d --force-recreate
+```
+
+Wait 15 seconds, run the measure command:
+
+```bash
+docker compose logs collector --no-log-prefix | python3 measure_reduction.py sample.log
+```
+
+You should see `11` logs have now been reduced to `7` (a `36%` reduction) and the `DEBUG` lines are no longer present in the collector output.
+
+### Exercise 3: Also deduplicate identical logs
+
+Edit `processors` in `collector.yaml` again and change:
+
+```yaml
+processors: [filter/health, filter/low_value]
+```
+
+to:
+
+```yaml
+processors: [filter/health, filter/low_value, log_dedup]
+```
+Then run:
+
+```bash
+docker compose --env-file ../../.env up -d --force-recreate
+```
+
+Run the measure command:
+
+```bash
+docker compose logs collector --no-log-prefix | python3 measure_reduction.py sample.log
+```
+
+You should see `11` logs have now been reduced to `5` (a `55%` reduction).
+
+### Exercise 4: Also drop the line with personal data
+
+Edit `processors` in `collector.yaml` again and change:
+
+```yaml
+processors: [filter/health, filter/low_value, log_dedup]
+```
+
+to:
+
+```yaml
+processors: [filter/health, filter/low_value, log_dedup, filter/personal_info]
+```
+Then run:
+
+```bash
+docker compose --env-file ../../.env up -d --force-recreate
+```
+
+Wait 15 seconds, run the measure command:
+
+```bash
+docker compose logs collector --no-log-prefix | python3 measure_reduction.py sample.log
+```
+
+You should see `11` logs have now been reduced to `4` (a `64%` reduction) and `Email visible: no`. The whole password reset line is gone.
+
+Run:
+
+```bash
+docker compose down
+```
+
+### Exercise 5: Mask the email instead of dropping the line
+
+Dropping the line also hides the fact that a password reset happened. Edit `processors` in `collector.yaml` again and change:
+
+```yaml
+processors: [filter/health, filter/low_value, log_dedup, filter/personal_info]
+```
+
+to:
+
+```yaml
+processors: [filter/health, filter/low_value, log_dedup, transform/mask_email]
+```
+Then run:
+
+```bash
+docker compose --env-file ../../.env up -d --force-recreate
+```
+
+Wait 15 seconds, run the measure command:
+
+```bash
+docker compose logs collector --no-log-prefix | python3 measure_reduction.py sample.log
+```
+
+You should see `11` logs have now been reduced to `5` (a `55%` reduction). The measure script reports `Email visible: no`. The password reset line is still there. To see the masked text in the collector's debug output, run:
+
+```bash
+docker compose logs collector --no-log-prefix | grep "password reset"
+```
+
+You should see `email=***@***` in the line.
+
+Run:
+
+```bash
+docker compose down
+```
+
+### Summary
+
 
 | Stage | `processors:` list | What it does |
 |---|---|---|
 | 1 | `[filter/health]` | Drops the 3 health checks |
 | 2 | `[filter/health, filter/low_value]` | Also drops the DEBUG line |
 | 3 | `[filter/health, filter/low_value, log_dedup]` | Collapses 3 identical warnings into 1 |
-| 4a | `[filter/health, filter/low_value, filter/personal_info, log_dedup]` | **Drops** the line that has an email |
-| 4b | `[filter/health, filter/low_value, transform/mask_email, log_dedup]` | **Masks** the email, keeps the line |
+| 4 | `[filter/health, filter/low_value, log_dedup, filter/personal_info]` | **Drops** the line that has an email |
+| 5 | `[filter/health, filter/low_value, log_dedup, transform/mask_email]` | **Masks** the email, keeps the line |
 
-Stage 4a and 4b are two answers to the same problem. Try both.
+Stages 4 and 5 are two answers to the same problem. Exercise 5 replaces the filter from Exercise 4 with a mask.
 
 ??? note "Why does `log_dedup` wait 10 seconds?"
-    `log_dedup` holds records for a time window (`interval: 10s`) and counts the identical ones. At the end of the window it sends **one** record with an attribute `log_duplicates: 3`. This is why we wait before we measure. It is also why `log_dedup` goes **after** the filters: there is no reason to count records you will drop.
+    `log_dedup` holds records for a time window (`interval: 10s`) and counts the identical ones. At the end of the window it sends **one** record with an attribute `log_duplicates: 3`. This is why we wait before we measure. It is also why `log_dedup` goes after the first two filters: there is no reason to count records you will drop.
 
 ## Drop or mask?
 
@@ -114,7 +277,7 @@ Our line says "password reset for uid=jsmith". That event is useful for security
 
 ## Expected result
 
-Run the finished config (stage 4b) to check:
+Run the finished config (stage 5) to check:
 
 ```bash
 docker compose --env-file ../../.env -f docker-compose.yaml -f docker-compose.solution.yaml up -d --force-recreate
@@ -131,10 +294,10 @@ We measured these numbers with the pinned versions:
 | 1. `filter/health` | 8 | 27% |
 | 2. + `filter/low_value` | 7 | 36% |
 | 3. + `log_dedup` | 5 | 55% |
-| 4a. + drop the email line | 4 | **64%** |
-| 4b. + mask the email (instead of drop) | 5 | **55%** |
+| 4. + drop the email line | 4 | **64%** |
+| 5. + mask the email (instead of drop) | 5 | **55%** |
 
-The debug output shows the masked email and the count:
+The debug output (`docker compose logs collector --no-log-prefix`, before `docker compose down`) shows the masked email and the count:
 
 ```text
 Body: Str(INFO account-service password reset for uid=jsmith email=***@***)
@@ -143,11 +306,11 @@ Body: Str(WARN payment-service Connection reset by peer while calling downstream
 ```
 
 !!! info "About the 63% number"
-    Other material says "reduce by 63%". That is 7 of 11 lines removed (63.6%). Our script counts 4 of 11 records left with stage 4a, and rounds the reduction to 64%. The number is **measured**, not assumed. With masking (stage 4b) one more line stays, so the saving is 55%.
+    Other material says "reduce by 63%". That is 7 of 11 lines removed (63.6%). Our script counts 4 of 11 records left with stage 4, and rounds the reduction to 64%. The number is **measured**, not assumed. With masking (stage 5) one more line stays, so the saving is 55%.
 
 <!-- TODO: screenshot of the same logs in Dynatrace before and after the processors. Save as docs/assets/lab06-logs.png and link it here. -->
 
-*Screenshot placeholder: the Dynatrace Logs app after stage 4b. 5 records, one with `log_duplicates=3`, and no email.*
+*Screenshot placeholder: the Dynatrace Logs app after stage 5. 5 records, one with `log_duplicates=3`, and no email.*
 
 In Dynatrace, search for `order-service` again. The email line shows `email=***@***`, and no `/health` lines arrive.
 
@@ -158,7 +321,7 @@ In Dynatrace, search for `order-service` again. The email line shows `email=***@
 - **The count is the same as before:** you did not use `--force-recreate`, so the old config is still running. Run `docker compose down`, then `up -d` again.
 - **`'processors' ... unknown type`:** check that you spelled the name as in the `processors:` section, like `filter/health`.
 - **YAML errors:** indentation is part of YAML. Use spaces, not tabs. The config in some older material has wrong indentation (`log_record` must be under `logs`, which is under the processor name).
-- **The email is still visible:** you ran stage 1, 2 or 3 only. Add stage 4a or 4b.
+- **The email is still visible:** you ran stage 1, 2 or 3 only. Add stage 4 or 5.
 - **Validate before you run:**
   ```bash
   docker run --rm -e DT_ENDPOINT=https://x.live.dynatrace.com -e DT_API_TOKEN=x \

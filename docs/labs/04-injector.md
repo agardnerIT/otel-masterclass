@@ -1,4 +1,4 @@
-# Discussion: OpenTelemetry Injector
+# Lab 04: OpenTelemetry Injector (discussion)
 
 **Time:** 10 minutes. Discussion only, no lab.
 
@@ -10,7 +10,17 @@ Understand what the OpenTelemetry Injector is, how it adds instrumentation witho
 
 In Labs 01 and 02 you started the app with `opentelemetry-instrument`. That still means you change how each app starts. On a host with 200 services, this is a lot of work.
 
-Many people know the Dynatrace OneAgent. You install it once on a host, and it instruments the processes on that host. The OpenTelemetry Injector has a similar goal, using open source parts. It is much smaller in scope, and it does not replace the agents themselves.
+The OpenTelemetry Injector solves this. You install it once on a host, and it switches on auto instrumentation for the processes on that host. You do not edit each service's start command.
+
+The injector does not collect any telemetry itself. It only helps the OTel auto instrumentation agent for each runtime (for example the Java agent) load into your processes. You still need those agents.
+
+If you know the Dynatrace OneAgent, the "install once per host" idea is the same. Put together, the pieces form an open source alternative:
+
+- the **injector** gets the agents loaded,
+- the **OTel agents** for each runtime create the telemetry,
+- the **collector** receives it and sends it to your backend.
+
+This is a viable approach, but it is early. It is not a drop-in OneAgent. You assemble and maintain the parts yourself, and the injector is still `0.x`. It supports Linux only, and Python is off by default. The OneAgent also comes with vendor support, which this setup does not. See section 5 for the full list of limits.
 
 ## 3. How it works
 
@@ -65,14 +75,14 @@ Checked against the [upstream README](https://github.com/open-telemetry/opentele
 - It does not create the agents. You must install the agent for each runtime, or use the packages that bundle them.
 - By default it only sets variables that start with `OTEL_`. Other prefixes need a custom build.
 - For .NET it overwrites existing profiler variables. .NET does not support two agents.
-- Auto instrumentation gives you framework spans only. It does not know your business logic. You still need manual spans like in Lab 03.
+- Auto instrumentation gives you framework spans only. It does not know your business logic. Business-level spans need manual instrumentation, as in Lab 03.
 
 **Security**
 
 - Turning it on for the whole host needs root.
-- A preloaded library runs inside **every** process, with that process's permissions. Treat it like any code you run on production hosts.
-- Raw library releases are signed with Sigstore Cosign. Verify the signature before you load the file. The README says: "If verification fails, do not load the artifact."
-- A bug in the injector can affect the host process. Release v0.10.1 fixed a crash on older glibc. Test on a staging host first.
+- A preloaded library runs inside **every** process, with that process's permissions. It carries the same risks as any code that runs on production hosts.
+- Raw library releases are signed with Sigstore Cosign. The README says to verify the signature before loading the file: "If verification fails, do not load the artifact."
+- A bug in the injector can affect the host process. Release v0.10.1 fixed a crash on older glibc. Many teams test on a staging host first.
 - Injected agents change what data leaves the host. Check which attributes they capture.
 
 ## 6. Discussion questions

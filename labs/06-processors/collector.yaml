@@ -38,5 +38,5 @@ service:
   pipelines:
     logs:
       receivers: [file_log]
-      processors: []
+      processors: [filter/health, filter/low_value, log_dedup, transform/mask_email]
       exporters: [otlp_http/dynatrace, debug]

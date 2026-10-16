@@ -1,0 +1,13 @@
+groups:
+  - id: registry.acme.cost
+    type: attribute_group
+    display_name: Acme cost
+    brief: Attributes describing the cost center telemetry is charged to.
+    attributes:
+      - id: acme.cost.code
+        type: string
+        stability: stable
+        brief: Finance cost code that telemetry cost is charged to.
+        note: >
+          Must match `^[A-Z]{3}[0-9]{4}$`. Set on every log record.
+        examples: ["ABC1234", "XYZ9876"]

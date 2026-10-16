@@ -135,7 +135,7 @@ In Dynatrace, the list shows one row per request. Open one to see the server spa
 - The `404` request has status `UNSET`, not `ERROR`. For a server, a 4xx is the client's mistake, so OTel does not mark it as an error.
 - Any detail inside the function. The 50 ms of "work" is just part of the one span.
 
-Lab 03 fixes this with manual instrumentation.
+Lab 03 shows how manual instrumentation adds this.
 
 ## Stuck?
 
@@ -148,5 +148,5 @@ Lab 03 fixes this with manual instrumentation.
 
 ## Going further
 
-- Remove `OTEL_SEMCONV_STABILITY_OPT_IN` and run again. The attribute names change (`http.method`, `http.status_code`). These are the old names. Standard names are the topic of Lab 07.
+- Remove `OTEL_SEMCONV_STABILITY_OPT_IN` and run again. The attribute names change (`http.method`, `http.status_code`). These are the old names. Standard names are the topic of Lab 08.
 - Set `OTEL_TRACES_EXPORTER=console,otlp` to send to both.

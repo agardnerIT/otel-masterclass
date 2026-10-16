@@ -7,19 +7,20 @@ We start with the basics and move quickly. All code is open source, so you can r
 
 ## Agenda
 
-| # | Section | Type | Minutes |
-|---|---|---|---|
-| 1 | [OTel overview](concepts.md) | Talk | 15 |
-| 2 | [Auto instrumentation](labs/01-auto-instrumentation.md) | Lab | 15 |
-| 3 | [Auto instrumentation expanded](labs/02-auto-expanded.md) | Lab | 15 |
-| 4 | [Manual instrumentation](labs/03-manual-instrumentation.md) | Lab | 25 |
-| 5 | [OTel Injector](discussion/injector.md) | Discussion | 10 |
-| 6 | [Collector basics](labs/05-collector-basics.md) | Lab | 20 |
-| 7 | [Processors](labs/06-processors.md) | Lab | 25 |
-| 8 | [Custom collector with OCB](labs/06b-ocb.md) (optional) | Lab | 10-15 |
-| 9 | [Semantic conventions](labs/07-semantic-conventions.md) | Discussion + exercise | 15 |
-| 10 | [Weaver](labs/08-weaver.md) | Lab | 20 |
-| 11 | [Control plane: OpAMP](labs/09-opamp.md) and [Bindplane](discussion/bindplane.md) | Lab + talk | 20 |
+| # | Section | Area | Type | Minutes |
+|---|---|---|---|---|
+| | [OTel overview](concepts.md) | Intro | Talk | 15 |
+| 1 | [Auto instrumentation](labs/01-auto-instrumentation.md) | Generate | Lab | 15 |
+| 2 | [Auto instrumentation expanded](labs/02-auto-expanded.md) | Generate | Lab | 15 |
+| 3 | [Manual instrumentation](labs/03-manual-instrumentation.md) | Generate | Lab | 25 |
+| 4 | [OTel Injector](labs/04-injector.md) | Generate | Discussion | 10 |
+| 5 | [Collector basics](labs/05-collector-basics.md) | Collect and process | Lab | 20 |
+| 6 | [Processors](labs/06-processors.md) | Collect and process | Lab | 25 |
+| 7 | [Custom collector with OCB](labs/07-ocb.md) | Collect and process | Lab | 10-15 |
+| 8 | [Semantic conventions](labs/08-semantic-conventions.md) | Standardise | Lab | 15 |
+| 9 | [Weaver](labs/09-weaver.md) | Standardise | Lab | 20 |
+| 10 | [Control plane: OpAMP](labs/10-opamp.md) | Control plane | Lab | 15 |
+| 11 | [Bindplane](labs/11-bindplane.md) | Control plane | Discussion + Demo | 5 |
 | | **Total** | | **~180** |
 
 ## Prerequisites
