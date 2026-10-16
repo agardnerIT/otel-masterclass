@@ -24,7 +24,7 @@ cd otel-masterclass
 
 ## 3. Dynatrace
 
-Get a free trial here: `https://dt-url.net/trial`
+[Get a free trial here](https://dt-url.net/trial)
 
 1. Create an API token: **Access Tokens** > **Generate new token**.
 2. Add these scopes:
