@@ -22,9 +22,9 @@ cd otel-masterclass
 - **Docker:** <https://docs.docker.com/get-docker/>
 - **Python:** <https://www.python.org/downloads/>. The labs use the built-in `venv` and `pip`. You do not need any other Python tool.
 
-## 3. Dynatrace (optional)
+## 3. Dynatrace
 
-No tenant? Skip this step. Each lab can print telemetry to the console instead.
+Get a free trial here: `https://dt-url.net/trial`
 
 1. Create an API token: **Access Tokens** > **Generate new token**.
 2. Add these scopes:
