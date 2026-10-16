@@ -13,7 +13,7 @@ Do this before the workshop. It takes about 10 minutes.
 ## 1. Get the code
 
 ```bash
-git clone https://github.com/CHANGE_ME/otel-masterclass.git
+git clone https://github.com/agardnerIT/otel-masterclass.git
 cd otel-masterclass
 ```
 
