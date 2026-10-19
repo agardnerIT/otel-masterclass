@@ -1,5 +1,8 @@
 # One virtual environment for all labs that run Python on your machine
 # (labs 01, 08, 09 and 10). Labs that run in Docker pin their own packages.
+# First install local scripts for signalling stuck, solved or finished
+-e .
+# Now install the rest...
 fastapi==0.143.0
 uvicorn==0.54.0
 websockets==17.2  # WebSocket support for uvicorn (lab 10)

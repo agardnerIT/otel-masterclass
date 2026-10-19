@@ -1,0 +1,17 @@
+[project]
+name = "training-status"
+version = "0.2.1"
+requires-python = ">=3.8"
+
+[project.scripts]
+stuck = "training_status.cli:stuck"
+solved = "training_status.cli:solved"
+done = "training_status.cli:done"
+finished = "training_status.cli:done"
+
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = ["training_status"]
