@@ -1543,24 +1543,36 @@
    Compared with Lab 02, <code>docker-compose.yaml</code> also turns on metrics and logs (<code>OTEL_METRICS_EXPORTER=otlp</code>, <code>OTEL_LOGS_EXPORTER=otlp</code>). It sets <code>OTEL_EXPORTER_OTLP_METRICS_TEMPORALITY_PREFERENCE=delta</code>, because Dynatrace wants <strong>delta</strong> values for counters and histograms.</p>
 <details class="note">
 <summary>No Dynatrace tenant? Print telemetry in the console</summary>
-<p><div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nb">export</span><span class="w"> </span><span class="nv">DT_ENDPOINT</span><span class="o">=</span>x<span class="w"> </span><span class="nv">DT_API_TOKEN</span><span class="o">=</span>x
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>docker<span class="w"> </span>compose<span class="w"> </span>-f<span class="w"> </span>docker-compose.yaml<span class="w"> </span>-f<span class="w"> </span>docker-compose.console.yaml<span class="w"> </span>up<span class="w"> </span>--build
+<p><div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>-f<span class="w"> </span>docker-compose.yaml<span class="w"> </span>-f<span class="w"> </span>docker-compose.console.yaml<span class="w"> </span>up<span class="w"> </span>--build
 </code></pre></div>
 Metrics print every 5 seconds in this mode.</p>
 </details>
 </li>
 <li>
-<p>In a second terminal, send three orders:
-   <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>curl<span class="w"> </span><span class="s2">"localhost:9000/order/1?quantity=2"</span>
+<p>In a second terminal, send three orders:</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">macOS / Linux</label><label for="__tabbed_1_2">Windows (PowerShell)</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>curl<span class="w"> </span><span class="s2">"localhost:9000/order/1?quantity=2"</span>
 <a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>curl<span class="w"> </span>-i<span class="w"> </span><span class="s2">"localhost:9000/order/3?quantity=2"</span>
 <a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>curl<span class="w"> </span>-i<span class="w"> </span>localhost:9000/order/99
-</code></pre></div></p>
-</li>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<p>Type <code>curl.exe</code>. In PowerShell, plain <code>curl</code> is a different command.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="n">curl</span><span class="p">.</span><span class="n">exe</span> <span class="s2">"localhost:9000/order/1?quantity=2"</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="n">curl</span><span class="p">.</span><span class="n">exe</span> <span class="n">-i</span> <span class="s2">"localhost:9000/order/3?quantity=2"</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="n">curl</span><span class="p">.</span><span class="n">exe</span> <span class="n">-i</span> <span class="n">localhost</span><span class="p">:</span><span class="n">9000</span><span class="p">/</span><span class="n">order</span><span class="p">/</span><span class="n">99</span>
+</code></pre></div>
+</div>
+</div>
+</div>
+<ul>
 <li>The first order works: 2 keyboards cost 98.</li>
 <li>The second is declined: 2 monitors cost 600, and the payment limit is 500. You get a <code>402</code>.</li>
 <li>The third returns <code>404</code>, because the product does not exist.</li>
-<li>
-<p>Open <code>starter/backend/app.py</code> and read it. Each feature is marked in the code:</p>
+<li>Open <code>starter/backend/app.py</code> and read it. Each feature is marked in the code:</li>
+</ul>
 <table>
 <thead>
 <tr>
@@ -1615,19 +1627,19 @@ Metrics print every 5 seconds in this mode.</p>
 <li><strong>TODO 1:</strong> add the attribute <code>order.value</code> to the <code>process_order</code> span.</li>
 <li><strong>TODO 2:</strong> put <code>charge_payment(order_value)</code> in its own span <code>charge_payment</code>. Set <code>payment.amount</code> on it. Record the error on this new span.</li>
 <li>Restart, and send the same three orders again:
-   <div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>--env-file<span class="w"> </span>../../.env<span class="w"> </span>up<span class="w"> </span>--build
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>--env-file<span class="w"> </span>../../.env<span class="w"> </span>up<span class="w"> </span>--build
 </code></pre></div></li>
 <li>Stuck? Compare with <code>solution/backend/app.py</code>. You can run it with:
-   <div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>--env-file<span class="w"> </span>../../.env<span class="w"> </span>-f<span class="w"> </span>docker-compose.yaml<span class="w"> </span>-f<span class="w"> </span>docker-compose.solution.yaml<span class="w"> </span>up<span class="w"> </span>--build
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>--env-file<span class="w"> </span>../../.env<span class="w"> </span>-f<span class="w"> </span>docker-compose.yaml<span class="w"> </span>-f<span class="w"> </span>docker-compose.solution.yaml<span class="w"> </span>up<span class="w"> </span>--build
 </code></pre></div></li>
 </ol>
 <h2 id="expected-result">Expected result<a class="headerlink" href="#expected-result" title="Permanent link">&para;</a></h2>
 <p>For the declined order, one trace with:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>frontend-lab03  GET /order/{product_id}
-<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>frontend-lab03    GET                              (client span)
-<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>backend-lab03       GET /orders/{product_id}       (server span, 402)
-<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>backend-lab03         process_order                (ERROR, order.id, order.value ...)
-<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>backend-lab03           charge_payment             (ERROR, exception event)
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>frontend-lab03  GET /order/{product_id}
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>frontend-lab03    GET                              (client span)
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>backend-lab03       GET /orders/{product_id}       (server span, 402)
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>backend-lab03         process_order                (ERROR, order.id, order.value ...)
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>backend-lab03           charge_payment             (ERROR, exception event)
 </code></pre></div>
 <ul>
 <li>In Dynatrace, open <strong>Distributed Tracing</strong>, filter by service <code>backend-lab03</code>, and open the <code>process_order</code> span. Look at the attributes and the <code>stock.checked</code> event.</li>
@@ -1697,16 +1709,16 @@ Metrics print every 5 seconds in this mode.</p>
 <h2 id="stuck">Stuck?<a class="headerlink" href="#stuck" title="Permanent link">&para;</a></h2>
 <ul>
 <li><strong><code>port is already allocated</code>:</strong> Lab 02 is still running. Stop it from <code>labs/02-auto-expanded</code>:
-  <div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>down
+  <div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>down
 </code></pre></div></li>
 <li><strong>No metrics in Dynatrace:</strong> the metric export interval is 10 seconds. Wait, then check the token has <code>metrics.ingest</code>. Logs need <code>logs.ingest</code>. See <a href="../../setup/">Setup</a>.</li>
 <li><strong>Metrics are there but histogram is empty or odd:</strong> check that <code>OTEL_EXPORTER_OTLP_METRICS_TEMPORALITY_PREFERENCE</code> is <code>delta</code>.</li>
 <li><strong>Logs have no trace ID:</strong> the log call must run <strong>inside</strong> the <code>with tracer.start_as_current_span(...)</code> block.</li>
 <li><strong>Changed the code but nothing changed:</strong> rebuild:
-  <div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>up<span class="w"> </span>--build
+  <div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>up<span class="w"> </span>--build
 </code></pre></div></li>
 <li><strong><code>required variable DT_ENDPOINT is missing a value</code>:</strong> add the env file to the command:
-  <div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>--env-file<span class="w"> </span>../../.env<span class="w"> </span>up<span class="w"> </span>--build
+  <div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>--env-file<span class="w"> </span>../../.env<span class="w"> </span>up<span class="w"> </span>--build
 </code></pre></div></li>
 </ul>
 <h2 id="going-further">Going further<a class="headerlink" href="#going-further" title="Permanent link">&para;</a></h2>

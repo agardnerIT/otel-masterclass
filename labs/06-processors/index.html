@@ -1728,7 +1728,7 @@
 </div>
 <p>The rules are written in <strong>OTTL</strong>, the OpenTelemetry Transformation Language. <code>IsMatch(log.body, "...")</code> is true when the log text matches a regular expression. A <code>filter</code> condition says what to <strong>drop</strong>.</p>
 <h2 id="steps">Steps<a class="headerlink" href="#steps" title="Permanent link">&para;</a></h2>
-<p>The lab files are in <code>labs/06-processors/</code>. Docker must be running.</p>
+<p>The lab files are in <code>labs/06-processors/</code>. Docker must be running. You also run a Python script to measure the result, so turn on the virtual environment from <a href="../../setup/#4-python-environment">Setup</a> in your terminal.</p>
 <ol>
 <li>Go to the lab folder:
    <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nb">cd</span><span class="w"> </span>labs/06-processors
@@ -1748,14 +1748,13 @@
 </ol>
 <details class="note">
 <summary>No Dynatrace tenant?</summary>
-<p><div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="nb">export</span><span class="w"> </span><span class="nv">DT_ENDPOINT</span><span class="o">=</span>http://localhost:1<span class="w"> </span><span class="nv">DT_API_TOKEN</span><span class="o">=</span>x
-<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>docker<span class="w"> </span>compose<span class="w"> </span>up<span class="w"> </span>-d
+<p><div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>up<span class="w"> </span>-d
 </code></pre></div>
    The Dynatrace exporter will print errors. Ignore them. The debug output is correct. Use <code>--force-recreate</code> and <code>docker compose down</code> as in the steps below, without <code>--env-file</code>.</p>
 </details>
 <ol>
 <li>Wait 15 seconds. Then measure:
-   <div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>logs<span class="w"> </span>collector<span class="w"> </span>--no-log-prefix<span class="w"> </span><span class="p">|</span><span class="w"> </span>python3<span class="w"> </span>measure_reduction.py<span class="w"> </span>sample.log
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>logs<span class="w"> </span>collector<span class="w"> </span>--no-log-prefix<span class="w"> </span><span class="p">|</span><span class="w"> </span>python<span class="w"> </span>measure_reduction.py<span class="w"> </span>sample.log
 </code></pre></div>
    The script counts the lines in <code>sample.log</code> and the records the collector exported. You should see 11 records, 0% reduction, and <code>Email visible: YES (leak!)</code>.</li>
 <li>Stop the collector. Do this before every change:
@@ -1774,7 +1773,7 @@
 <div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>--env-file<span class="w"> </span>../../.env<span class="w"> </span>up<span class="w"> </span>-d<span class="w"> </span>--force-recreate
 </code></pre></div>
 <p>Now run the measure command:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>logs<span class="w"> </span>collector<span class="w"> </span>--no-log-prefix<span class="w"> </span><span class="p">|</span><span class="w"> </span>python3<span class="w"> </span>measure_reduction.py<span class="w"> </span>sample.log
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>logs<span class="w"> </span>collector<span class="w"> </span>--no-log-prefix<span class="w"> </span><span class="p">|</span><span class="w"> </span>python<span class="w"> </span>measure_reduction.py<span class="w"> </span>sample.log
 </code></pre></div>
 <p>You should see the logs have dropped from 11 to 8 (a 27% reduction) and the /health pings are no longer visible.</p>
 <p>and run</p>
@@ -1791,7 +1790,7 @@ Then run:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>--env-file<span class="w"> </span>../../.env<span class="w"> </span>up<span class="w"> </span>-d<span class="w"> </span>--force-recreate
 </code></pre></div>
 <p>Wait 15 seconds, run the measure command:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>logs<span class="w"> </span>collector<span class="w"> </span>--no-log-prefix<span class="w"> </span><span class="p">|</span><span class="w"> </span>python3<span class="w"> </span>measure_reduction.py<span class="w"> </span>sample.log
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>logs<span class="w"> </span>collector<span class="w"> </span>--no-log-prefix<span class="w"> </span><span class="p">|</span><span class="w"> </span>python<span class="w"> </span>measure_reduction.py<span class="w"> </span>sample.log
 </code></pre></div>
 <p>You should see <code>11</code> logs have now been reduced to <code>7</code> (a <code>36%</code> reduction) and the <code>DEBUG</code> lines are no longer present in the collector output.</p>
 <h3 id="exercise-3-also-deduplicate-identical-logs">Exercise 3: Also deduplicate identical logs<a class="headerlink" href="#exercise-3-also-deduplicate-identical-logs" title="Permanent link">&para;</a></h3>
@@ -1805,7 +1804,7 @@ Then run:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>--env-file<span class="w"> </span>../../.env<span class="w"> </span>up<span class="w"> </span>-d<span class="w"> </span>--force-recreate
 </code></pre></div>
 <p>Run the measure command:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>logs<span class="w"> </span>collector<span class="w"> </span>--no-log-prefix<span class="w"> </span><span class="p">|</span><span class="w"> </span>python3<span class="w"> </span>measure_reduction.py<span class="w"> </span>sample.log
+<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>logs<span class="w"> </span>collector<span class="w"> </span>--no-log-prefix<span class="w"> </span><span class="p">|</span><span class="w"> </span>python<span class="w"> </span>measure_reduction.py<span class="w"> </span>sample.log
 </code></pre></div>
 <p>You should see <code>11</code> logs have now been reduced to <code>5</code> (a <code>55%</code> reduction).</p>
 <h3 id="exercise-4-also-drop-the-line-with-personal-data">Exercise 4: Also drop the line with personal data<a class="headerlink" href="#exercise-4-also-drop-the-line-with-personal-data" title="Permanent link">&para;</a></h3>
@@ -1819,7 +1818,7 @@ Then run:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>--env-file<span class="w"> </span>../../.env<span class="w"> </span>up<span class="w"> </span>-d<span class="w"> </span>--force-recreate
 </code></pre></div>
 <p>Wait 15 seconds, run the measure command:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>logs<span class="w"> </span>collector<span class="w"> </span>--no-log-prefix<span class="w"> </span><span class="p">|</span><span class="w"> </span>python3<span class="w"> </span>measure_reduction.py<span class="w"> </span>sample.log
+<div class="highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>logs<span class="w"> </span>collector<span class="w"> </span>--no-log-prefix<span class="w"> </span><span class="p">|</span><span class="w"> </span>python<span class="w"> </span>measure_reduction.py<span class="w"> </span>sample.log
 </code></pre></div>
 <p>You should see <code>11</code> logs have now been reduced to <code>4</code> (a <code>64%</code> reduction) and <code>Email visible: no</code>. The whole password reset line is gone.</p>
 <p>Run:</p>
@@ -1836,14 +1835,24 @@ Then run:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>--env-file<span class="w"> </span>../../.env<span class="w"> </span>up<span class="w"> </span>-d<span class="w"> </span>--force-recreate
 </code></pre></div>
 <p>Wait 15 seconds, run the measure command:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>logs<span class="w"> </span>collector<span class="w"> </span>--no-log-prefix<span class="w"> </span><span class="p">|</span><span class="w"> </span>python3<span class="w"> </span>measure_reduction.py<span class="w"> </span>sample.log
+<div class="highlight"><pre><span></span><code><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>logs<span class="w"> </span>collector<span class="w"> </span>--no-log-prefix<span class="w"> </span><span class="p">|</span><span class="w"> </span>python<span class="w"> </span>measure_reduction.py<span class="w"> </span>sample.log
 </code></pre></div>
 <p>You should see <code>11</code> logs have now been reduced to <code>5</code> (a <code>55%</code> reduction). The measure script reports <code>Email visible: no</code>. The password reset line is still there. To see the masked text in the collector's debug output, run:</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">macOS / Linux</label><label for="__tabbed_1_2">Windows (PowerShell)</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
 <div class="highlight"><pre><span></span><code><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>logs<span class="w"> </span>collector<span class="w"> </span>--no-log-prefix<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span><span class="s2">"password reset"</span>
 </code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a><span class="n">docker</span> <span class="n">compose</span> <span class="n">logs</span> <span class="n">collector</span> <span class="p">-</span><span class="n">-no-log-prefix</span> <span class="p">|</span> <span class="nb">Select-String</span> <span class="s2">"password reset"</span>
+</code></pre></div>
+</div>
+</div>
+</div>
 <p>You should see <code>email=***@***</code> in the line.</p>
 <p>Run:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>down
+<div class="highlight"><pre><span></span><code><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>down
 </code></pre></div>
 <h3 id="summary">Summary<a class="headerlink" href="#summary" title="Permanent link">&para;</a></h3>
 <table>
@@ -1931,10 +1940,10 @@ Then run:</p>
 </div>
 <h2 id="expected-result">Expected result<a class="headerlink" href="#expected-result" title="Permanent link">&para;</a></h2>
 <p>Run the finished config (stage 5) to check:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>--env-file<span class="w"> </span>../../.env<span class="w"> </span>-f<span class="w"> </span>docker-compose.yaml<span class="w"> </span>-f<span class="w"> </span>docker-compose.solution.yaml<span class="w"> </span>up<span class="w"> </span>-d<span class="w"> </span>--force-recreate
-<a id="__codelineno-31-2" name="__codelineno-31-2" href="#__codelineno-31-2"></a>sleep<span class="w"> </span><span class="m">15</span>
-<a id="__codelineno-31-3" name="__codelineno-31-3" href="#__codelineno-31-3"></a>docker<span class="w"> </span>compose<span class="w"> </span>logs<span class="w"> </span>collector<span class="w"> </span>--no-log-prefix<span class="w"> </span><span class="p">|</span><span class="w"> </span>python3<span class="w"> </span>measure_reduction.py<span class="w"> </span>sample.log
-<a id="__codelineno-31-4" name="__codelineno-31-4" href="#__codelineno-31-4"></a>docker<span class="w"> </span>compose<span class="w"> </span>down
+<div class="highlight"><pre><span></span><code><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>--env-file<span class="w"> </span>../../.env<span class="w"> </span>-f<span class="w"> </span>docker-compose.yaml<span class="w"> </span>-f<span class="w"> </span>docker-compose.solution.yaml<span class="w"> </span>up<span class="w"> </span>-d<span class="w"> </span>--force-recreate
+<a id="__codelineno-32-2" name="__codelineno-32-2" href="#__codelineno-32-2"></a>sleep<span class="w"> </span><span class="m">15</span>
+<a id="__codelineno-32-3" name="__codelineno-32-3" href="#__codelineno-32-3"></a>docker<span class="w"> </span>compose<span class="w"> </span>logs<span class="w"> </span>collector<span class="w"> </span>--no-log-prefix<span class="w"> </span><span class="p">|</span><span class="w"> </span>python<span class="w"> </span>measure_reduction.py<span class="w"> </span>sample.log
+<a id="__codelineno-32-4" name="__codelineno-32-4" href="#__codelineno-32-4"></a>docker<span class="w"> </span>compose<span class="w"> </span>down
 </code></pre></div>
 <p>We measured these numbers with the pinned versions:</p>
 <table>
@@ -1979,9 +1988,9 @@ Then run:</p>
 </tbody>
 </table>
 <p>The debug output (<code>docker compose logs collector --no-log-prefix</code>, before <code>docker compose down</code>) shows the masked email and the count:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a>Body: Str(INFO account-service password reset for uid=jsmith email=***@***)
-<a id="__codelineno-32-2" name="__codelineno-32-2" href="#__codelineno-32-2"></a>Body: Str(WARN payment-service Connection reset by peer while calling downstream billing-api)
-<a id="__codelineno-32-3" name="__codelineno-32-3" href="#__codelineno-32-3"></a>     -&gt; log_duplicates: Int(3)
+<div class="highlight"><pre><span></span><code><a id="__codelineno-33-1" name="__codelineno-33-1" href="#__codelineno-33-1"></a>Body: Str(INFO account-service password reset for uid=jsmith email=***@***)
+<a id="__codelineno-33-2" name="__codelineno-33-2" href="#__codelineno-33-2"></a>Body: Str(WARN payment-service Connection reset by peer while calling downstream billing-api)
+<a id="__codelineno-33-3" name="__codelineno-33-3" href="#__codelineno-33-3"></a>     -&gt; log_duplicates: Int(3)
 </code></pre></div>
 <div class="admonition info">
 <p class="admonition-title">About the 63% number</p>
@@ -1996,16 +2005,14 @@ Then run:</p>
 <li><strong><code>unsupported protocol scheme ""</code> errors:</strong> <code>DT_ENDPOINT</code> is empty. Use <code>--env-file ../../.env</code>. Your records are still counted correctly.</li>
 <li><strong>The count is lower than expected (for example 3):</strong> the collector did not wait for <code>log_dedup</code>. Wait 15 seconds, then measure.</li>
 <li><strong>The count is the same as before:</strong> you did not use <code>--force-recreate</code>, so the old config is still running. Reset and start again:
-  <div class="highlight"><pre><span></span><code><a id="__codelineno-33-1" name="__codelineno-33-1" href="#__codelineno-33-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>down
-<a id="__codelineno-33-2" name="__codelineno-33-2" href="#__codelineno-33-2"></a>docker<span class="w"> </span>compose<span class="w"> </span>up<span class="w"> </span>-d
+  <div class="highlight"><pre><span></span><code><a id="__codelineno-34-1" name="__codelineno-34-1" href="#__codelineno-34-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>down
+<a id="__codelineno-34-2" name="__codelineno-34-2" href="#__codelineno-34-2"></a>docker<span class="w"> </span>compose<span class="w"> </span>up<span class="w"> </span>-d
 </code></pre></div></li>
 <li><strong><code>'processors' ... unknown type</code>:</strong> check that you spelled the name as in the <code>processors:</code> section, like <code>filter/health</code>.</li>
 <li><strong>YAML errors:</strong> indentation is part of YAML. Use spaces, not tabs. The config in some older material has wrong indentation (<code>log_record</code> must be under <code>logs</code>, which is under the processor name).</li>
 <li><strong>The email is still visible:</strong> you ran stage 1, 2 or 3 only. Add stage 4 or 5.</li>
 <li><strong>Validate before you run:</strong>
-  <div class="highlight"><pre><span></span><code><a id="__codelineno-34-1" name="__codelineno-34-1" href="#__codelineno-34-1"></a>docker<span class="w"> </span>run<span class="w"> </span>--rm<span class="w"> </span>-e<span class="w"> </span><span class="nv">DT_ENDPOINT</span><span class="o">=</span>https://x.live.dynatrace.com<span class="w"> </span>-e<span class="w"> </span><span class="nv">DT_API_TOKEN</span><span class="o">=</span>x<span class="w"> </span><span class="se">\</span>
-<a id="__codelineno-34-2" name="__codelineno-34-2" href="#__codelineno-34-2"></a><span class="w">  </span>-v<span class="w"> </span><span class="s2">"</span><span class="nv">$PWD</span><span class="s2">/collector.yaml:/c.yaml:ro"</span><span class="w"> </span>otel/opentelemetry-collector-contrib:0.162.0<span class="w"> </span><span class="se">\</span>
-<a id="__codelineno-34-3" name="__codelineno-34-3" href="#__codelineno-34-3"></a><span class="w">  </span>validate<span class="w"> </span>--config<span class="o">=</span>/c.yaml
+  <div class="highlight"><pre><span></span><code><a id="__codelineno-35-1" name="__codelineno-35-1" href="#__codelineno-35-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>run<span class="w"> </span>--rm<span class="w"> </span>collector<span class="w"> </span>validate<span class="w"> </span>--config<span class="o">=</span>/etc/otelcol/collector.yaml
 </code></pre></div></li>
 </ul>
 <h2 id="going-further">Going further<a class="headerlink" href="#going-further" title="Permanent link">&para;</a></h2>

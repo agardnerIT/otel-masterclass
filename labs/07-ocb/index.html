@@ -1472,7 +1472,7 @@
 <p>The contrib image has hundreds of components. You use a handful, but you ship and patch all of them. A smaller collector starts faster, has a smaller attack surface, and is easier to review. It is also the only way to use a component that no ready-made image includes.</p>
 <p>The tool for this is the <strong>OpenTelemetry Collector Builder</strong>, called <strong>OCB</strong> (<code>ocb</code>). You give it a list of components. It generates Go code and compiles one binary.</p>
 <h2 id="steps">Steps<a class="headerlink" href="#steps" title="Permanent link">&para;</a></h2>
-<p>The lab files are in <code>labs/07-ocb/</code>. Docker must be running. You do <strong>not</strong> need Go: the build runs inside Docker.</p>
+<p>The lab files are in <code>labs/07-ocb/</code>. Docker must be running. You do <strong>not</strong> need Go: the build runs inside Docker.  You also run a Python script to measure the result, so turn on the virtual environment from <a href="../../setup/#4-python-environment">Setup</a>.</p>
 <ol>
 <li>Go to the lab folder:
    <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nb">cd</span><span class="w"> </span>labs/07-ocb
@@ -1508,14 +1508,13 @@
 </code></pre></div></p>
 <details class="note">
 <summary>No Dynatrace tenant?</summary>
-<p><div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="nb">export</span><span class="w"> </span><span class="nv">DT_ENDPOINT</span><span class="o">=</span>http://localhost:1<span class="w"> </span><span class="nv">DT_API_TOKEN</span><span class="o">=</span>x
-<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>docker<span class="w"> </span>compose<span class="w"> </span>up<span class="w"> </span>-d
+<p><div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>up<span class="w"> </span>-d
 </code></pre></div>
    The Dynatrace exporter will print errors. Ignore them.</p>
 </details>
 <ol>
 <li>Wait 15 seconds. Then measure:
-   <div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>logs<span class="w"> </span>collector<span class="w"> </span>--no-log-prefix<span class="w"> </span><span class="p">|</span><span class="w"> </span>python3<span class="w"> </span>measure_reduction.py<span class="w"> </span>sample.log
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>logs<span class="w"> </span>collector<span class="w"> </span>--no-log-prefix<span class="w"> </span><span class="p">|</span><span class="w"> </span>python<span class="w"> </span>measure_reduction.py<span class="w"> </span>sample.log
 </code></pre></div></li>
 <li>Clean up:
    <div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>down

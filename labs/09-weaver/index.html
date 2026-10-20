@@ -1723,33 +1723,39 @@
 <h3 id="steps">Steps<a class="headerlink" href="#steps" title="Permanent link">&para;</a></h3>
 <p>Docker must be running. You need Python 3.11+.</p>
 <ol>
-<li>Go to the lab folder, turn on the virtual environment from <a href="../../setup/#4-python-environment">Setup</a> and pull the Weaver image:
+<li>Go to the lab folder and pull the Weaver image. The Weaver commands are defined in <code>docker-compose.yaml</code>, so they are the same on every OS:
    <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nb">cd</span><span class="w"> </span>labs/09-weaver
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="nb">source</span><span class="w"> </span>../../.venv/bin/activate
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>docker<span class="w"> </span>pull<span class="w"> </span>otel/weaver:v0.28.0
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>docker<span class="w"> </span>compose<span class="w"> </span>pull
 </code></pre></div></li>
 <li>Check that the registry is valid:
-   <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>docker<span class="w"> </span>run<span class="w"> </span>--rm<span class="w"> </span>-v<span class="w"> </span><span class="s2">"</span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span><span class="s2">"</span>:/work<span class="w"> </span>-w<span class="w"> </span>/work<span class="w"> </span>otel/weaver:v0.28.0<span class="w"> </span>registry<span class="w"> </span>check<span class="w"> </span>-r<span class="w"> </span>/work/model
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>run<span class="w"> </span>--rm<span class="w"> </span>check
 </code></pre></div>
    You should see <code>✔ No after_resolution policy violation</code>. Weaver downloads the OpenTelemetry conventions the first time, so this can take a few seconds.</li>
 <li>Open <strong>two terminals</strong> in <code>labs/09-weaver</code>. In <strong>terminal 1</strong>, start Weaver in <code>live-check</code> mode. It is a server that waits for telemetry on port 4317 and checks every record. It stops after 30 seconds without data:
-   <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>docker<span class="w"> </span>run<span class="w"> </span>--rm<span class="w"> </span>-v<span class="w"> </span><span class="s2">"</span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span><span class="s2">"</span>:/work<span class="w"> </span>-w<span class="w"> </span>/work<span class="w"> </span>-p<span class="w"> </span><span class="m">4317</span>:4317<span class="w"> </span>-p<span class="w"> </span><span class="m">4320</span>:4320<span class="w"> </span>otel/weaver:v0.28.0<span class="w"> </span><span class="se">\</span>
-<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">  </span>registry<span class="w"> </span>live-check<span class="w"> </span>-r<span class="w"> </span>/work/model<span class="w"> </span>--advice-policies<span class="w"> </span>/work/policies<span class="w"> </span><span class="se">\</span>
-<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">  </span>--otlp-grpc-address<span class="w"> </span><span class="m">0</span>.0.0.0<span class="w"> </span>--inactivity-timeout<span class="w"> </span><span class="m">30</span>
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>run<span class="w"> </span>--rm<span class="w"> </span>--service-ports<span class="w"> </span>live-check
 </code></pre></div>
    Wait until you see <code>OTLP gRPC listener started</code>.</li>
-<li>In <strong>terminal 2</strong>, activate the environment and send the 3 test logs:
-   <div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="nb">source</span><span class="w"> </span>../../.venv/bin/activate
+<li>
+<p>In <strong>terminal 2</strong>, go to the lab folder, activate the environment and send the 3 test logs:</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">macOS / Linux</label><label for="__tabbed_1_2">Windows (PowerShell)</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="nb">source</span><span class="w"> </span>../../.venv/bin/activate
 <a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>python<span class="w"> </span>emit_test_logs.py
-</code></pre></div></li>
-<li>Go back to terminal 1. Wait for Weaver to stop, or press <code>Ctrl+C</code>. It prints a report.</li>
-</ol>
-<details class="note">
-<summary>On Windows?</summary>
-<p>Use PowerShell. Replace <code>$(pwd)</code> with <code>${PWD}</code>, and activate the environment with:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="p">..\..\.</span><span class="n">venv</span><span class="p">\</span><span class="n">Scripts</span><span class="p">\</span><span class="n">activate</span>
 </code></pre></div>
-</details>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="p">..\..\.</span><span class="n">venv</span><span class="p">\</span><span class="n">Scripts</span><span class="p">\</span><span class="n">Activate</span><span class="p">.</span><span class="n">ps1</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="n">python</span> <span class="n">emit_test_logs</span><span class="p">.</span><span class="n">py</span>
+</code></pre></div>
+</div>
+</div>
+</div>
+</li>
+<li>
+<p>Go back to terminal 1. Wait for Weaver to stop, or press <code>Ctrl+C</code>. It prints a report.</p>
+</li>
+</ol>
 <h2 id="expected-result">Expected result<a class="headerlink" href="#expected-result" title="Permanent link">&para;</a></h2>
 <p>Weaver prints one block per log. Read the <code>Log</code> part of each block. Colours in the terminal: green is fine, red is a violation.</p>
 <p><strong>Log 1: <code>good</code></strong> is compliant. Every attribute is green.</p>

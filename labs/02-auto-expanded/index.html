@@ -1545,28 +1545,40 @@
 <p><code>docker-compose.yaml</code> sets <code>OTEL_TRACES_EXPORTER=otlp</code>, the endpoint (<code>$DT_ENDPOINT/api/v2/otlp</code>), and the token header. These are the same variables as in Lab 01.</p>
 <details class="note">
 <summary>No Dynatrace tenant? Print spans in the console</summary>
-<p>Add the console file. It turns the OTLP exporter into the console exporter. Spans then print in the container logs. The two values are dummies, because the main file needs them to be set:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nb">export</span><span class="w"> </span><span class="nv">DT_ENDPOINT</span><span class="o">=</span>x<span class="w"> </span><span class="nv">DT_API_TOKEN</span><span class="o">=</span>x
-<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>docker<span class="w"> </span>compose<span class="w"> </span>-f<span class="w"> </span>docker-compose.yaml<span class="w"> </span>-f<span class="w"> </span>docker-compose.console.yaml<span class="w"> </span>up<span class="w"> </span>--build
+<p>Add the console file. It turns the OTLP exporter into the console exporter. Spans then print in the container logs. You do not need a <code>.env</code> file:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>-f<span class="w"> </span>docker-compose.yaml<span class="w"> </span>-f<span class="w"> </span>docker-compose.console.yaml<span class="w"> </span>up<span class="w"> </span>--build
 </code></pre></div>
 </details>
 </li>
 <li>
-<p>In a second terminal, order a product:
-   <div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>curl<span class="w"> </span>localhost:9000/order/1
+<p>In a second terminal, order a product:</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">macOS / Linux</label><label for="__tabbed_1_2">Windows (PowerShell)</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>curl<span class="w"> </span>localhost:9000/order/1
 </code></pre></div>
-   You get JSON back. Look at the field <code>traceparent_sent</code>.</p>
+</div>
+<div class="tabbed-block">
+<p>Type <code>curl.exe</code>. In PowerShell, plain <code>curl</code> is a different command.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="n">curl</span><span class="p">.</span><span class="n">exe</span> <span class="n">localhost</span><span class="p">:</span><span class="n">9000</span><span class="p">/</span><span class="n">order</span><span class="p">/</span><span class="n">1</span>
+</code></pre></div>
+</div>
+</div>
+</div>
+<p>You get JSON back. Look at the field <code>traceparent_sent</code>.</p>
 </li>
-<li>Read the logs. The frontend prints <code>frontend sent traceparent: ...</code>. The backend prints <code>backend received traceparent: ...</code>. They are the <strong>same value</strong>.</li>
+<li>
+<p>Read the logs. The frontend prints <code>frontend sent traceparent: ...</code>. The backend prints <code>backend received traceparent: ...</code>. They are the <strong>same value</strong>.</p>
+</li>
 <li>Find the trace. In Dynatrace, open <strong>Distributed Tracing</strong> and filter by service <code>frontend-lab02</code>. (In console mode, look at the <code>trace_id</code> in every span, in both services.)</li>
 </ol>
 <h3 id="read-the-traceparent">Read the traceparent<a class="headerlink" href="#read-the-traceparent" title="Permanent link">&para;</a></h3>
 <p>The header looks like this:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>00-0d8a645dc4d5dcd1c2dbd31cc171983c-eca2e95684aac18e-03
-<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>│  │                                │                └─ flags
-<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>│  │                                └─ parent span ID (the frontend's outgoing call)
-<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>│  └─ trace ID (the same in every service)
-<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>└─ version
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>00-0d8a645dc4d5dcd1c2dbd31cc171983c-eca2e95684aac18e-03
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>│  │                                │                └─ flags
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>│  │                                └─ parent span ID (the frontend's outgoing call)
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>│  └─ trace ID (the same in every service)
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>└─ version
 </code></pre></div>
 <table>
 <thead>
@@ -1597,17 +1609,28 @@
 <p>The <code>requests</code> instrumentation <strong>adds</strong> the header to the outgoing call. The FastAPI instrumentation in the backend <strong>reads</strong> it and makes its span a child. That is all of context propagation.</p>
 <h3 id="agent-or-code">Agent or code?<a class="headerlink" href="#agent-or-code" title="Permanent link">&para;</a></h3>
 <p>In step 3 the agent (<code>opentelemetry-instrument</code>) did all the work. You can also turn the same instrumentation on <strong>in code</strong>. Look at <code>frontend/app_in_code.py</code>. The important lines are:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="n">FastAPIInstrumentor</span><span class="o">.</span><span class="n">instrument_app</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>  <span class="c1"># one span for each incoming request</span>
-<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="n">RequestsInstrumentor</span><span class="p">()</span><span class="o">.</span><span class="n">instrument</span><span class="p">()</span>      <span class="c1"># one span for each outgoing request</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="n">FastAPIInstrumentor</span><span class="o">.</span><span class="n">instrument_app</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>  <span class="c1"># one span for each incoming request</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="n">RequestsInstrumentor</span><span class="p">()</span><span class="o">.</span><span class="n">instrument</span><span class="p">()</span>      <span class="c1"># one span for each outgoing request</span>
 </code></pre></div>
 <p>Before that, the file builds the SDK itself: a <code>TracerProvider</code>, a service name, and an exporter. The agent did this for you from the environment variables.</p>
 <p>Try it. Stop the stack (<code>Ctrl+C</code>), then run the frontend without the agent:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>--env-file<span class="w"> </span>../../.env<span class="w"> </span><span class="se">\</span>
-<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="w">  </span>-f<span class="w"> </span>docker-compose.yaml<span class="w"> </span>-f<span class="w"> </span>docker-compose.code.yaml<span class="w"> </span>up<span class="w"> </span>--build
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>--env-file<span class="w"> </span>../../.env<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="w">  </span>-f<span class="w"> </span>docker-compose.yaml<span class="w"> </span>-f<span class="w"> </span>docker-compose.code.yaml<span class="w"> </span>up<span class="w"> </span>--build
 </code></pre></div>
 <p>Call the app again. You get the same trace:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>curl<span class="w"> </span>localhost:9000/order/1
+<div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><input id="__tabbed_2_2" name="__tabbed_2" type="radio" /><div class="tabbed-labels"><label for="__tabbed_2_1">macOS / Linux</label><label for="__tabbed_2_2">Windows (PowerShell)</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>curl<span class="w"> </span>localhost:9000/order/1
 </code></pre></div>
+</div>
+<div class="tabbed-block">
+<p>Type <code>curl.exe</code>. In PowerShell, plain <code>curl</code> is a different command.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="n">curl</span><span class="p">.</span><span class="n">exe</span> <span class="n">localhost</span><span class="p">:</span><span class="n">9000</span><span class="p">/</span><span class="n">order</span><span class="p">/</span><span class="n">1</span>
+</code></pre></div>
+</div>
+</div>
+</div>
 <table>
 <thead>
 <tr>
@@ -1641,9 +1664,9 @@
 </table>
 <h2 id="expected-result">Expected result<a class="headerlink" href="#expected-result" title="Permanent link">&para;</a></h2>
 <p>One trace with spans from <strong>two services</strong>:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>frontend-lab02  GET /order/{product_id}      (server span)
-<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>frontend-lab02    GET                         (client span, the call made by requests)
-<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>backend-lab02       GET /products/{product_id} (server span)
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>frontend-lab02  GET /order/{product_id}      (server span)
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>frontend-lab02    GET                         (client span, the call made by requests)
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>backend-lab02       GET /products/{product_id} (server span)
 </code></pre></div>
 <p>All of them have the same trace ID. The backend span is a child of the frontend's client span. FastAPI also adds small <code>http send</code> and <code>http receive</code> child spans.</p>
 <!-- TODO: screenshot of the Dynatrace trace (frontend-lab02 and backend-lab02). Save as docs/assets/lab02-trace.png and link it here. -->
@@ -1656,55 +1679,98 @@
 <li><strong>Two separate traces, not one:</strong> the <code>traceparent</code> header was lost. Check that the frontend logs show <code>frontend sent traceparent: ...</code> and not <code>None</code>.</li>
 <li><strong>No spans in console mode:</strong> spans are printed in batches. Wait about 5 seconds after a request.</li>
 <li><strong><code>required variable DT_ENDPOINT is missing a value</code>:</strong> add the env file to the command, and check that <code>.env</code> has both values:
-  <div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>--env-file<span class="w"> </span>../../.env<span class="w"> </span>up
+  <div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>--env-file<span class="w"> </span>../../.env<span class="w"> </span>up
 </code></pre></div></li>
 <li><strong>Nothing in Dynatrace:</strong> check <code>DT_ENDPOINT</code> (no <code>/api/...</code> at the end) and the token scopes. See Lab 01.</li>
 <li><strong>Changed a file but nothing changed:</strong> rebuild the image:
-  <div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>up<span class="w"> </span>--build
+  <div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>up<span class="w"> </span>--build
 </code></pre></div></li>
 </ul>
 <h2 id="going-further">Going further<a class="headerlink" href="#going-further" title="Permanent link">&para;</a></h2>
 <p>Exercise: <strong>find an error in a trace.</strong></p>
 <ol>
-<li>Call product 13. The backend raises an exception for it:
-   <div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>curl<span class="w"> </span>-i<span class="w"> </span>localhost:9000/order/13
-</code></pre></div></li>
-<li>Find this trace. Which span has the error? The backend server span has status <code>ERROR</code> and an exception event. The frontend returns <code>502</code>.</li>
-<li>Call product 99:
-   <div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>curl<span class="w"> </span>-i<span class="w"> </span>localhost:9000/order/99
+<li>
+<p>Call product 13. The backend raises an exception for it:</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="3:2"><input checked="checked" id="__tabbed_3_1" name="__tabbed_3" type="radio" /><input id="__tabbed_3_2" name="__tabbed_3" type="radio" /><div class="tabbed-labels"><label for="__tabbed_3_1">macOS / Linux</label><label for="__tabbed_3_2">Windows (PowerShell)</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>curl<span class="w"> </span>-i<span class="w"> </span>localhost:9000/order/13
 </code></pre></div>
-   This is a <code>404</code>. Compare it: is any span marked as an error? (Remember Lab 01: a 4xx is not a server error.)</li>
+</div>
+<div class="tabbed-block">
+<p>Type <code>curl.exe</code>. In PowerShell, plain <code>curl</code> is a different command.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="n">curl</span><span class="p">.</span><span class="n">exe</span> <span class="n">-i</span> <span class="n">localhost</span><span class="p">:</span><span class="n">9000</span><span class="p">/</span><span class="n">order</span><span class="p">/</span><span class="n">13</span>
+</code></pre></div>
+</div>
+</div>
+</div>
+</li>
+<li>
+<p>Find this trace. Which span has the error? The backend server span has status <code>ERROR</code> and an exception event. The frontend returns <code>502</code>.</p>
+</li>
+<li>
+<p>Call product 99:</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="4:2"><input checked="checked" id="__tabbed_4_1" name="__tabbed_4" type="radio" /><input id="__tabbed_4_2" name="__tabbed_4" type="radio" /><div class="tabbed-labels"><label for="__tabbed_4_1">macOS / Linux</label><label for="__tabbed_4_2">Windows (PowerShell)</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>curl<span class="w"> </span>-i<span class="w"> </span>localhost:9000/order/99
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<p>Type <code>curl.exe</code>. In PowerShell, plain <code>curl</code> is a different command.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="n">curl</span><span class="p">.</span><span class="n">exe</span> <span class="n">-i</span> <span class="n">localhost</span><span class="p">:</span><span class="n">9000</span><span class="p">/</span><span class="n">order</span><span class="p">/</span><span class="n">99</span>
+</code></pre></div>
+</div>
+</div>
+</div>
+<p>This is a <code>404</code>. Compare it: is any span marked as an error? (Remember Lab 01: a 4xx is not a server error.)</p>
+</li>
 </ol>
 <p>Exercise: <strong>add a third hop.</strong></p>
 <p>The folder <code>inventory/</code> is ready. It is a third FastAPI service with <code>GET /stock/{id}</code> on port 8002. It is not in <code>docker-compose.yaml</code> yet. Your job is to wire it in, so the trace has three services.</p>
 <ol>
 <li>Add the service to <code>docker-compose.yaml</code>, below <code>backend</code>:
-   <div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="w">  </span><span class="nt">inventory</span><span class="p">:</span>
-<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="w">    </span><span class="nt">build</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">./inventory</span>
-<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="w">    </span><span class="nt">environment</span><span class="p">:</span>
-<a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a><span class="w">      </span><span class="nt">&lt;&lt;</span><span class="p">:</span><span class="w"> </span><span class="nv">*otel-env</span>
-<a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a><span class="w">      </span><span class="nt">OTEL_SERVICE_NAME</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">inventory-lab02</span>
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="w">  </span><span class="nt">inventory</span><span class="p">:</span>
+<a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a><span class="w">    </span><span class="nt">build</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">./inventory</span>
+<a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a><span class="w">    </span><span class="nt">environment</span><span class="p">:</span>
+<a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a><span class="w">      </span><span class="nt">&lt;&lt;</span><span class="p">:</span><span class="w"> </span><span class="nv">*otel-env</span>
+<a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a><span class="w">      </span><span class="nt">OTEL_SERVICE_NAME</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">inventory-lab02</span>
 </code></pre></div></li>
 <li>Tell the backend where it is. In the <code>backend</code> service, add this to <code>environment</code>, and add a <code>depends_on</code> for <code>inventory</code>:
-   <div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="w">      </span><span class="nt">INVENTORY_URL</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">http://inventory:8002</span>
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="w">      </span><span class="nt">INVENTORY_URL</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">http://inventory:8002</span>
 </code></pre></div></li>
 <li>In <code>backend/requirements.txt</code>, add <code>requests==2.32.5</code>. The backend will make an outgoing call, so it needs <code>requests</code>. Bootstrap installs the matching instrumentation for you when the image builds.</li>
 <li>In <code>backend/app.py</code>, call the inventory service before <code>return PRODUCTS[product_id]</code>:
-   <div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="n">stock</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">INVENTORY_URL</span><span class="si">}</span><span class="s2">/stock/</span><span class="si">{</span><span class="n">product_id</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
-<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a><span class="k">return</span> <span class="p">{</span><span class="o">**</span><span class="n">PRODUCTS</span><span class="p">[</span><span class="n">product_id</span><span class="p">],</span> <span class="s2">"in_stock"</span><span class="p">:</span> <span class="n">stock</span><span class="p">[</span><span class="s2">"in_stock"</span><span class="p">]}</span>
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="n">stock</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">INVENTORY_URL</span><span class="si">}</span><span class="s2">/stock/</span><span class="si">{</span><span class="n">product_id</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+<a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a><span class="k">return</span> <span class="p">{</span><span class="o">**</span><span class="n">PRODUCTS</span><span class="p">[</span><span class="n">product_id</span><span class="p">],</span> <span class="s2">"in_stock"</span><span class="p">:</span> <span class="n">stock</span><span class="p">[</span><span class="s2">"in_stock"</span><span class="p">]}</span>
 </code></pre></div>
    You also need these lines at the top of the file:
-   <div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
-<a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a><span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
-<a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a>
-<a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a><span class="n">INVENTORY_URL</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">"INVENTORY_URL"</span><span class="p">,</span> <span class="s2">"http://localhost:8002"</span><span class="p">)</span>
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a><span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
+<a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a>
+<a id="__codelineno-20-4" name="__codelineno-20-4" href="#__codelineno-20-4"></a><span class="n">INVENTORY_URL</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">"INVENTORY_URL"</span><span class="p">,</span> <span class="s2">"http://localhost:8002"</span><span class="p">)</span>
 </code></pre></div></li>
-<li>Rebuild and start, then call the app:
-   <div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>--env-file<span class="w"> </span>../../.env<span class="w"> </span>up<span class="w"> </span>--build
+<li>
+<p>Rebuild and start, then call the app:
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>--env-file<span class="w"> </span>../../.env<span class="w"> </span>up<span class="w"> </span>--build
+</code></pre></div></p>
+<div class="tabbed-set tabbed-alternate" data-tabs="5:2"><input checked="checked" id="__tabbed_5_1" name="__tabbed_5" type="radio" /><input id="__tabbed_5_2" name="__tabbed_5" type="radio" /><div class="tabbed-labels"><label for="__tabbed_5_1">macOS / Linux</label><label for="__tabbed_5_2">Windows (PowerShell)</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a>curl<span class="w"> </span>localhost:9000/order/1
 </code></pre></div>
-   <div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a>curl<span class="w"> </span>localhost:9000/order/1
-</code></pre></div></li>
-<li>Check the result. The response has <code>in_stock</code>. The logs of all three services show the <strong>same trace ID</strong> in the <code>traceparent</code>. The parent span ID is different in each, because each hop makes a new client span. In Dynatrace, you see <code>inventory-lab02</code> as a third service in the trace.</li>
+</div>
+<div class="tabbed-block">
+<p>Type <code>curl.exe</code>. In PowerShell, plain <code>curl</code> is a different command.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a><span class="n">curl</span><span class="p">.</span><span class="n">exe</span> <span class="n">localhost</span><span class="p">:</span><span class="n">9000</span><span class="p">/</span><span class="n">order</span><span class="p">/</span><span class="n">1</span>
+</code></pre></div>
+</div>
+</div>
+</div>
+</li>
+<li>
+<p>Check the result. The response has <code>in_stock</code>. The logs of all three services show the <strong>same trace ID</strong> in the <code>traceparent</code>. The parent span ID is different in each, because each hop makes a new client span. In Dynatrace, you see <code>inventory-lab02</code> as a third service in the trace.</p>
+</li>
 </ol>
 
 

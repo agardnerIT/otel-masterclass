@@ -1703,11 +1703,10 @@
 <p>In these versions, component names use an underscore: <code>file_log</code>, <code>otlp_http</code>, <code>log_dedup</code>. Older guides write <code>filelog</code>, <code>otlphttp</code>, <code>logdedup</code>. If you copy a config from the internet, check the names.</p>
 </div>
 <h2 id="steps">Steps<a class="headerlink" href="#steps" title="Permanent link">&para;</a></h2>
-<p>The lab files are in <code>labs/05-collector-basics/</code>. Docker must be running.</p>
+<p>The lab files are in <code>labs/05-collector-basics/</code>. Docker must be running. You also run one Python script, so turn on the virtual environment from <a href="../../setup/#4-python-environment">Setup</a> in your <strong>second</strong> terminal.</p>
 <ol>
-<li>Go to the lab folder and create the file the collector will read:
+<li>Go to the lab folder. It contains an empty <code>live.log</code>, the file the collector will read:
    <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nb">cd</span><span class="w"> </span>labs/05-collector-basics
-<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>touch<span class="w"> </span>live.log
 </code></pre></div></li>
 <li>Look at <code>collector.yaml</code>. It has one receiver, two exporters and one pipeline:
    <div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="nt">receivers</span><span class="p">:</span>
@@ -1731,11 +1730,7 @@
 <li>The collector adds <code>/v1/logs</code> to the endpoint by itself.</li>
 <li><code>otlp_http/dynatrace</code> is a <strong>named instance</strong>: <code>type/name</code>. You can have many exporters of the same type.</li>
 <li>Check that the config is valid. This is the same check you would run in a build pipeline:
-   <div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>docker<span class="w"> </span>run<span class="w"> </span>--rm<span class="w"> </span><span class="se">\</span>
-<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="w">  </span>-e<span class="w"> </span><span class="nv">DT_ENDPOINT</span><span class="o">=</span>https://example.live.dynatrace.com<span class="w"> </span>-e<span class="w"> </span><span class="nv">DT_API_TOKEN</span><span class="o">=</span>x<span class="w"> </span><span class="se">\</span>
-<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="w">  </span>-v<span class="w"> </span><span class="s2">"</span><span class="nv">$PWD</span><span class="s2">/collector.yaml:/c.yaml:ro"</span><span class="w"> </span><span class="se">\</span>
-<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="w">  </span>ghcr.io/dynatrace/dynatrace-otel-collector/dynatrace-otel-collector:0.58.0<span class="w"> </span><span class="se">\</span>
-<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="w">  </span>validate<span class="w"> </span>--config<span class="o">=</span>/c.yaml
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>run<span class="w"> </span>--rm<span class="w"> </span>-e<span class="w"> </span><span class="nv">DT_ENDPOINT</span><span class="o">=</span>https://example.live.dynatrace.com<span class="w"> </span>-e<span class="w"> </span><span class="nv">DT_API_TOKEN</span><span class="o">=</span>x<span class="w"> </span>collector<span class="w"> </span>validate<span class="w"> </span>--config<span class="o">=</span>/etc/otelcol/collector.yaml
 </code></pre></div>
    No output means the config is valid.</li>
 <li>
@@ -1751,7 +1746,7 @@ This uses <code>collector.console.yaml</code>: the same pipeline without the Dyn
 </li>
 <li>
 <p>Open a <strong>second terminal</strong>, go to the same folder, and start a program that writes one log line per second. It repeats the lines of <code>sample.log</code>:
-   <div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>python3<span class="w"> </span>append_logs.py
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>python<span class="w"> </span>append_logs.py
 </code></pre></div></p>
 </li>
 <li>Watch the first terminal. Each <code>log records: 1</code> line is one log line that was read and exported.</li>
@@ -1760,6 +1755,7 @@ This uses <code>collector.console.yaml</code>: the same pipeline without the Dyn
 <p>Stop the program with <code>Ctrl+C</code>. Stop the collector with <code>Ctrl+C</code>, then clean up:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>down
 </code></pre></div>
+<p>Then empty <code>live.log</code> again, so you can repeat the lab with a clean file: <code>git restore live.log</code>.</p>
 <h2 id="expected-result">Expected result<a class="headerlink" href="#expected-result" title="Permanent link">&para;</a></h2>
 <p>In the collector terminal:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>info  Logs  {"otelcol.component.id": "debug", "otelcol.signal": "logs", "log records": 1}
@@ -1819,10 +1815,25 @@ This uses <code>collector.console.yaml</code>: the same pipeline without the Dyn
 <a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>docker<span class="w"> </span>compose<span class="w"> </span>--env-file<span class="w"> </span>../../.env<span class="w"> </span>-f<span class="w"> </span>docker-compose.yaml<span class="w"> </span>-f<span class="w"> </span>docker-compose.collector.yaml<span class="w"> </span>up<span class="w"> </span>--build
 </code></pre></div>
    The apps run in containers. They reach the collector on your machine at <code>host.docker.internal</code>.</li>
-<li>Send an order:
-   <div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>curl<span class="w"> </span><span class="s2">"localhost:9000/order/1?quantity=2"</span>
-</code></pre></div></li>
-<li>In the collector terminal, you see <code>traces</code>, <code>metrics</code> and <code>logs</code>. In Dynatrace, you see the same trace as in Lab 03.</li>
+<li>
+<p>Send an order:</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">macOS / Linux</label><label for="__tabbed_1_2">Windows (PowerShell)</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>curl<span class="w"> </span><span class="s2">"localhost:9000/order/1?quantity=2"</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<p>Type <code>curl.exe</code>. In PowerShell, plain <code>curl</code> is a different command.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="n">curl</span><span class="p">.</span><span class="n">exe</span> <span class="s2">"localhost:9000/order/1?quantity=2"</span>
+</code></pre></div>
+</div>
+</div>
+</div>
+</li>
+<li>
+<p>In the collector terminal, you see <code>traces</code>, <code>metrics</code> and <code>logs</code>. In Dynatrace, you see the same trace as in Lab 03.</p>
+</li>
 </ol>
 <p>The app did not change. Only one environment variable changed: <code>OTEL_EXPORTER_OTLP_ENDPOINT</code>. Now you can filter, mask or route this data in one place.</p>
 <h2 id="stuck">Stuck?<a class="headerlink" href="#stuck" title="Permanent link">&para;</a></h2>
@@ -1830,7 +1841,7 @@ This uses <code>collector.console.yaml</code>: the same pipeline without the Dyn
 <li><strong><code>unsupported protocol scheme ""</code> in the collector output:</strong> you forgot <code>--env-file ../../.env</code>, or <code>.env</code> is empty.</li>
 <li><strong><code>401</code> or <code>403</code> in the collector output:</strong> the token has no <code>logs.ingest</code> scope. See <a href="../../setup/">Setup</a>.</li>
 <li><strong><code>404</code> from Dynatrace:</strong> the endpoint must be the base URL, like <code>https://abc12345.live.dynatrace.com</code>. No <code>/api/v2/otlp</code> and no trailing slash in <code>.env</code>. The config adds the path.</li>
-<li><strong>No log lines in the collector:</strong> check that <code>append_logs.py</code> runs in the lab folder, and that <code>live.log</code> exists <em>before</em> you start the collector. On Linux, check the file permissions.</li>
+<li><strong>No log lines in the collector:</strong> check that <code>append_logs.py</code> runs in the lab folder, and that <code>live.log</code> exists <em>before</em> you start the collector (if you deleted it, run <code>git restore live.log</code>; Docker would otherwise create a <em>folder</em> with that name). On Linux, check the file permissions.</li>
 <li><strong><code>unknown type: "filelog"</code>:</strong> the name is <code>file_log</code> in this version.</li>
 <li><strong>Lab 03 cannot reach the collector (Linux):</strong> the override file adds <code>host.docker.internal</code> for you. Check that the collector container is running and port <code>4318</code> is free.</li>
 <li><strong>Port <code>4318</code> is in use:</strong> another collector or app uses it. Stop it.</li>

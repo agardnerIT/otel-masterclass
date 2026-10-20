@@ -1566,9 +1566,21 @@
 <li>Go to the lab folder:
    <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nb">cd</span><span class="w"> </span>labs/01-auto-instrumentation
 </code></pre></div></li>
-<li>Turn on the virtual environment you made in <a href="../../setup/#4-python-environment">Setup</a>. It is in the repo root, so from this folder:
-   <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nb">source</span><span class="w"> </span>../../.venv/bin/activate
-</code></pre></div></li>
+<li>
+<p>Turn on the virtual environment you made in <a href="../../setup/#4-python-environment">Setup</a>. It is in the repo root, so from this folder:</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">macOS / Linux</label><label for="__tabbed_1_2">Windows (PowerShell)</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nb">source</span><span class="w"> </span>../../.venv/bin/activate
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="p">..\..\.</span><span class="n">venv</span><span class="p">\</span><span class="n">Scripts</span><span class="p">\</span><span class="n">Activate</span><span class="p">.</span><span class="n">ps1</span>
+</code></pre></div>
+</div>
+</div>
+</div>
+</li>
 <li>
 <p>Check that the packages are installed. Read <code>requirements.txt</code> in the repo root. Among others, it has FastAPI, uvicorn, and two OpenTelemetry packages this lab uses:</p>
 <ul>
@@ -1578,38 +1590,71 @@
 </li>
 <li>
 <p>Install the instrumentation libraries. <code>opentelemetry-bootstrap</code> looks at the packages in your environment and installs a matching instrumentation library for each one it knows (for example, FastAPI):
-   <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>opentelemetry-bootstrap<span class="w"> </span>-a<span class="w"> </span>install
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>opentelemetry-bootstrap<span class="w"> </span>-a<span class="w"> </span>install
 </code></pre></div>
    To see what it would install without installing, run:
-   <div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>opentelemetry-bootstrap<span class="w"> </span>-a<span class="w"> </span>requirements
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>opentelemetry-bootstrap<span class="w"> </span>-a<span class="w"> </span>requirements
 </code></pre></div></p>
 </li>
 <li>
 <p>Tell OpenTelemetry what to do. You do this with <strong>environment variables</strong>, not code. Pick one:</p>
-<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">Dynatrace</label><label for="__tabbed_1_2">Console (no tenant)</label></div>
+<div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><input id="__tabbed_2_2" name="__tabbed_2" type="radio" /><div class="tabbed-labels"><label for="__tabbed_2_1">Dynatrace</label><label for="__tabbed_2_2">Console (no tenant)</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <p>Copy <code>.env.example</code> to <code>.env</code> in the repo root and fill it in. See <a href="../../setup/">Setup</a>. Then load it and set the variables:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="nb">set</span><span class="w"> </span>-a<span class="p">;</span><span class="w"> </span><span class="nb">source</span><span class="w"> </span>../../.env<span class="p">;</span><span class="w"> </span><span class="nb">set</span><span class="w"> </span>+a
-<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>
-<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="nb">export</span><span class="w"> </span><span class="nv">OTEL_SERVICE_NAME</span><span class="o">=</span><span class="s2">"shop-lab01"</span>
-<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="nb">export</span><span class="w"> </span><span class="nv">OTEL_TRACES_EXPORTER</span><span class="o">=</span>otlp
-<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="nb">export</span><span class="w"> </span><span class="nv">OTEL_METRICS_EXPORTER</span><span class="o">=</span>none
-<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="nb">export</span><span class="w"> </span><span class="nv">OTEL_LOGS_EXPORTER</span><span class="o">=</span>none
-<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="nb">export</span><span class="w"> </span><span class="nv">OTEL_SEMCONV_STABILITY_OPT_IN</span><span class="o">=</span>http
-<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="nb">export</span><span class="w"> </span><span class="nv">OTEL_EXPORTER_OTLP_PROTOCOL</span><span class="o">=</span>http/protobuf
-<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="nb">export</span><span class="w"> </span><span class="nv">OTEL_EXPORTER_OTLP_ENDPOINT</span><span class="o">=</span><span class="s2">"</span><span class="nv">$DT_ENDPOINT</span><span class="s2">/api/v2/otlp"</span>
-<a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a><span class="nb">export</span><span class="w"> </span><span class="nv">OTEL_EXPORTER_OTLP_HEADERS</span><span class="o">=</span><span class="s2">"Authorization=Api-Token </span><span class="nv">$DT_API_TOKEN</span><span class="s2">"</span>
+<div class="tabbed-set tabbed-alternate" data-tabs="3:2"><input checked="checked" id="__tabbed_3_1" name="__tabbed_3" type="radio" /><input id="__tabbed_3_2" name="__tabbed_3" type="radio" /><div class="tabbed-labels"><label for="__tabbed_3_1">macOS / Linux</label><label for="__tabbed_3_2">Windows (PowerShell)</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="nb">set</span><span class="w"> </span>-a<span class="p">;</span><span class="w"> </span><span class="nb">source</span><span class="w"> </span>../../.env<span class="p">;</span><span class="w"> </span><span class="nb">set</span><span class="w"> </span>+a
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="nb">export</span><span class="w"> </span><span class="nv">OTEL_SERVICE_NAME</span><span class="o">=</span><span class="s2">"shop-lab01"</span>
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="nb">export</span><span class="w"> </span><span class="nv">OTEL_TRACES_EXPORTER</span><span class="o">=</span>otlp
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="nb">export</span><span class="w"> </span><span class="nv">OTEL_METRICS_EXPORTER</span><span class="o">=</span>none
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="nb">export</span><span class="w"> </span><span class="nv">OTEL_LOGS_EXPORTER</span><span class="o">=</span>none
+<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="nb">export</span><span class="w"> </span><span class="nv">OTEL_SEMCONV_STABILITY_OPT_IN</span><span class="o">=</span>http
+<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="nb">export</span><span class="w"> </span><span class="nv">OTEL_EXPORTER_OTLP_PROTOCOL</span><span class="o">=</span>http/protobuf
+<a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a><span class="nb">export</span><span class="w"> </span><span class="nv">OTEL_EXPORTER_OTLP_ENDPOINT</span><span class="o">=</span><span class="s2">"</span><span class="nv">$DT_ENDPOINT</span><span class="s2">/api/v2/otlp"</span>
+<a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a><span class="nb">export</span><span class="w"> </span><span class="nv">OTEL_EXPORTER_OTLP_HEADERS</span><span class="o">=</span><span class="s2">"Authorization=Api-Token </span><span class="nv">$DT_API_TOKEN</span><span class="s2">"</span>
 </code></pre></div>
 </div>
 <div class="tabbed-block">
-<p>Print spans in the terminal:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="nb">export</span><span class="w"> </span><span class="nv">OTEL_SERVICE_NAME</span><span class="o">=</span><span class="s2">"shop-lab01"</span>
-<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="nb">export</span><span class="w"> </span><span class="nv">OTEL_TRACES_EXPORTER</span><span class="o">=</span>console
-<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="nb">export</span><span class="w"> </span><span class="nv">OTEL_METRICS_EXPORTER</span><span class="o">=</span>none
-<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="nb">export</span><span class="w"> </span><span class="nv">OTEL_LOGS_EXPORTER</span><span class="o">=</span>none
-<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="nb">export</span><span class="w"> </span><span class="nv">OTEL_SEMCONV_STABILITY_OPT_IN</span><span class="o">=</span>http
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="nb">Get-Content</span> <span class="p">..\..\.</span><span class="n">env</span> <span class="p">|</span> <span class="k">ForEach</span><span class="n">-Object</span> <span class="p">{</span> <span class="k">if</span> <span class="p">(</span><span class="nv">$_</span> <span class="o">-match</span> <span class="s1">'^\s*([^#=\s][^=]*)=(.*)$'</span><span class="p">)</span> <span class="p">{</span> <span class="nb">Set-Item</span> <span class="s2">"env:</span><span class="p">$(</span><span class="nv">$Matches</span><span class="p">[</span><span class="n">1</span><span class="p">].</span><span class="n">Trim</span><span class="p">())</span><span class="s2">"</span> <span class="nv">$Matches</span><span class="p">[</span><span class="n">2</span><span class="p">].</span><span class="n">Trim</span><span class="p">().</span><span class="n">Trim</span><span class="p">(</span><span class="s1">'"'</span><span class="p">)</span> <span class="p">}</span> <span class="p">}</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="nv">$env:OTEL_SERVICE_NAME</span> <span class="p">=</span> <span class="s2">"shop-lab01"</span>
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="nv">$env:OTEL_TRACES_EXPORTER</span> <span class="p">=</span> <span class="s2">"otlp"</span>
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="nv">$env:OTEL_METRICS_EXPORTER</span> <span class="p">=</span> <span class="s2">"none"</span>
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="nv">$env:OTEL_LOGS_EXPORTER</span> <span class="p">=</span> <span class="s2">"none"</span>
+<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="nv">$env:OTEL_SEMCONV_STABILITY_OPT_IN</span> <span class="p">=</span> <span class="s2">"http"</span>
+<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a><span class="nv">$env:OTEL_EXPORTER_OTLP_PROTOCOL</span> <span class="p">=</span> <span class="s2">"http/protobuf"</span>
+<a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a><span class="nv">$env:OTEL_EXPORTER_OTLP_ENDPOINT</span> <span class="p">=</span> <span class="s2">"$env:DT_ENDPOINT/api/v2/otlp"</span>
+<a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a><span class="nv">$env:OTEL_EXPORTER_OTLP_HEADERS</span> <span class="p">=</span> <span class="s2">"Authorization=Api-Token $env:DT_API_TOKEN"</span>
 </code></pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="tabbed-block">
+<p>Print spans in the terminal:</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="4:2"><input checked="checked" id="__tabbed_4_1" name="__tabbed_4" type="radio" /><input id="__tabbed_4_2" name="__tabbed_4" type="radio" /><div class="tabbed-labels"><label for="__tabbed_4_1">macOS / Linux</label><label for="__tabbed_4_2">Windows (PowerShell)</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="nb">export</span><span class="w"> </span><span class="nv">OTEL_SERVICE_NAME</span><span class="o">=</span><span class="s2">"shop-lab01"</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="nb">export</span><span class="w"> </span><span class="nv">OTEL_TRACES_EXPORTER</span><span class="o">=</span>console
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="nb">export</span><span class="w"> </span><span class="nv">OTEL_METRICS_EXPORTER</span><span class="o">=</span>none
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="nb">export</span><span class="w"> </span><span class="nv">OTEL_LOGS_EXPORTER</span><span class="o">=</span>none
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="nb">export</span><span class="w"> </span><span class="nv">OTEL_SEMCONV_STABILITY_OPT_IN</span><span class="o">=</span>http
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="nv">$env:OTEL_SERVICE_NAME</span> <span class="p">=</span> <span class="s2">"shop-lab01"</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="nv">$env:OTEL_TRACES_EXPORTER</span> <span class="p">=</span> <span class="s2">"console"</span>
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="nv">$env:OTEL_METRICS_EXPORTER</span> <span class="p">=</span> <span class="s2">"none"</span>
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="nv">$env:OTEL_LOGS_EXPORTER</span> <span class="p">=</span> <span class="s2">"none"</span>
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="nv">$env:OTEL_SEMCONV_STABILITY_OPT_IN</span> <span class="p">=</span> <span class="s2">"http"</span>
+</code></pre></div>
+</div>
+</div>
+</div>
 </div>
 </div>
 </div>
@@ -1654,22 +1699,49 @@
 </li>
 <li>
 <p>Start the app <strong>with the agent in front of it</strong>. Without <code>opentelemetry-instrument</code>, this is a normal app with no telemetry:
-   <div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>opentelemetry-instrument<span class="w"> </span>uvicorn<span class="w"> </span>app:app<span class="w"> </span>--port<span class="w"> </span><span class="m">8000</span>
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>opentelemetry-instrument<span class="w"> </span>uvicorn<span class="w"> </span>app:app<span class="w"> </span>--port<span class="w"> </span><span class="m">8000</span>
 </code></pre></div>
    <code>opentelemetry-instrument</code> starts your command. Before your app code runs, it turns on every instrumentation library it finds, and it sets up the SDK from the environment variables.</p>
 </li>
-<li>In a second terminal, send some requests:
-   <div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>curl<span class="w"> </span>localhost:8000/
-<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>curl<span class="w"> </span>localhost:8000/products/1
-<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>curl<span class="w"> </span>localhost:8000/products/99
-</code></pre></div></li>
-<li>Look at the spans. In console mode, they print in the first terminal. In Dynatrace, open <strong>Distributed Tracing</strong> and filter by service <code>shop-lab01</code>.</li>
+<li>
+<p>In a second terminal, send some requests:</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="5:2"><input checked="checked" id="__tabbed_5_1" name="__tabbed_5" type="radio" /><input id="__tabbed_5_2" name="__tabbed_5" type="radio" /><div class="tabbed-labels"><label for="__tabbed_5_1">macOS / Linux</label><label for="__tabbed_5_2">Windows (PowerShell)</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>curl<span class="w"> </span>localhost:8000/
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>curl<span class="w"> </span>localhost:8000/products/1
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>curl<span class="w"> </span>localhost:8000/products/99
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<p>Type <code>curl.exe</code>. In PowerShell, plain <code>curl</code> is a different command.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="n">curl</span><span class="p">.</span><span class="n">exe</span> <span class="n">localhost</span><span class="p">:</span><span class="n">8000</span><span class="p">/</span>
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="n">curl</span><span class="p">.</span><span class="n">exe</span> <span class="n">localhost</span><span class="p">:</span><span class="n">8000</span><span class="p">/</span><span class="n">products</span><span class="p">/</span><span class="n">1</span>
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="n">curl</span><span class="p">.</span><span class="n">exe</span> <span class="n">localhost</span><span class="p">:</span><span class="n">8000</span><span class="p">/</span><span class="n">products</span><span class="p">/</span><span class="n">99</span>
+</code></pre></div>
+</div>
+</div>
+</div>
+</li>
+<li>
+<p>Look at the spans. In console mode, they print in the first terminal. In Dynatrace, open <strong>Distributed Tracing</strong> and filter by service <code>shop-lab01</code>.</p>
+</li>
 </ol>
 <div class="admonition tip">
 <p class="admonition-title">New terminal?</p>
-<p>Environment variables and the virtual environment belong to one terminal. If you open a new one, activate the environment and run the <code>export</code> lines again:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="nb">source</span><span class="w"> </span>../../.venv/bin/activate
+<p>Environment variables and the virtual environment belong to one terminal. If you open a new one, activate the environment and set the variables from step 5 again:</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="6:2"><input checked="checked" id="__tabbed_6_1" name="__tabbed_6" type="radio" /><input id="__tabbed_6_2" name="__tabbed_6" type="radio" /><div class="tabbed-labels"><label for="__tabbed_6_1">macOS / Linux</label><label for="__tabbed_6_2">Windows (PowerShell)</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="nb">source</span><span class="w"> </span>../../.venv/bin/activate
 </code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="p">..\..\.</span><span class="n">venv</span><span class="p">\</span><span class="n">Scripts</span><span class="p">\</span><span class="n">Activate</span><span class="p">.</span><span class="n">ps1</span>
+</code></pre></div>
+</div>
+</div>
+</div>
 </div>
 <h3 id="token-scopes">Token scopes<a class="headerlink" href="#token-scopes" title="Permanent link">&para;</a></h3>
 <p>For this lab, the Dynatrace API token needs the scope <code>openTelemetryTrace.ingest</code>. The later labs also send metrics and logs, so we ask for all three:</p>
@@ -1740,10 +1812,8 @@
 <p>Lab 03 shows how manual instrumentation adds this.</p>
 <h2 id="stuck">Stuck?<a class="headerlink" href="#stuck" title="Permanent link">&para;</a></h2>
 <ul>
-<li><strong><code>python3: command not found</code> or <code>No module named venv</code>:</strong> install Python 3.11 or newer. See <a href="../../setup/">Setup</a>.</li>
-<li><strong><code>opentelemetry-instrument: command not found</code>:</strong> the virtual environment is not on (see <a href="../../setup/#4-python-environment">Setup</a>). Turn it on:
-  <div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="nb">source</span><span class="w"> </span>../../.venv/bin/activate
-</code></pre></div></li>
+<li><strong><code>python: command not found</code> or <code>No module named venv</code>:</strong> install Python 3.11 or newer. See <a href="../../setup/">Setup</a>.</li>
+<li><strong><code>opentelemetry-instrument: command not found</code>:</strong> the virtual environment is not on (see <a href="../../setup/#4-python-environment">Setup</a>). Turn it on: <code>source ../../.venv/bin/activate</code> (macOS / Linux) or <code>..\..\.venv\Scripts\Activate.ps1</code> (Windows PowerShell).</li>
 <li><strong>Port 8000 is busy</strong> (for example, <code>mkdocs serve</code> also uses it): stop the other program, or use another port, such as <code>--port 8001</code>. Then use the same port in the <code>curl</code> commands.</li>
 <li><strong>Nothing in Dynatrace, no errors:</strong> wait 30 seconds. Check that <code>DT_ENDPOINT</code> has no <code>/api/...</code> at the end. Step 5 adds <code>/api/v2/otlp</code>.</li>
 <li><strong>401 or 403 from Dynatrace:</strong> the token is wrong or lacks the <code>openTelemetryTrace.ingest</code> scope.</li>
@@ -1752,9 +1822,7 @@
 <h2 id="going-further">Going further<a class="headerlink" href="#going-further" title="Permanent link">&para;</a></h2>
 <ul>
 <li>Remove <code>OTEL_SEMCONV_STABILITY_OPT_IN</code> and run again. The attribute names change (<code>http.method</code>, <code>http.status_code</code>). These are the old names. Standard names are the topic of Lab 08.</li>
-<li>Send to both console and OTLP:
-  <div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="nb">export</span><span class="w"> </span><span class="nv">OTEL_TRACES_EXPORTER</span><span class="o">=</span>console,otlp
-</code></pre></div></li>
+<li>Send to both console and OTLP. Set <code>OTEL_TRACES_EXPORTER</code> to <code>console,otlp</code> (<code>export OTEL_TRACES_EXPORTER=console,otlp</code> on macOS / Linux, <code>$env:OTEL_TRACES_EXPORTER = "console,otlp"</code> on Windows).</li>
 </ul>
 
 

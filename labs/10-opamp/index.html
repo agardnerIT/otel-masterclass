@@ -1670,83 +1670,153 @@
 <p>Docker must be running. You need three terminals, all in the lab folder. The server runs on your machine and uses the Python environment from <a href="../../setup/#4-python-environment">Setup</a>.</p>
 <h3 id="part-1-run-the-server-and-see-an-agent">Part 1: Run the server and see an agent<a class="headerlink" href="#part-1-run-the-server-and-see-an-agent" title="Permanent link">&para;</a></h3>
 <ol>
-<li><strong>Terminal 1.</strong> Start the server:
-   <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nb">cd</span><span class="w"> </span>labs/10-opamp
+<li>
+<p><strong>Terminal 1.</strong> Start the server:</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">macOS / Linux</label><label for="__tabbed_1_2">Windows (PowerShell)</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nb">cd</span><span class="w"> </span>labs/10-opamp
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="nb">source</span><span class="w"> </span>../../.venv/bin/activate
 <a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>python<span class="w"> </span>server.py
 </code></pre></div>
-   It prints <code>* remote-config.yaml changed (...)</code>. It has read the file and is waiting for agents.</li>
-<li><strong>Terminal 2.</strong> Start the plain collector:
-   <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nb">cd</span><span class="w"> </span>labs/10-opamp
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>docker<span class="w"> </span>compose<span class="w"> </span>up<span class="w"> </span>-d<span class="w"> </span>plain
-</code></pre></div></li>
-<li>Within a few seconds, terminal 1 prints <code>+ agent &lt;id&gt; connected</code>. List what the server knows:
-   <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>curl<span class="w"> </span>-s<span class="w"> </span>localhost:4320/agents<span class="w"> </span><span class="p">|</span><span class="w"> </span>python3<span class="w"> </span>-m<span class="w"> </span>json.tool
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nb">cd </span><span class="n">labs</span><span class="p">\</span><span class="n">10-opamp</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="p">..\..\.</span><span class="n">venv</span><span class="p">\</span><span class="n">Scripts</span><span class="p">\</span><span class="n">Activate</span><span class="p">.</span><span class="n">ps1</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="n">python</span> <span class="n">server</span><span class="p">.</span><span class="n">py</span>
 </code></pre></div>
-   You see the agent's <code>description</code> (name, version, host), its health, and its <code>capabilities</code>. The capabilities are sent as one number (a bitmask, one bit per yes/no ability). The server turns it into names.</li>
-</ol>
+</div>
+</div>
+</div>
+<p>It prints <code>* remote-config.yaml changed (...)</code>. It has read the file and is waiting for agents.</p>
+</li>
+<li>
+<p><strong>Terminal 2.</strong> Start the plain collector:
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nb">cd</span><span class="w"> </span>labs/10-opamp
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>docker<span class="w"> </span>compose<span class="w"> </span>up<span class="w"> </span>-d<span class="w"> </span>plain
+</code></pre></div></p>
+</li>
+<li>
+<p>Within a few seconds, terminal 1 prints <code>+ agent &lt;id&gt; connected</code>. List what the server knows:</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><input id="__tabbed_2_2" name="__tabbed_2" type="radio" /><div class="tabbed-labels"><label for="__tabbed_2_1">macOS / Linux</label><label for="__tabbed_2_2">Windows (PowerShell)</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>curl<span class="w"> </span>-s<span class="w"> </span>localhost:4320/agents<span class="w"> </span><span class="p">|</span><span class="w"> </span>python<span class="w"> </span>-m<span class="w"> </span>json.tool
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<p>Type <code>curl.exe</code>. In PowerShell, plain <code>curl</code> is a different command.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="n">curl</span><span class="p">.</span><span class="n">exe</span> <span class="n">-s</span> <span class="n">localhost</span><span class="p">:</span><span class="n">4320</span><span class="p">/</span><span class="n">agents</span> <span class="p">|</span> <span class="n">python</span> <span class="n">-m</span> <span class="n">json</span><span class="p">.</span><span class="n">tool</span>
+</code></pre></div>
+</div>
+</div>
+</div>
+<p>You see the agent's <code>description</code> (name, version, host), its health, and its <code>capabilities</code>. The capabilities are sent as one number (a bitmask, one bit per yes/no ability). The server turns it into names.</p>
 <p>Look at the list. There is <strong>no</strong> <code>AcceptsRemoteConfig</code>. This agent can report, but it cannot be told what to do.</p>
+</li>
+</ol>
 <h3 id="part-2-connect-an-agent-that-accepts-config">Part 2: Connect an agent that accepts config<a class="headerlink" href="#part-2-connect-an-agent-that-accepts-config" title="Permanent link">&para;</a></h3>
 <ol>
 <li>Start the Supervisor agent (the first build takes about a minute):
-   <div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>up<span class="w"> </span>-d<span class="w"> </span>--build<span class="w"> </span>agent
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>up<span class="w"> </span>-d<span class="w"> </span>--build<span class="w"> </span>agent
 </code></pre></div></li>
-<li>Terminal 1 shows the server sending the file and the agent applying it:
-   <div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>+ agent 01a1438afaae7bac9c2097c7ac1990f9 connected
-<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>&gt; agent 01a1438afaae7bac9c2097c7ac1990f9: sending remote-config.yaml
-<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>~ agent 01a1438afaae7bac9c2097c7ac1990f9 remote config APPLIED
+<li>
+<p>Terminal 1 shows the server sending the file and the agent applying it:
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>+ agent 01a1438afaae7bac9c2097c7ac1990f9 connected
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>&gt; agent 01a1438afaae7bac9c2097c7ac1990f9: sending remote-config.yaml
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>~ agent 01a1438afaae7bac9c2097c7ac1990f9 remote config APPLIED
 </code></pre></div>
-   You see this once at start, even though the config equals the local one. The server sends the file to any agent that accepts it, as soon as it connects. Run <code>curl</code> again. Now there are two agents, and only one has <code>AcceptsRemoteConfig</code> and <code>remote_config_status: APPLIED</code>.</li>
-<li><strong>Terminal 3.</strong> Watch what the collector prints, as just <code>LEVEL message</code>:
-   <div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="nb">cd</span><span class="w"> </span>labs/10-opamp
-<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="nb">source</span><span class="w"> </span>../../.venv/bin/activate
-<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>docker<span class="w"> </span>compose<span class="w"> </span>logs<span class="w"> </span>-f<span class="w"> </span>--no-log-prefix<span class="w"> </span>agent<span class="w"> </span><span class="p">|</span><span class="w"> </span>python3<span class="w"> </span>watch_collector.py
+    You see this once at start, even though the config equals the local one. The server sends the file to any agent that accepts it, as soon as it connects. Run the <code>curl</code> command again. Now there are two agents, and only one has <code>AcceptsRemoteConfig</code> and <code>remote_config_status: APPLIED</code>.</p>
+</li>
+<li>
+<p><strong>Terminal 3.</strong> Watch what the collector prints, as just <code>LEVEL message</code>:</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="3:2"><input checked="checked" id="__tabbed_3_1" name="__tabbed_3" type="radio" /><input id="__tabbed_3_2" name="__tabbed_3" type="radio" /><div class="tabbed-labels"><label for="__tabbed_3_1">macOS / Linux</label><label for="__tabbed_3_2">Windows (PowerShell)</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="nb">cd</span><span class="w"> </span>labs/10-opamp
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="nb">source</span><span class="w"> </span>../../.venv/bin/activate
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>docker<span class="w"> </span>compose<span class="w"> </span>logs<span class="w"> </span>-f<span class="w"> </span>--no-log-prefix<span class="w"> </span>agent<span class="w"> </span><span class="p">|</span><span class="w"> </span>python<span class="w"> </span>watch_collector.py
 </code></pre></div>
-   The three DEBUG lines already in the log file are dropped, so you see nothing yet. That is the production baseline.</li>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="nb">cd </span><span class="n">labs</span><span class="p">\</span><span class="n">10-opamp</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="p">..\..\.</span><span class="n">venv</span><span class="p">\</span><span class="n">Scripts</span><span class="p">\</span><span class="n">Activate</span><span class="p">.</span><span class="n">ps1</span>
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="n">docker</span> <span class="n">compose</span> <span class="n">logs</span> <span class="o">-f</span> <span class="p">-</span><span class="n">-no-log-prefix</span> <span class="n">agent</span> <span class="p">|</span> <span class="n">python</span> <span class="n">watch_collector</span><span class="p">.</span><span class="n">py</span>
+</code></pre></div>
+</div>
+</div>
+</div>
+<p>The three DEBUG lines already in the log file are dropped, so you see nothing yet. That is the production baseline.</p>
+</li>
 </ol>
 <h3 id="part-3-the-incident">Part 3: The incident<a class="headerlink" href="#part-3-the-incident" title="Permanent link">&para;</a></h3>
 <ol>
-<li>In terminal 2, write two log lines. One is INFO, one is DEBUG:
-   <div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">"INFO user logged in"</span><span class="w"> </span>&gt;&gt;<span class="w"> </span>logs/file.log
-<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">"DEBUG cache miss"</span><span class="w">    </span>&gt;&gt;<span class="w"> </span>logs/file.log
+<li>
+<p>In terminal 2, write two log lines. One is INFO, one is DEBUG:
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>python<span class="w"> </span>lab.py<span class="w"> </span>log<span class="w"> </span><span class="s2">"INFO user logged in"</span>
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>python<span class="w"> </span>lab.py<span class="w"> </span>log<span class="w"> </span><span class="s2">"DEBUG cache miss"</span>
 </code></pre></div>
-   Terminal 3 shows only <code>INFO   user logged in</code>. The DEBUG line is dropped.</li>
-<li><strong>Incident! Turn on DEBUG capture.</strong> Open <code>examples/capture-debug.yaml</code>. It removes the filter from the logs pipeline:
-   <div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="nt">service</span><span class="p">:</span>
-<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="w">  </span><span class="nt">pipelines</span><span class="p">:</span>
-<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="w">    </span><span class="nt">logs</span><span class="p">:</span>
-<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="w">      </span><span class="nt">processors</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[]</span>
+    <code>lab.py</code> is a small helper in the lab folder. It appends a line to <code>logs/file.log</code>. It works the same on every OS. Activate the environment in this terminal first, as in terminal 1.
+    Terminal 3 shows only <code>INFO   user logged in</code>. The DEBUG line is dropped.</p>
+</li>
+<li>
+<p><strong>Incident! Turn on DEBUG capture.</strong> Open <code>examples/capture-debug.yaml</code>. It removes the filter from the logs pipeline:
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="nt">service</span><span class="p">:</span>
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="w"> </span><span class="nt">pipelines</span><span class="p">:</span>
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="w">   </span><span class="nt">logs</span><span class="p">:</span>
+<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="w">     </span><span class="nt">processors</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[]</span>
 </code></pre></div>
-   Lists are <strong>replaced</strong> when configs merge, so an empty list removes the local <code>filter/drop_debug</code>. Copy it over the watched file:
-   <div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>cp<span class="w"> </span>examples/capture-debug.yaml<span class="w"> </span>remote-config.yaml
+    Lists are <strong>replaced</strong> when configs merge, so an empty list removes the local <code>filter/drop_debug</code>. Copy it over the watched file:
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>python<span class="w"> </span>lab.py<span class="w"> </span>config<span class="w"> </span>capture-debug
 </code></pre></div>
-   On Windows PowerShell, use <code>copy examples\capture-debug.yaml remote-config.yaml</code>. You can also paste it into <code>remote-config.yaml</code> in your editor and save.</li>
-<li>Terminal 1 shows the full round trip:
-   <div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>* remote-config.yaml changed (3ddcc841)
-<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>&gt; agent 01a1438a...: pushed remote-config.yaml
-<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>~ agent 01a1438a... remote config APPLYING
-<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>~ agent 01a1438a... remote config APPLIED
-</code></pre></div></li>
-<li>Write more logs:
-    <div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">"INFO payment failed"</span><span class="w">          </span>&gt;&gt;<span class="w"> </span>logs/file.log
-<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">"DEBUG retrying gateway call"</span><span class="w">  </span>&gt;&gt;<span class="w"> </span>logs/file.log
+    This copies <code>examples/capture-debug.yaml</code> over <code>remote-config.yaml</code>. You can also paste the file into <code>remote-config.yaml</code> in your editor and save.</p>
+</li>
+<li>
+<p>Terminal 1 shows the full round trip:
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>* remote-config.yaml changed (3ddcc841)
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>&gt; agent 01a1438a...: pushed remote-config.yaml
+<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>~ agent 01a1438a... remote config APPLYING
+<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a>~ agent 01a1438a... remote config APPLIED
+</code></pre></div></p>
+</li>
+<li>
+<p>Write more logs:
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>python<span class="w"> </span>lab.py<span class="w"> </span>log<span class="w"> </span><span class="s2">"INFO payment failed"</span>
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>python<span class="w"> </span>lab.py<span class="w"> </span>log<span class="w"> </span><span class="s2">"DEBUG retrying gateway call"</span>
 </code></pre></div>
-    This time terminal 3 shows <strong>both</strong> lines.</li>
-<li>Ask the server what the collector is really running. Use the <code>instance_uid</code> of the agent with <code>APPLIED</code>:
-    <div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>curl<span class="w"> </span>-s<span class="w"> </span>localhost:4320/agents/&lt;instance_uid&gt;/effective-config
+    This time terminal 3 shows <strong>both</strong> lines.</p>
+</li>
+<li>
+<p>Ask the server what the collector is really running. Use the <code>instance_uid</code> of the agent with <code>APPLIED</code>:</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="4:2"><input checked="checked" id="__tabbed_4_1" name="__tabbed_4" type="radio" /><input id="__tabbed_4_2" name="__tabbed_4" type="radio" /><div class="tabbed-labels"><label for="__tabbed_4_1">macOS / Linux</label><label for="__tabbed_4_2">Windows (PowerShell)</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>curl<span class="w"> </span>-s<span class="w"> </span>localhost:4320/agents/&lt;instance_uid&gt;/effective-config
 </code></pre></div>
-    The <code>logs</code> pipeline now has no <code>filter/drop_debug</code>.</li>
-<li><strong>Incident over.</strong> Revert:
-    <div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>cp<span class="w"> </span>examples/baseline.yaml<span class="w"> </span>remote-config.yaml
-<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">"DEBUG should be dropped again"</span><span class="w"> </span>&gt;&gt;<span class="w"> </span>logs/file.log
+</div>
+<div class="tabbed-block">
+<p>Type <code>curl.exe</code>. In PowerShell, plain <code>curl</code> is a different command.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="n">curl</span><span class="p">.</span><span class="n">exe</span> <span class="n">-s</span> <span class="n">localhost</span><span class="p">:</span><span class="n">4320</span><span class="p">/</span><span class="n">agents</span><span class="p">/&lt;</span><span class="n">instance_uid</span><span class="p">&gt;/</span><span class="n">effective-config</span>
 </code></pre></div>
-    The DEBUG line no longer appears in terminal 3.</li>
-<li>Clean up. Press <code>Ctrl-C</code> in terminal 1 and in terminal 3, then run:
-    <div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>down
-<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>cp<span class="w"> </span>examples/baseline.yaml<span class="w"> </span>remote-config.yaml
-<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="nb">printf</span><span class="w"> </span><span class="s1">'DEBUG starting up\nDEBUG loaded 3 plugins\nDEBUG cache miss key=user:42\n'</span><span class="w"> </span>&gt;<span class="w"> </span>logs/file.log
+</div>
+</div>
+</div>
+<p>The <code>logs</code> pipeline now has no <code>filter/drop_debug</code>.</p>
+</li>
+<li>
+<p><strong>Incident over.</strong> Revert:
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>python<span class="w"> </span>lab.py<span class="w"> </span>config<span class="w"> </span>baseline
+<a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>python<span class="w"> </span>lab.py<span class="w"> </span>log<span class="w"> </span><span class="s2">"DEBUG should be dropped again"</span>
 </code></pre></div>
-    The last two lines put the lab files back to how they started.</li>
+    The DEBUG line no longer appears in terminal 3.</p>
+</li>
+<li>
+<p>Clean up. Press <code>Ctrl-C</code> in terminal 1 and in terminal 3, then run:
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>down
+<a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>python<span class="w"> </span>lab.py<span class="w"> </span>reset
+</code></pre></div>
+    <code>reset</code> puts <code>remote-config.yaml</code> and <code>logs/file.log</code> back to how they started.</p>
+</li>
 </ol>
 <h2 id="expected-result">Expected result<a class="headerlink" href="#expected-result" title="Permanent link">&para;</a></h2>
 <ul>
@@ -1764,8 +1834,8 @@
 <h2 id="stuck">Stuck?<a class="headerlink" href="#stuck" title="Permanent link">&para;</a></h2>
 <ul>
 <li><strong>No agent connects:</strong> the containers reach your machine as <code>host.docker.internal</code>. This works on Docker Desktop and Rancher Desktop. On <strong>Linux</strong>, add this to both services in <code>docker-compose.yaml</code>:
-  <div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="nt">extra_hosts</span><span class="p">:</span>
-<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">"host.docker.internal:host-gateway"</span>
+  <div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="nt">extra_hosts</span><span class="p">:</span>
+<a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">"host.docker.internal:host-gateway"</span>
 </code></pre></div>
   Do <strong>not</strong> add it on macOS or Windows. It points to the wrong address there.</li>
 <li><strong><code>Failed to connect to the OpAMP server</code> in the agent log:</strong> the server is not running, or you started the agent before the server. The agent retries. It connects once the server is up.</li>
@@ -1773,7 +1843,7 @@
 <li><strong><code>ModuleNotFoundError: google.protobuf</code> or <code>fastapi</code>:</strong> activate the environment in this terminal (see <a href="../../setup/#4-python-environment">Setup</a>).</li>
 <li><strong><code>port is already allocated</code> or address already in use (4320):</strong> an old server is still running. Stop it with <code>Ctrl-C</code>.</li>
 <li><strong>Nothing changes after you copy the file:</strong> the server checks the file once a second. Look for <code>* remote-config.yaml changed</code> in terminal 1. If it is missing, check you copied it <strong>over</strong> <code>remote-config.yaml</code> in <code>labs/10-opamp</code>.</li>
-<li><strong>Terminal 3 shows old or missing lines:</strong> the collector remembers how far it has read the file (the <code>file_storage</code> extension), so it only prints new lines. If you ran the lab before, run <code>docker compose down</code> and reset <code>logs/file.log</code> as in step 13.</li>
+<li><strong>Terminal 3 shows old or missing lines:</strong> the collector remembers how far it has read the file (the <code>file_storage</code> extension), so it only prints new lines. If you ran the lab before, run <code>docker compose down</code> and run <code>python lab.py reset</code>.</li>
 </ul>
 <h2 id="going-further">Going further<a class="headerlink" href="#going-further" title="Permanent link">&para;</a></h2>
 <ul>
