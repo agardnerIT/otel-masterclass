@@ -57,7 +57,7 @@ The lab files are in `labs/01-auto-instrumentation/`. The app (`app.py`) is a sm
             set -a; source ../../.env; set +a
 
             export OTEL_SERVICE_NAME="shop-lab01"
-            export OTEL_TRACES_EXPORTER=otlp
+            export OTEL_TRACES_EXPORTER=console,otlp
             export OTEL_METRICS_EXPORTER=none
             export OTEL_LOGS_EXPORTER=none
             export OTEL_SEMCONV_STABILITY_OPT_IN=http
@@ -72,7 +72,7 @@ The lab files are in `labs/01-auto-instrumentation/`. The app (`app.py`) is a sm
             Get-Content ..\..\.env | ForEach-Object { if ($_ -match '^\s*([^#=\s][^=]*)=(.*)$') { Set-Item "env:$($Matches[1].Trim())" $Matches[2].Trim().Trim('"') } }
 
             $env:OTEL_SERVICE_NAME = "shop-lab01"
-            $env:OTEL_TRACES_EXPORTER = "otlp"
+            $env:OTEL_TRACES_EXPORTER = "console,otlp"
             $env:OTEL_METRICS_EXPORTER = "none"
             $env:OTEL_LOGS_EXPORTER = "none"
             $env:OTEL_SEMCONV_STABILITY_OPT_IN = "http"
