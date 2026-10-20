@@ -10,6 +10,23 @@ Do this before the workshop. It takes about 10 minutes.
 | Python | 3.11 or newer | All code examples |
 | Dynatrace tenant + token | optional | See your data in Dynatrace |
 
+## Easiest: GitHub Codespaces or a dev container
+
+Everything below (Docker, Python, the virtual environment, `dtctl`) comes preinstalled, so you can skip to [Download the lab images](#6-download-the-lab-images-at-the-start-of-the-workshop).
+
+1. Do the [Dynatrace step](#3-dynatrace) first. You need **two** tokens:
+    - an **access token** (`dt0c01.`) with the three ingest scopes listed there, and
+    - a **platform token** (`dt0s16.`) with `storage:logs:read` and `storage:metrics:read`. Create it under **Account Management** > **Platform tokens**. `dtctl` uses it in lab 08.
+2. Open the repo: [![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/agardnerIT/otel-masterclass)
+   Or, locally, open the folder in VS Code and run **Dev Containers: Reopen in Container** (needs Docker Desktop).
+3. In Codespaces you are asked for `PARTICIPANT` (your name), `DT_ENDPOINT`, `DT_API_TOKEN` and `DTCTL_PLATFORM_TOKEN`. Paste them in. The setup writes `.env` for you and configures `dtctl`.
+4. When the terminal finishes, check the output of the prerequisite check. Re-run it any time: `python scripts/check_prereqs.py`.
+
+!!! note
+    Locally, a dev container does not prompt for these values. Fill in `.env` as described in step 3 below, and run `dtctl auth login`.
+
+Prefer to install everything yourself? Continue below.
+
 ## 1. Get the code
 
 ```bash
@@ -105,7 +122,9 @@ Every lab that runs Python on your machine uses this environment. Turn it on in 
     python scripts\check_prereqs.py
     ```
 
-Fix anything marked `[FAIL]`. A `[WARN]` is fine.
+The check tests more than "is it installed". It also tries the things that go wrong on company laptops: whether Docker can really download from Docker Hub, `ghcr.io` and `gcr.io`, whether a firewall or proxy blocks PyPI, whether PowerShell will run the activation script, whether the lab ports are free, and whether git changed the line endings. It downloads about 65 MB. Add `--quick` to skip that download test.
+
+Fix anything marked `[FAIL]`. A `[WARN]` is fine, but read it: it usually tells you what will go wrong in a later lab. Run the check **before** the workshop. If something fails and you cannot fix it (for example, your company blocks Docker downloads), tell the instructor in advance.
 
 ## 6. Download the lab images (at the start of the workshop)
 

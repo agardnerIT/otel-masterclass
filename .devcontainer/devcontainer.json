@@ -1,0 +1,68 @@
+{
+  "name": "OpenTelemetry Masterclass",
+  "image": "mcr.microsoft.com/devcontainers/python:1-3.12-bookworm",
+
+  // The labs bind-mount relative paths (./collector.yaml, ./sample.log), so Docker must run
+  // INSIDE this container. Sharing the host's Docker socket would break those mounts.
+  "features": {
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {}
+  },
+
+  "hostRequirements": {
+    "cpus": 4,
+    "memory": "8gb",
+    "storage": "32gb"
+  },
+
+  // dtctl keeps tokens in the OS keyring by default. A container has none, so use a file.
+  "containerEnv": {
+    "DTCTL_TOKEN_STORAGE": "file"
+  },
+  "remoteEnv": {
+    "PATH": "${containerEnv:PATH}:/home/vscode/.local/bin"
+  },
+
+  // Codespaces asks for each of these when the Codespace is created and exposes them
+  // as environment variables. post_create.py writes them to .env for the labs.
+  // Locally, leave them unset and fill in .env yourself (see docs/setup.md).
+  "secrets": {
+    "PARTICIPANT": {
+      "description": "Your name, as it should appear on the instructor's training dashboard."
+    },
+    "DT_ENDPOINT": {
+      "description": "Your tenant URL, e.g. https://abc12345.live.dynatrace.com"
+    },
+    "DT_API_TOKEN": {
+      "description": "Access token (dt0c01.) with scopes: openTelemetryTrace.ingest, metrics.ingest, logs.ingest"
+    },
+    "DTCTL_PLATFORM_TOKEN": {
+      "description": "Platform token (dt0s16.) with scopes: storage:logs:read, storage:metrics:read. Used by dtctl in lab 08."
+    }
+  },
+
+  "postCreateCommand": "python .devcontainer/post_create.py",
+
+  "forwardPorts": [8000, 9000, 9001, 4317, 4318, 4320],
+  "portsAttributes": {
+    "8000": { "label": "Lab 01 app" },
+    "9000": { "label": "Lab 02/03 frontend" },
+    "9001": { "label": "Lab 02/03 backend" },
+    "4317": { "label": "Weaver (OTLP gRPC)" },
+    "4318": { "label": "Collector (OTLP HTTP)" },
+    "4320": { "label": "OpAMP server" }
+  },
+
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.python",
+        "redhat.vscode-yaml",
+        "ms-azuretools.vscode-docker"
+      ],
+      "settings": {
+        "python.defaultInterpreterPath": "${containerWorkspaceFolder}/.venv/bin/python",
+        "python.terminal.activateEnvironment": true
+      }
+    }
+  }
+}
