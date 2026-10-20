@@ -19,7 +19,9 @@ Everything below (Docker, Python, the virtual environment, `dtctl`) comes preins
     - a **platform token** (`dt0s16.`) with `storage:logs:read` and `storage:metrics:read`. Create it under **Account Management** > **Platform tokens**. `dtctl` uses it in lab 08.
 2. Open the repo: [![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/agardnerIT/otel-masterclass)
    Or, locally, open the folder in VS Code and run **Dev Containers: Reopen in Container** (needs Docker Desktop).
-3. In Codespaces you are asked for `PARTICIPANT` (your name), `DT_ENDPOINT`, `DT_API_TOKEN` and `DTCTL_PLATFORM_TOKEN`. Paste them in. The setup writes `.env` for you and configures `dtctl`.
+3. In Codespaces you are asked for `PARTICIPANT` (your name), `DT_TENANT`, `DT_API_TOKEN` and `DTCTL_PLATFORM_TOKEN`. For `DT_TENANT` enter **only the tenant ID**, for example `abc12345` from `https://abc12345.live.dynatrace.com`. The setup checks the format, builds the full URLs, writes `.env` for you and configures `dtctl`. A value that looks wrong is reported and **not** saved.
+
+    **Made a typo?** Open `.env` and fix it. The labs read it every time. For `dtctl`, run `dtctl config set-credentials lab-token --token <new token>`.
 4. When the terminal finishes, check the output of the prerequisite check. Re-run it any time: `python scripts/check_prereqs.py`.
 
 !!! note

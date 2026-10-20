@@ -29,8 +29,8 @@
     "PARTICIPANT": {
       "description": "Your name, as it should appear on the instructor's training dashboard."
     },
-    "DT_ENDPOINT": {
-      "description": "Your tenant URL, e.g. https://abc12345.live.dynatrace.com"
+    "DT_TENANT": {
+      "description": "Your tenant ID only, e.g. abc12345 (from https://abc12345.live.dynatrace.com)"
     },
     "DT_API_TOKEN": {
       "description": "Access token (dt0c01.) with scopes: openTelemetryTrace.ingest, metrics.ingest, logs.ingest"
