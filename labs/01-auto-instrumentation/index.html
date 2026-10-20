@@ -1817,12 +1817,12 @@
 <li><strong>Port 8000 is busy</strong> (for example, <code>mkdocs serve</code> also uses it): stop the other program, or use another port, such as <code>--port 8001</code>. Then use the same port in the <code>curl</code> commands.</li>
 <li><strong>Nothing in Dynatrace, no errors:</strong> wait 30 seconds. Check that <code>DT_ENDPOINT</code> has no <code>/api/...</code> at the end. Step 5 adds <code>/api/v2/otlp</code>.</li>
 <li><strong>401 or 403 from Dynatrace:</strong> the token is wrong or lacks the <code>openTelemetryTrace.ingest</code> scope.</li>
-<li><strong>Console output is not showing:</strong> the console exporter writes in batches. Wait about 5 seconds after a request.</li>
+<li><strong>Console output is not showing:</strong> the console exporter writes in batches. Wait about 5 seconds after a request. Also check that you sent a request (nothing prints at startup) and that <code>OTEL_TRACES_EXPORTER</code> is set in the same terminal that runs the app (<code>echo $OTEL_TRACES_EXPORTER</code> should print <code>console</code>). If it is unset, the default is <code>otlp</code>, which tries <code>localhost:4318</code> and prints nothing.</li>
 </ul>
 <h2 id="going-further">Going further<a class="headerlink" href="#going-further" title="Permanent link">&para;</a></h2>
 <ul>
 <li>Remove <code>OTEL_SEMCONV_STABILITY_OPT_IN</code> and run again. The attribute names change (<code>http.method</code>, <code>http.status_code</code>). These are the old names. Standard names are the topic of Lab 08.</li>
-<li>Send to both console and OTLP. Set <code>OTEL_TRACES_EXPORTER</code> to <code>console,otlp</code> (<code>export OTEL_TRACES_EXPORTER=console,otlp</code> on macOS / Linux, <code>$env:OTEL_TRACES_EXPORTER = "console,otlp"</code> on Windows).</li>
+<li>Send to both console and Dynatrace. Use the <strong>Dynatrace</strong> settings from step 5, but set <code>OTEL_TRACES_EXPORTER</code> to <code>console,otlp</code> (<code>export OTEL_TRACES_EXPORTER=console,otlp</code> on macOS / Linux, <code>$env:OTEL_TRACES_EXPORTER = "console,otlp"</code> on Windows). Spans print in the terminal and also arrive in Dynatrace over OTLP HTTP (<code>http/protobuf</code>).</li>
 </ul>
 
 
