@@ -540,6 +540,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#easiest-github-codespaces-or-a-dev-container" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Easiest: GitHub Codespaces or a dev container
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#1-get-the-code" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1412,6 +1423,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#easiest-github-codespaces-or-a-dev-container" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Easiest: GitHub Codespaces or a dev container
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#1-get-the-code" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1534,6 +1556,27 @@
 </tr>
 </tbody>
 </table>
+<h2 id="easiest-github-codespaces-or-a-dev-container">Easiest: GitHub Codespaces or a dev container<a class="headerlink" href="#easiest-github-codespaces-or-a-dev-container" title="Permanent link">&para;</a></h2>
+<p>Everything below (Docker, Python, the virtual environment, <code>dtctl</code>) comes preinstalled, so you can skip to <a href="#6-download-the-lab-images-at-the-start-of-the-workshop">Download the lab images</a>.</p>
+<ol>
+<li>Do the <a href="#3-dynatrace">Dynatrace step</a> first. You need <strong>two</strong> tokens:<ul>
+<li>an <strong>access token</strong> (<code>dt0c01.</code>) with the three ingest scopes listed there, and</li>
+<li>a <strong>platform token</strong> (<code>dt0s16.</code>) with <code>storage:logs:read</code> and <code>storage:metrics:read</code>. Create it at <a href="https://myaccount.dynatrace.com/account/iam/platform-tokens">Account Management &gt; Platform tokens</a>. <code>dtctl</code> uses it in lab 08.</li>
+</ul>
+</li>
+<li>Open the repo: <a href="https://codespaces.new/agardnerIT/otel-masterclass"><img alt="Open in GitHub Codespaces" src="https://github.com/codespaces/badge.svg" /></a>
+   Or, locally, open the folder in VS Code and run <strong>Dev Containers: Reopen in Container</strong> (needs Docker Desktop).</li>
+<li>
+<p>In Codespaces you are asked for <code>PARTICIPANT</code> (your name), <code>DT_TENANT</code>, <code>DT_API_TOKEN</code> and <code>DTCTL_PLATFORM_TOKEN</code>. For <code>DT_TENANT</code> enter <strong>only the tenant ID</strong>, for example <code>abc12345</code> from <code>https://abc12345.live.dynatrace.com</code>. The setup checks the format, builds the full URLs, writes <code>.env</code> for you and configures <code>dtctl</code>. A value that looks wrong is reported and <strong>not</strong> saved.</p>
+<p><strong>Made a typo?</strong> Open <code>.env</code> and fix it. The labs read it every time. For <code>dtctl</code>, run <code>dtctl config set-credentials lab-token --token &lt;new token&gt;</code>.
+4. When the terminal finishes, check the output of the prerequisite check. Re-run it any time: <code>python scripts/check_prereqs.py</code>.</p>
+</li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Locally, a dev container does not prompt for these values. Fill in <code>.env</code> as described in step 3 below, and run <code>dtctl auth login</code>.</p>
+</div>
+<p>Prefer to install everything yourself? Continue below.</p>
 <h2 id="1-get-the-code">1. Get the code<a class="headerlink" href="#1-get-the-code" title="Permanent link">&para;</a></h2>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/agardnerIT/otel-masterclass.git
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="nb">cd</span><span class="w"> </span>otel-masterclass
