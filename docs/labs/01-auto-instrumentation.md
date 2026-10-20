@@ -207,9 +207,9 @@ Lab 03 shows how manual instrumentation adds this.
 - **Port 8000 is busy** (for example, `mkdocs serve` also uses it): stop the other program, or use another port, such as `--port 8001`. Then use the same port in the `curl` commands.
 - **Nothing in Dynatrace, no errors:** wait 30 seconds. Check that `DT_ENDPOINT` has no `/api/...` at the end. Step 5 adds `/api/v2/otlp`.
 - **401 or 403 from Dynatrace:** the token is wrong or lacks the `openTelemetryTrace.ingest` scope.
-- **Console output is not showing:** the console exporter writes in batches. Wait about 5 seconds after a request.
+- **Console output is not showing:** the console exporter writes in batches. Wait about 5 seconds after a request. Also check that you sent a request (nothing prints at startup) and that `OTEL_TRACES_EXPORTER` is set in the same terminal that runs the app (`echo $OTEL_TRACES_EXPORTER` should print `console`). If it is unset, the default is `otlp`, which tries `localhost:4318` and prints nothing.
 
 ## Going further
 
 - Remove `OTEL_SEMCONV_STABILITY_OPT_IN` and run again. The attribute names change (`http.method`, `http.status_code`). These are the old names. Standard names are the topic of Lab 08.
-- Send to both console and OTLP. Set `OTEL_TRACES_EXPORTER` to `console,otlp` (`export OTEL_TRACES_EXPORTER=console,otlp` on macOS / Linux, `$env:OTEL_TRACES_EXPORTER = "console,otlp"` on Windows).
+- Send to both console and Dynatrace. Use the **Dynatrace** settings from step 5, but set `OTEL_TRACES_EXPORTER` to `console,otlp` (`export OTEL_TRACES_EXPORTER=console,otlp` on macOS / Linux, `$env:OTEL_TRACES_EXPORTER = "console,otlp"` on Windows). Spans print in the terminal and also arrive in Dynatrace over OTLP HTTP (`http/protobuf`).
