@@ -36,7 +36,7 @@
       "description": "Access token (dt0c01.) with scopes: openTelemetryTrace.ingest, metrics.ingest, logs.ingest"
     },
     "DTCTL_PLATFORM_TOKEN": {
-      "description": "Platform token (dt0s16.) with scopes: storage:logs:read, storage:metrics:read. Used by dtctl in lab 08."
+      "description": "Platform token (dt0s16.) with scopes: storage:logs:read, storage:metrics:read. Create it at https://myaccount.dynatrace.com/account/iam/platform-tokens . Used by dtctl in lab 08."
     }
   },
 
