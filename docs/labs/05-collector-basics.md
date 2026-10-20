@@ -75,12 +75,11 @@ Both images are big, because they contain many components you will never use. Ca
 
 ## Steps
 
-The lab files are in `labs/05-collector-basics/`. Docker must be running.
+The lab files are in `labs/05-collector-basics/`. Docker must be running. You also run one Python script, so turn on the virtual environment from [Setup](../setup.md#4-python-environment) in your **second** terminal.
 
-1. Go to the lab folder and create the file the collector will read:
+1. Go to the lab folder. It contains an empty `live.log`, the file the collector will read:
    ```bash
    cd labs/05-collector-basics
-   touch live.log
    ```
 2. Look at `collector.yaml`. It has one receiver, two exporters and one pipeline:
    ```yaml
@@ -106,11 +105,7 @@ The lab files are in `labs/05-collector-basics/`. Docker must be running.
    - `otlp_http/dynatrace` is a **named instance**: `type/name`. You can have many exporters of the same type.
 3. Check that the config is valid. This is the same check you would run in a build pipeline:
    ```bash
-   docker run --rm \
-     -e DT_ENDPOINT=https://example.live.dynatrace.com -e DT_API_TOKEN=x \
-     -v "$PWD/collector.yaml:/c.yaml:ro" \
-     ghcr.io/dynatrace/dynatrace-otel-collector/dynatrace-otel-collector:0.58.0 \
-     validate --config=/c.yaml
+   docker compose run --rm -e DT_ENDPOINT=https://example.live.dynatrace.com -e DT_API_TOKEN=x collector validate --config=/etc/otelcol/collector.yaml
    ```
    No output means the config is valid.
 4. Start the collector:
@@ -126,7 +121,7 @@ The lab files are in `labs/05-collector-basics/`. Docker must be running.
 
 5. Open a **second terminal**, go to the same folder, and start a program that writes one log line per second. It repeats the lines of `sample.log`:
    ```bash
-   python3 append_logs.py
+   python append_logs.py
    ```
 6. Watch the first terminal. Each `log records: 1` line is one log line that was read and exported.
 7. Open Dynatrace, open the **Logs** app, and filter with `content = *"order-service"*`. Your lines appear after a few seconds.
@@ -136,6 +131,8 @@ Stop the program with `Ctrl+C`. Stop the collector with `Ctrl+C`, then clean up:
 ```bash
 docker compose down
 ```
+
+Then empty `live.log` again, so you can repeat the lab with a clean file: `git restore live.log`.
 
 ## Expected result
 
@@ -191,9 +188,21 @@ Now the collector also receives OTLP. We add an `otlp` receiver and a pipeline f
    ```
    The apps run in containers. They reach the collector on your machine at `host.docker.internal`.
 4. Send an order:
-   ```bash
-   curl "localhost:9000/order/1?quantity=2"
-   ```
+
+    === "macOS / Linux"
+
+        ```bash
+        curl "localhost:9000/order/1?quantity=2"
+        ```
+
+    === "Windows (PowerShell)"
+
+        Type `curl.exe`. In PowerShell, plain `curl` is a different command.
+
+        ```powershell
+        curl.exe "localhost:9000/order/1?quantity=2"
+        ```
+
 5. In the collector terminal, you see `traces`, `metrics` and `logs`. In Dynatrace, you see the same trace as in Lab 03.
 
 The app did not change. Only one environment variable changed: `OTEL_EXPORTER_OTLP_ENDPOINT`. Now you can filter, mask or route this data in one place.
@@ -203,7 +212,7 @@ The app did not change. Only one environment variable changed: `OTEL_EXPORTER_OT
 - **`unsupported protocol scheme ""` in the collector output:** you forgot `--env-file ../../.env`, or `.env` is empty.
 - **`401` or `403` in the collector output:** the token has no `logs.ingest` scope. See [Setup](../setup.md).
 - **`404` from Dynatrace:** the endpoint must be the base URL, like `https://abc12345.live.dynatrace.com`. No `/api/v2/otlp` and no trailing slash in `.env`. The config adds the path.
-- **No log lines in the collector:** check that `append_logs.py` runs in the lab folder, and that `live.log` exists *before* you start the collector. On Linux, check the file permissions.
+- **No log lines in the collector:** check that `append_logs.py` runs in the lab folder, and that `live.log` exists *before* you start the collector (if you deleted it, run `git restore live.log`; Docker would otherwise create a *folder* with that name). On Linux, check the file permissions.
 - **`unknown type: "filelog"`:** the name is `file_log` in this version.
 - **Lab 03 cannot reach the collector (Linux):** the override file adds `host.docker.internal` for you. Check that the collector container is running and port `4318` is free.
 - **Port `4318` is in use:** another collector or app uses it. Stop it.

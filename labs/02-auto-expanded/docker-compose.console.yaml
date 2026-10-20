@@ -1,6 +1,6 @@
 # Fallback for no tenant: add this file to print spans in the container logs.
-# No .env file is needed, but compose still reads the variables, so give it dummy values:
-#   DT_ENDPOINT=x DT_API_TOKEN=x docker compose -f docker-compose.yaml -f docker-compose.console.yaml up --build
+# No .env file is needed:
+#   docker compose -f docker-compose.yaml -f docker-compose.console.yaml up --build
 x-console-env: &console-env
   OTEL_TRACES_EXPORTER: console
   OTEL_EXPORTER_OTLP_ENDPOINT: ""

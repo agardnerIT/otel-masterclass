@@ -1,0 +1,30 @@
+# Weaver as compose services, so the commands are the same on every OS.
+#   docker compose run --rm check
+#   docker compose run --rm --service-ports live-check
+x-weaver: &weaver
+  image: otel/weaver:v0.28.0
+  working_dir: /work
+  volumes:
+    - ./:/work
+
+services:
+  check:
+    <<: *weaver
+    command: ["registry", "check", "-r", "/work/model"]
+
+  live-check:
+    <<: *weaver
+    ports:
+      - "4317:4317"
+      - "4320:4320"
+    command:
+      - registry
+      - live-check
+      - -r
+      - /work/model
+      - --advice-policies
+      - /work/policies
+      - --otlp-grpc-address
+      - 0.0.0.0
+      - --inactivity-timeout
+      - "30"

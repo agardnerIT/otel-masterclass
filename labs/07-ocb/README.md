@@ -8,7 +8,7 @@ docker compose build        # 2-3 minutes
 docker run --rm otelcol-masterclass:0.162.0 components
 docker compose --env-file ../../.env up -d
 sleep 15
-docker compose logs collector --no-log-prefix | python3 measure_reduction.py sample.log
+docker compose logs collector --no-log-prefix | python measure_reduction.py sample.log
 docker compose down
 ```
 

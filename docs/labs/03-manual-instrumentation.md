@@ -29,18 +29,31 @@ The agent (`opentelemetry-instrument`) still sets up the SDK from environment va
 
     ??? note "No Dynatrace tenant? Print telemetry in the console"
         ```bash
-        export DT_ENDPOINT=x DT_API_TOKEN=x
         docker compose -f docker-compose.yaml -f docker-compose.console.yaml up --build
         ```
         Metrics print every 5 seconds in this mode.
 
 2. In a second terminal, send three orders:
-   ```bash
-   curl "localhost:9000/order/1?quantity=2"
-   curl -i "localhost:9000/order/3?quantity=2"
-   curl -i localhost:9000/order/99
-   ```
-   - The first order works: 2 keyboards cost 98.
+
+    === "macOS / Linux"
+
+        ```bash
+        curl "localhost:9000/order/1?quantity=2"
+        curl -i "localhost:9000/order/3?quantity=2"
+        curl -i localhost:9000/order/99
+        ```
+
+    === "Windows (PowerShell)"
+
+        Type `curl.exe`. In PowerShell, plain `curl` is a different command.
+
+        ```powershell
+        curl.exe "localhost:9000/order/1?quantity=2"
+        curl.exe -i "localhost:9000/order/3?quantity=2"
+        curl.exe -i localhost:9000/order/99
+        ```
+
+    - The first order works: 2 keyboards cost 98.
    - The second is declined: 2 monitors cost 600, and the payment limit is 500. You get a `402`.
    - The third returns `404`, because the product does not exist.
 3. Open `starter/backend/app.py` and read it. Each feature is marked in the code:

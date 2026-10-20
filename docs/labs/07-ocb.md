@@ -14,7 +14,7 @@ The tool for this is the **OpenTelemetry Collector Builder**, called **OCB** (`o
 
 ## Steps
 
-The lab files are in `labs/07-ocb/`. Docker must be running. You do **not** need Go: the build runs inside Docker.
+The lab files are in `labs/07-ocb/`. Docker must be running. You do **not** need Go: the build runs inside Docker.  You also run a Python script to measure the result, so turn on the virtual environment from [Setup](../setup.md#4-python-environment).
 
 1. Go to the lab folder:
    ```bash
@@ -53,13 +53,12 @@ The lab files are in `labs/07-ocb/`. Docker must be running. You do **not** need
    ```
 ??? note "No Dynatrace tenant?"
        ```bash
-       export DT_ENDPOINT=http://localhost:1 DT_API_TOKEN=x
        docker compose up -d
        ```
        The Dynatrace exporter will print errors. Ignore them.
 8. Wait 15 seconds. Then measure:
    ```bash
-   docker compose logs collector --no-log-prefix | python3 measure_reduction.py sample.log
+   docker compose logs collector --no-log-prefix | python measure_reduction.py sample.log
    ```
 9. Clean up:
    ```bash

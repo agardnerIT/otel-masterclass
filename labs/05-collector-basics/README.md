@@ -6,10 +6,9 @@ Full instructions: `docs/labs/05-collector-basics.md` (or the docs site).
 Quick start (Docker must be running, `.env` filled in):
 
 ```bash
-touch live.log
 docker compose --env-file ../../.env up
 # in a second terminal:
-python3 append_logs.py
+python append_logs.py
 ```
 
 Files:

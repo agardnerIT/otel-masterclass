@@ -45,7 +45,7 @@ The rules are written in **OTTL**, the OpenTelemetry Transformation Language. `I
 
 ## Steps
 
-The lab files are in `labs/06-processors/`. Docker must be running.
+The lab files are in `labs/06-processors/`. Docker must be running. You also run a Python script to measure the result, so turn on the virtual environment from [Setup](../setup.md#4-python-environment) in your terminal.
 
 1. Go to the lab folder:
    ```bash
@@ -67,13 +67,12 @@ The lab files are in `labs/06-processors/`. Docker must be running.
    ```
 ??? note "No Dynatrace tenant?"
        ```bash
-       export DT_ENDPOINT=http://localhost:1 DT_API_TOKEN=x
        docker compose up -d
        ```
        The Dynatrace exporter will print errors. Ignore them. The debug output is correct. Use `--force-recreate` and `docker compose down` as in the steps below, without `--env-file`.
 4. Wait 15 seconds. Then measure:
    ```bash
-   docker compose logs collector --no-log-prefix | python3 measure_reduction.py sample.log
+   docker compose logs collector --no-log-prefix | python measure_reduction.py sample.log
    ```
    The script counts the lines in `sample.log` and the records the collector exported. You should see 11 records, 0% reduction, and `Email visible: YES (leak!)`.
 5. Stop the collector. Do this before every change:
@@ -106,7 +105,7 @@ docker compose --env-file ../../.env up -d --force-recreate
 Now run the measure command:
 
 ```bash
-docker compose logs collector --no-log-prefix | python3 measure_reduction.py sample.log
+docker compose logs collector --no-log-prefix | python measure_reduction.py sample.log
 ```
 
 You should see the logs have dropped from 11 to 8 (a 27% reduction) and the /health pings are no longer visible.
@@ -140,7 +139,7 @@ docker compose --env-file ../../.env up -d --force-recreate
 Wait 15 seconds, run the measure command:
 
 ```bash
-docker compose logs collector --no-log-prefix | python3 measure_reduction.py sample.log
+docker compose logs collector --no-log-prefix | python measure_reduction.py sample.log
 ```
 
 You should see `11` logs have now been reduced to `7` (a `36%` reduction) and the `DEBUG` lines are no longer present in the collector output.
@@ -167,7 +166,7 @@ docker compose --env-file ../../.env up -d --force-recreate
 Run the measure command:
 
 ```bash
-docker compose logs collector --no-log-prefix | python3 measure_reduction.py sample.log
+docker compose logs collector --no-log-prefix | python measure_reduction.py sample.log
 ```
 
 You should see `11` logs have now been reduced to `5` (a `55%` reduction).
@@ -194,7 +193,7 @@ docker compose --env-file ../../.env up -d --force-recreate
 Wait 15 seconds, run the measure command:
 
 ```bash
-docker compose logs collector --no-log-prefix | python3 measure_reduction.py sample.log
+docker compose logs collector --no-log-prefix | python measure_reduction.py sample.log
 ```
 
 You should see `11` logs have now been reduced to `4` (a `64%` reduction) and `Email visible: no`. The whole password reset line is gone.
@@ -227,14 +226,22 @@ docker compose --env-file ../../.env up -d --force-recreate
 Wait 15 seconds, run the measure command:
 
 ```bash
-docker compose logs collector --no-log-prefix | python3 measure_reduction.py sample.log
+docker compose logs collector --no-log-prefix | python measure_reduction.py sample.log
 ```
 
 You should see `11` logs have now been reduced to `5` (a `55%` reduction). The measure script reports `Email visible: no`. The password reset line is still there. To see the masked text in the collector's debug output, run:
 
-```bash
-docker compose logs collector --no-log-prefix | grep "password reset"
-```
+=== "macOS / Linux"
+
+    ```bash
+    docker compose logs collector --no-log-prefix | grep "password reset"
+    ```
+
+=== "Windows (PowerShell)"
+
+    ```powershell
+    docker compose logs collector --no-log-prefix | Select-String "password reset"
+    ```
 
 You should see `email=***@***` in the line.
 
@@ -282,7 +289,7 @@ Run the finished config (stage 5) to check:
 ```bash
 docker compose --env-file ../../.env -f docker-compose.yaml -f docker-compose.solution.yaml up -d --force-recreate
 sleep 15
-docker compose logs collector --no-log-prefix | python3 measure_reduction.py sample.log
+docker compose logs collector --no-log-prefix | python measure_reduction.py sample.log
 docker compose down
 ```
 
@@ -328,9 +335,7 @@ In Dynatrace, search for `order-service` again. The email line shows `email=***@
 - **The email is still visible:** you ran stage 1, 2 or 3 only. Add stage 4 or 5.
 - **Validate before you run:**
   ```bash
-  docker run --rm -e DT_ENDPOINT=https://x.live.dynatrace.com -e DT_API_TOKEN=x \
-    -v "$PWD/collector.yaml:/c.yaml:ro" otel/opentelemetry-collector-contrib:0.162.0 \
-    validate --config=/c.yaml
+  docker compose run --rm collector validate --config=/etc/otelcol/collector.yaml
   ```
 
 ## Going further

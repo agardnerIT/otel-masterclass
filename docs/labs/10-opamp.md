@@ -49,97 +49,153 @@ Docker must be running. You need three terminals, all in the lab folder. The ser
 ### Part 1: Run the server and see an agent
 
 1. **Terminal 1.** Start the server:
-   ```bash
-   cd labs/10-opamp
-   source ../../.venv/bin/activate
-   python server.py
-   ```
-   It prints `* remote-config.yaml changed (...)`. It has read the file and is waiting for agents.
-2. **Terminal 2.** Start the plain collector:
-   ```bash
-   cd labs/10-opamp
-   docker compose up -d plain
-   ```
-3. Within a few seconds, terminal 1 prints `+ agent <id> connected`. List what the server knows:
-   ```bash
-   curl -s localhost:4320/agents | python3 -m json.tool
-   ```
-   You see the agent's `description` (name, version, host), its health, and its `capabilities`. The capabilities are sent as one number (a bitmask, one bit per yes/no ability). The server turns it into names.
 
-   Look at the list. There is **no** `AcceptsRemoteConfig`. This agent can report, but it cannot be told what to do.
+    === "macOS / Linux"
+
+        ```bash
+        cd labs/10-opamp
+        source ../../.venv/bin/activate
+        python server.py
+        ```
+
+    === "Windows (PowerShell)"
+
+        ```powershell
+        cd labs\10-opamp
+        ..\..\.venv\Scripts\Activate.ps1
+        python server.py
+        ```
+
+
+    It prints `* remote-config.yaml changed (...)`. It has read the file and is waiting for agents.
+
+2. **Terminal 2.** Start the plain collector:
+    ```bash
+    cd labs/10-opamp
+    docker compose up -d plain
+    ```
+3. Within a few seconds, terminal 1 prints `+ agent <id> connected`. List what the server knows:
+
+    === "macOS / Linux"
+
+        ```bash
+        curl -s localhost:4320/agents | python -m json.tool
+        ```
+
+    === "Windows (PowerShell)"
+
+        Type `curl.exe`. In PowerShell, plain `curl` is a different command.
+
+        ```powershell
+        curl.exe -s localhost:4320/agents | python -m json.tool
+        ```
+
+    You see the agent's `description` (name, version, host), its health, and its `capabilities`. The capabilities are sent as one number (a bitmask, one bit per yes/no ability). The server turns it into names.
+
+    Look at the list. There is **no** `AcceptsRemoteConfig`. This agent can report, but it cannot be told what to do.
 
 ### Part 2: Connect an agent that accepts config
 
 4. Start the Supervisor agent (the first build takes about a minute):
-   ```bash
-   docker compose up -d --build agent
-   ```
+    ```bash
+    docker compose up -d --build agent
+    ```
 5. Terminal 1 shows the server sending the file and the agent applying it:
-   ```text
-   + agent 01a1438afaae7bac9c2097c7ac1990f9 connected
-   > agent 01a1438afaae7bac9c2097c7ac1990f9: sending remote-config.yaml
-   ~ agent 01a1438afaae7bac9c2097c7ac1990f9 remote config APPLIED
-   ```
-   You see this once at start, even though the config equals the local one. The server sends the file to any agent that accepts it, as soon as it connects. Run `curl` again. Now there are two agents, and only one has `AcceptsRemoteConfig` and `remote_config_status: APPLIED`.
+    ```text
+    + agent 01a1438afaae7bac9c2097c7ac1990f9 connected
+    > agent 01a1438afaae7bac9c2097c7ac1990f9: sending remote-config.yaml
+    ~ agent 01a1438afaae7bac9c2097c7ac1990f9 remote config APPLIED
+    ```
+    You see this once at start, even though the config equals the local one. The server sends the file to any agent that accepts it, as soon as it connects. Run the `curl` command again. Now there are two agents, and only one has `AcceptsRemoteConfig` and `remote_config_status: APPLIED`.
+
 6. **Terminal 3.** Watch what the collector prints, as just `LEVEL message`:
-   ```bash
-   cd labs/10-opamp
-   source ../../.venv/bin/activate
-   docker compose logs -f --no-log-prefix agent | python3 watch_collector.py
-   ```
-   The three DEBUG lines already in the log file are dropped, so you see nothing yet. That is the production baseline.
+
+    === "macOS / Linux"
+
+        ```bash
+        cd labs/10-opamp
+        source ../../.venv/bin/activate
+        docker compose logs -f --no-log-prefix agent | python watch_collector.py
+        ```
+
+    === "Windows (PowerShell)"
+
+        ```powershell
+        cd labs\10-opamp
+        ..\..\.venv\Scripts\Activate.ps1
+        docker compose logs -f --no-log-prefix agent | python watch_collector.py
+        ```
+
+    The three DEBUG lines already in the log file are dropped, so you see nothing yet. That is the production baseline.
 
 ### Part 3: The incident
 
 7. In terminal 2, write two log lines. One is INFO, one is DEBUG:
-   ```bash
-   echo "INFO user logged in" >> logs/file.log
-   echo "DEBUG cache miss"    >> logs/file.log
-   ```
-   Terminal 3 shows only `INFO   user logged in`. The DEBUG line is dropped.
+    ```bash
+    python lab.py log "INFO user logged in"
+    python lab.py log "DEBUG cache miss"
+    ```
+    `lab.py` is a small helper in the lab folder. It appends a line to `logs/file.log`. It works the same on every OS. Activate the environment in this terminal first, as in terminal 1.
+    Terminal 3 shows only `INFO   user logged in`. The DEBUG line is dropped.
+
 8. **Incident! Turn on DEBUG capture.** Open `examples/capture-debug.yaml`. It removes the filter from the logs pipeline:
-   ```yaml
-   service:
+    ```yaml
+    service:
      pipelines:
        logs:
          processors: []
-   ```
-   Lists are **replaced** when configs merge, so an empty list removes the local `filter/drop_debug`. Copy it over the watched file:
-   ```bash
-   cp examples/capture-debug.yaml remote-config.yaml
-   ```
-   On Windows PowerShell, use `copy examples\capture-debug.yaml remote-config.yaml`. You can also paste it into `remote-config.yaml` in your editor and save.
+    ```
+    Lists are **replaced** when configs merge, so an empty list removes the local `filter/drop_debug`. Copy it over the watched file:
+    ```bash
+    python lab.py config capture-debug
+    ```
+    This copies `examples/capture-debug.yaml` over `remote-config.yaml`. You can also paste the file into `remote-config.yaml` in your editor and save.
+
 9. Terminal 1 shows the full round trip:
-   ```text
-   * remote-config.yaml changed (3ddcc841)
-   > agent 01a1438a...: pushed remote-config.yaml
-   ~ agent 01a1438a... remote config APPLYING
-   ~ agent 01a1438a... remote config APPLIED
-   ```
+    ```text
+    * remote-config.yaml changed (3ddcc841)
+    > agent 01a1438a...: pushed remote-config.yaml
+    ~ agent 01a1438a... remote config APPLYING
+    ~ agent 01a1438a... remote config APPLIED
+    ```
 10. Write more logs:
     ```bash
-    echo "INFO payment failed"          >> logs/file.log
-    echo "DEBUG retrying gateway call"  >> logs/file.log
+    python lab.py log "INFO payment failed"
+    python lab.py log "DEBUG retrying gateway call"
     ```
     This time terminal 3 shows **both** lines.
+
 11. Ask the server what the collector is really running. Use the `instance_uid` of the agent with `APPLIED`:
-    ```bash
-    curl -s localhost:4320/agents/<instance_uid>/effective-config
-    ```
+
+    === "macOS / Linux"
+
+        ```bash
+        curl -s localhost:4320/agents/<instance_uid>/effective-config
+        ```
+
+    === "Windows (PowerShell)"
+
+        Type `curl.exe`. In PowerShell, plain `curl` is a different command.
+
+        ```powershell
+        curl.exe -s localhost:4320/agents/<instance_uid>/effective-config
+        ```
+
     The `logs` pipeline now has no `filter/drop_debug`.
+
 12. **Incident over.** Revert:
     ```bash
-    cp examples/baseline.yaml remote-config.yaml
-    echo "DEBUG should be dropped again" >> logs/file.log
+    python lab.py config baseline
+    python lab.py log "DEBUG should be dropped again"
     ```
     The DEBUG line no longer appears in terminal 3.
+
 13. Clean up. Press `Ctrl-C` in terminal 1 and in terminal 3, then run:
     ```bash
     docker compose down
-    cp examples/baseline.yaml remote-config.yaml
-    printf 'DEBUG starting up\nDEBUG loaded 3 plugins\nDEBUG cache miss key=user:42\n' > logs/file.log
+    python lab.py reset
     ```
-    The last two lines put the lab files back to how they started.
+    `reset` puts `remote-config.yaml` and `logs/file.log` back to how they started.
 
 ## Expected result
 
@@ -167,7 +223,7 @@ Docker must be running. You need three terminals, all in the lab folder. The ser
 - **`ModuleNotFoundError: google.protobuf` or `fastapi`:** activate the environment in this terminal (see [Setup](../setup.md#4-python-environment)).
 - **`port is already allocated` or address already in use (4320):** an old server is still running. Stop it with `Ctrl-C`.
 - **Nothing changes after you copy the file:** the server checks the file once a second. Look for `* remote-config.yaml changed` in terminal 1. If it is missing, check you copied it **over** `remote-config.yaml` in `labs/10-opamp`.
-- **Terminal 3 shows old or missing lines:** the collector remembers how far it has read the file (the `file_storage` extension), so it only prints new lines. If you ran the lab before, run `docker compose down` and reset `logs/file.log` as in step 13.
+- **Terminal 3 shows old or missing lines:** the collector remembers how far it has read the file (the `file_storage` extension), so it only prints new lines. If you ran the lab before, run `docker compose down` and run `python lab.py reset`.
 
 ## Going further
 

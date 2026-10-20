@@ -6,8 +6,8 @@ x-otel-env: &otel-env
   OTEL_LOGS_EXPORTER: none
   OTEL_SEMCONV_STABILITY_OPT_IN: http
   OTEL_EXPORTER_OTLP_PROTOCOL: http/protobuf
-  OTEL_EXPORTER_OTLP_ENDPOINT: ${DT_ENDPOINT:?Set DT_ENDPOINT in .env and use --env-file ../../.env}/api/v2/otlp
-  OTEL_EXPORTER_OTLP_HEADERS: Authorization=Api-Token ${DT_API_TOKEN:?Set DT_API_TOKEN in .env}
+  OTEL_EXPORTER_OTLP_ENDPOINT: ${DT_ENDPOINT:-}/api/v2/otlp
+  OTEL_EXPORTER_OTLP_HEADERS: Authorization=Api-Token ${DT_API_TOKEN:-}
 
 services:
   frontend:

@@ -75,37 +75,38 @@ The lab files are in `labs/09-weaver/`.
 
 Docker must be running. You need Python 3.11+.
 
-1. Go to the lab folder, turn on the virtual environment from [Setup](../setup.md#4-python-environment) and pull the Weaver image:
+1. Go to the lab folder and pull the Weaver image. The Weaver commands are defined in `docker-compose.yaml`, so they are the same on every OS:
    ```bash
    cd labs/09-weaver
-   source ../../.venv/bin/activate
-   docker pull otel/weaver:v0.28.0
+   docker compose pull
    ```
 2. Check that the registry is valid:
    ```bash
-   docker run --rm -v "$(pwd)":/work -w /work otel/weaver:v0.28.0 registry check -r /work/model
+   docker compose run --rm check
    ```
    You should see `✔ No after_resolution policy violation`. Weaver downloads the OpenTelemetry conventions the first time, so this can take a few seconds.
 3. Open **two terminals** in `labs/09-weaver`. In **terminal 1**, start Weaver in `live-check` mode. It is a server that waits for telemetry on port 4317 and checks every record. It stops after 30 seconds without data:
    ```bash
-   docker run --rm -v "$(pwd)":/work -w /work -p 4317:4317 -p 4320:4320 otel/weaver:v0.28.0 \
-     registry live-check -r /work/model --advice-policies /work/policies \
-     --otlp-grpc-address 0.0.0.0 --inactivity-timeout 30
+   docker compose run --rm --service-ports live-check
    ```
    Wait until you see `OTLP gRPC listener started`.
-4. In **terminal 2**, activate the environment and send the 3 test logs:
-   ```bash
-   source ../../.venv/bin/activate
-   python emit_test_logs.py
-   ```
+4. In **terminal 2**, go to the lab folder, activate the environment and send the 3 test logs:
+
+    === "macOS / Linux"
+
+        ```bash
+        source ../../.venv/bin/activate
+        python emit_test_logs.py
+        ```
+
+    === "Windows (PowerShell)"
+
+        ```powershell
+        ..\..\.venv\Scripts\Activate.ps1
+        python emit_test_logs.py
+        ```
+
 5. Go back to terminal 1. Wait for Weaver to stop, or press `Ctrl+C`. It prints a report.
-
-??? note "On Windows?"
-    Use PowerShell. Replace `$(pwd)` with `${PWD}`, and activate the environment with:
-
-    ```powershell
-    ..\..\.venv\Scripts\activate
-    ```
 
 ## Expected result
 

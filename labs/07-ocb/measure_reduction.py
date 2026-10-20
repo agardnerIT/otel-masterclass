@@ -1,14 +1,15 @@
 """Measure how much the processors reduce the log volume.
 
 Usage:
-    docker compose logs collector --no-log-prefix | python3 measure_reduction.py sample.log
+    docker compose logs collector --no-log-prefix | python measure_reduction.py sample.log
 
 It counts the lines in the input file, and the records the debug exporter printed.
 """
 import re
 import sys
 
-input_lines = len(open(sys.argv[1]).read().splitlines())
+input_lines = len(open(sys.argv[1], encoding="utf-8").read().splitlines())
+sys.stdin.reconfigure(encoding="utf-8", errors="replace")  # Windows pipes use another encoding
 output = sys.stdin.read()
 
 records = len(re.findall(r"^LogRecord #\d+", output, re.MULTILINE))

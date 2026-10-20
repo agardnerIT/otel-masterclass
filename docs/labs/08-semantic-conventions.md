@@ -57,10 +57,21 @@ Now see the problem in a real backend. You send the **same 7 requests** to Dynat
 You need Python 3.11+, a Dynatrace tenant and `dtctl`. See [Setup](../setup.md#3-dynatrace-optional). The token needs the `logs.ingest` scope. No tenant? Use the fallback at the end of this part.
 
 1. Go to the folder and turn on the virtual environment from [Setup](../setup.md#4-python-environment):
-   ```bash
-   cd labs/08-semantic-conventions
-   source ../../.venv/bin/activate
-   ```
+
+    === "macOS / Linux"
+
+        ```bash
+        cd labs/08-semantic-conventions
+        source ../../.venv/bin/activate
+        ```
+
+    === "Windows (PowerShell)"
+
+        ```powershell
+        cd labs\08-semantic-conventions
+        ..\..\.venv\Scripts\Activate.ps1
+        ```
+
 2. Read `messy.log`. These are 7 logs from 7 "teams". All 7 are the same kind of event: a handled HTTP request.
    ```text
    GET /api/orders 200 from 10.0.0.5
@@ -72,11 +83,10 @@ You need Python 3.11+, a Dynatrace tenant and `dtctl`. See [Setup](../setup.md#3
    payment-svc: http.request.method=POST url.path=/refund http.response.status_code=200 client.address=10.0.0.9
    ```
    Three of them are server errors (`500`, `503`, `502`).
-3. Send both files to Dynatrace. `messy.log` is sent as plain text, one line per log record. `standardised.log` has the same 7 requests, but each name becomes an attribute:
+3. Send both files to Dynatrace. `messy.log` is sent as plain text, one line per log record. `standardised.log` has the same 7 requests, but each name becomes an attribute. The script reads `DT_ENDPOINT` and `DT_API_TOKEN` from the `.env` file in the repo root:
    ```bash
-   set -a; source ../../.env; set +a
-   python3 send_logs.py messy.log
-   python3 send_logs.py standardised.log
+   python send_logs.py messy.log
+   python send_logs.py standardised.log
    ```
    You should see `Sent 7 logs` twice. Wait about 30 seconds for the logs to arrive.
 4. First check that the messy logs arrived. If `dtctl` says `token ... not found`, log in first:
@@ -111,8 +121,8 @@ The query did not change. Only the names did.
 ??? note "No Dynatrace tenant? Run the query on your laptop"
     `count_errors.py` runs the same rule on the files, with no network:
     ```bash
-    python3 count_errors.py messy.log
-    python3 count_errors.py standardised.log
+    python count_errors.py messy.log
+    python count_errors.py standardised.log
     ```
     You should see `Server errors found: 0`, then `Server errors found: 3`.
 
@@ -127,13 +137,10 @@ To make the first one work, you would need a different rule for every team, and 
 
 ## Stuck?
 
-- **`python3: command not found`:** use `python`.
+- **`python: command not found`:** the virtual environment is not on. See [Setup](../setup.md#4-python-environment).
 - **The standardised query finds nothing:** the logs can take a minute to arrive. Check the time range, and that the token has `logs.ingest`. Check that `toLong(...)` is in the query: without it, text is compared to a number and nothing matches.
 - **You get 6 or 9 records, not 3:** you ran `send_logs.py` more than once. Each run adds the same logs again. Add `from:-10m` after `fetch logs` to see only the latest.
-- **`send_logs.py` fails with `KeyError: 'DT_ENDPOINT'`:** load the env file first:
-  ```bash
-  set -a; source ../../.env; set +a
-  ```
+- **`send_logs.py` fails with `KeyError: 'DT_ENDPOINT'`:** the script found no `.env` file, or it has no `DT_ENDPOINT`. Check `.env` in the repo root. See [Setup](../setup.md).
 - **The messy query returns records:** you changed `messy.log`, or you sent a file twice with a different name.
 
 ## Going further

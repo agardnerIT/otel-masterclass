@@ -3,7 +3,7 @@
 The Supervisor wraps the collector's output in JSON, and the debug exporter prints
 many lines per batch of records. This script strips that down. Usage:
 
-    docker compose logs -f --no-log-prefix agent | python3 watch_collector.py
+    docker compose logs -f --no-log-prefix agent | python watch_collector.py
 """
 import json
 import re
@@ -12,6 +12,7 @@ import sys
 SEVERITY = re.compile(r"^SeverityText: (\w+)$", re.MULTILINE)
 BODY = re.compile(r"^Body: Str\((.*)\)$", re.MULTILINE)
 
+sys.stdin.reconfigure(encoding="utf-8", errors="replace")  # Windows pipes use another encoding
 for line in sys.stdin:
     try:
         outer = json.loads(line)

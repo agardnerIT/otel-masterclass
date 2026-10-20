@@ -19,9 +19,19 @@ The lab files are in `labs/01-auto-instrumentation/`. The app (`app.py`) is a sm
    cd labs/01-auto-instrumentation
    ```
 2. Turn on the virtual environment you made in [Setup](../setup.md#4-python-environment). It is in the repo root, so from this folder:
-   ```bash
-   source ../../.venv/bin/activate
-   ```
+
+    === "macOS / Linux"
+
+        ```bash
+        source ../../.venv/bin/activate
+        ```
+
+    === "Windows (PowerShell)"
+
+        ```powershell
+        ..\..\.venv\Scripts\Activate.ps1
+        ```
+
 3. Check that the packages are installed. Read `requirements.txt` in the repo root. Among others, it has FastAPI, uvicorn, and two OpenTelemetry packages this lab uses:
 
     - `opentelemetry-distro` gives you the `opentelemetry-instrument` and `opentelemetry-bootstrap` commands.
@@ -41,30 +51,59 @@ The lab files are in `labs/01-auto-instrumentation/`. The app (`app.py`) is a sm
 
         Copy `.env.example` to `.env` in the repo root and fill it in. See [Setup](../setup.md). Then load it and set the variables:
 
-        ```bash
-        set -a; source ../../.env; set +a
+        === "macOS / Linux"
 
-        export OTEL_SERVICE_NAME="shop-lab01"
-        export OTEL_TRACES_EXPORTER=otlp
-        export OTEL_METRICS_EXPORTER=none
-        export OTEL_LOGS_EXPORTER=none
-        export OTEL_SEMCONV_STABILITY_OPT_IN=http
-        export OTEL_EXPORTER_OTLP_PROTOCOL=http/protobuf
-        export OTEL_EXPORTER_OTLP_ENDPOINT="$DT_ENDPOINT/api/v2/otlp"
-        export OTEL_EXPORTER_OTLP_HEADERS="Authorization=Api-Token $DT_API_TOKEN"
-        ```
+            ```bash
+            set -a; source ../../.env; set +a
+
+            export OTEL_SERVICE_NAME="shop-lab01"
+            export OTEL_TRACES_EXPORTER=otlp
+            export OTEL_METRICS_EXPORTER=none
+            export OTEL_LOGS_EXPORTER=none
+            export OTEL_SEMCONV_STABILITY_OPT_IN=http
+            export OTEL_EXPORTER_OTLP_PROTOCOL=http/protobuf
+            export OTEL_EXPORTER_OTLP_ENDPOINT="$DT_ENDPOINT/api/v2/otlp"
+            export OTEL_EXPORTER_OTLP_HEADERS="Authorization=Api-Token $DT_API_TOKEN"
+            ```
+
+        === "Windows (PowerShell)"
+
+            ```powershell
+            Get-Content ..\..\.env | ForEach-Object { if ($_ -match '^\s*([^#=\s][^=]*)=(.*)$') { Set-Item "env:$($Matches[1].Trim())" $Matches[2].Trim().Trim('"') } }
+
+            $env:OTEL_SERVICE_NAME = "shop-lab01"
+            $env:OTEL_TRACES_EXPORTER = "otlp"
+            $env:OTEL_METRICS_EXPORTER = "none"
+            $env:OTEL_LOGS_EXPORTER = "none"
+            $env:OTEL_SEMCONV_STABILITY_OPT_IN = "http"
+            $env:OTEL_EXPORTER_OTLP_PROTOCOL = "http/protobuf"
+            $env:OTEL_EXPORTER_OTLP_ENDPOINT = "$env:DT_ENDPOINT/api/v2/otlp"
+            $env:OTEL_EXPORTER_OTLP_HEADERS = "Authorization=Api-Token $env:DT_API_TOKEN"
+            ```
 
     === "Console (no tenant)"
 
         Print spans in the terminal:
 
-        ```bash
-        export OTEL_SERVICE_NAME="shop-lab01"
-        export OTEL_TRACES_EXPORTER=console
-        export OTEL_METRICS_EXPORTER=none
-        export OTEL_LOGS_EXPORTER=none
-        export OTEL_SEMCONV_STABILITY_OPT_IN=http
-        ```
+        === "macOS / Linux"
+
+            ```bash
+            export OTEL_SERVICE_NAME="shop-lab01"
+            export OTEL_TRACES_EXPORTER=console
+            export OTEL_METRICS_EXPORTER=none
+            export OTEL_LOGS_EXPORTER=none
+            export OTEL_SEMCONV_STABILITY_OPT_IN=http
+            ```
+
+        === "Windows (PowerShell)"
+
+            ```powershell
+            $env:OTEL_SERVICE_NAME = "shop-lab01"
+            $env:OTEL_TRACES_EXPORTER = "console"
+            $env:OTEL_METRICS_EXPORTER = "none"
+            $env:OTEL_LOGS_EXPORTER = "none"
+            $env:OTEL_SEMCONV_STABILITY_OPT_IN = "http"
+            ```
 
     | Variable | Meaning |
     |---|---|
@@ -82,19 +121,41 @@ The lab files are in `labs/01-auto-instrumentation/`. The app (`app.py`) is a sm
    ```
    `opentelemetry-instrument` starts your command. Before your app code runs, it turns on every instrumentation library it finds, and it sets up the SDK from the environment variables.
 7. In a second terminal, send some requests:
-   ```bash
-   curl localhost:8000/
-   curl localhost:8000/products/1
-   curl localhost:8000/products/99
-   ```
+
+    === "macOS / Linux"
+
+        ```bash
+        curl localhost:8000/
+        curl localhost:8000/products/1
+        curl localhost:8000/products/99
+        ```
+
+    === "Windows (PowerShell)"
+
+        Type `curl.exe`. In PowerShell, plain `curl` is a different command.
+
+        ```powershell
+        curl.exe localhost:8000/
+        curl.exe localhost:8000/products/1
+        curl.exe localhost:8000/products/99
+        ```
+
 8. Look at the spans. In console mode, they print in the first terminal. In Dynatrace, open **Distributed Tracing** and filter by service `shop-lab01`.
 
 !!! tip "New terminal?"
-    Environment variables and the virtual environment belong to one terminal. If you open a new one, activate the environment and run the `export` lines again:
+    Environment variables and the virtual environment belong to one terminal. If you open a new one, activate the environment and set the variables from step 5 again:
 
-    ```bash
-    source ../../.venv/bin/activate
-    ```
+    === "macOS / Linux"
+
+        ```bash
+        source ../../.venv/bin/activate
+        ```
+
+    === "Windows (PowerShell)"
+
+        ```powershell
+        ..\..\.venv\Scripts\Activate.ps1
+        ```
 
 ### Token scopes
 
@@ -141,11 +202,8 @@ Lab 03 shows how manual instrumentation adds this.
 
 ## Stuck?
 
-- **`python3: command not found` or `No module named venv`:** install Python 3.11 or newer. See [Setup](../setup.md).
-- **`opentelemetry-instrument: command not found`:** the virtual environment is not on (see [Setup](../setup.md#4-python-environment)). Turn it on:
-  ```bash
-  source ../../.venv/bin/activate
-  ```
+- **`python: command not found` or `No module named venv`:** install Python 3.11 or newer. See [Setup](../setup.md).
+- **`opentelemetry-instrument: command not found`:** the virtual environment is not on (see [Setup](../setup.md#4-python-environment)). Turn it on: `source ../../.venv/bin/activate` (macOS / Linux) or `..\..\.venv\Scripts\Activate.ps1` (Windows PowerShell).
 - **Port 8000 is busy** (for example, `mkdocs serve` also uses it): stop the other program, or use another port, such as `--port 8001`. Then use the same port in the `curl` commands.
 - **Nothing in Dynatrace, no errors:** wait 30 seconds. Check that `DT_ENDPOINT` has no `/api/...` at the end. Step 5 adds `/api/v2/otlp`.
 - **401 or 403 from Dynatrace:** the token is wrong or lacks the `openTelemetryTrace.ingest` scope.
@@ -154,7 +212,4 @@ Lab 03 shows how manual instrumentation adds this.
 ## Going further
 
 - Remove `OTEL_SEMCONV_STABILITY_OPT_IN` and run again. The attribute names change (`http.method`, `http.status_code`). These are the old names. Standard names are the topic of Lab 08.
-- Send to both console and OTLP:
-  ```bash
-  export OTEL_TRACES_EXPORTER=console,otlp
-  ```
+- Send to both console and OTLP. Set `OTEL_TRACES_EXPORTER` to `console,otlp` (`export OTEL_TRACES_EXPORTER=console,otlp` on macOS / Linux, `$env:OTEL_TRACES_EXPORTER = "console,otlp"` on Windows).

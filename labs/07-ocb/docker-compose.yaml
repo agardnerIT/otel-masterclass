@@ -5,8 +5,8 @@ services:
     image: otelcol-masterclass:0.162.0
     command: ["--config=/etc/otelcol/collector.yaml"]
     environment:
-      DT_ENDPOINT: ${DT_ENDPOINT:-}
-      DT_API_TOKEN: ${DT_API_TOKEN:-}
+      DT_ENDPOINT: ${DT_ENDPOINT:-http://localhost:1}
+      DT_API_TOKEN: ${DT_API_TOKEN:-x}
     volumes:
       - ./collector.yaml:/etc/otelcol/collector.yaml:ro
       - ./sample.log:/logs/sample.log:ro

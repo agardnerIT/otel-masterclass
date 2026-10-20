@@ -6,7 +6,7 @@ Do this before the workshop. It takes about 10 minutes.
 
 | Tool | Version | Why |
 |---|---|---|
-| Docker (with Compose) | recent | Runs the collector and multi-service labs |
+| Docker, including Compose v2 (`docker compose`) | recent | Runs the collector and multi-service labs |
 | Python | 3.11 or newer | All code examples |
 | Dynatrace tenant + token | optional | See your data in Dynatrace |
 
@@ -19,7 +19,7 @@ cd otel-masterclass
 
 ## 2. Install the tools
 
-- **Docker:** <https://docs.docker.com/get-docker/>
+- **Docker:** <https://docs.docker.com/get-docker/>. Compose is **included** with Docker Desktop (Windows and macOS) and Rancher Desktop, so there is nothing extra to install. Only on Linux with plain Docker Engine do you add it: `sudo apt install docker-compose-plugin`. The older `docker-compose` command (with a hyphen) does not work for the labs.
 - **Python:** <https://www.python.org/downloads/>. The labs use the built-in `venv` and `pip`. You do not need any other Python tool.
 
 ## 3. Dynatrace
@@ -52,37 +52,78 @@ cd otel-masterclass
 
 Create one virtual environment for **all** the labs and install every Python package once. Do this from the repo root:
 
-```bash
-python3 -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
-```
+=== "macOS / Linux"
 
-On Windows PowerShell, activate with:
+    ```bash
+    python3 -m venv .venv
+    source .venv/bin/activate
+    pip install -r requirements.txt
+    ```
 
-```powershell
-.venv\Scripts\activate
-```
+=== "Windows (PowerShell)"
 
-Labs 01, 08 and 09 run Python on your machine and use this environment. Turn it on in every new terminal by running this from the repo root. Labs that run in Docker build their own images and do not need it.
+    ```powershell
+    py -3 -m venv .venv
+    .venv\Scripts\Activate.ps1
+    pip install -r requirements.txt
+    ```
 
-```bash
-source .venv/bin/activate
-```
+    !!! tip "`running scripts is disabled on this system`?"
+        Your PowerShell blocks activation scripts. Allow them for this terminal only. It needs no admin rights:
+
+        ```powershell
+        Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+        ```
+
+        If your company blocks that too, skip activation and call the tools directly: `.venv\Scripts\python`, `.venv\Scripts\pip`.
+
+Every lab that runs Python on your machine uses this environment. Turn it on in **every new terminal** by running this from the repo root. After that, `python` works the same on every OS.
+
+=== "macOS / Linux"
+
+    ```bash
+    source .venv/bin/activate
+    ```
+
+=== "Windows (PowerShell)"
+
+    ```powershell
+    .venv\Scripts\Activate.ps1
+    ```
 
 ## 5. Check everything
 
-```bash
-./scripts/check-prereqs.sh
-```
+=== "macOS / Linux"
 
-Or run:
+    ```bash
+    python3 scripts/check_prereqs.py
+    ```
 
-```bash
-make check
-```
+=== "Windows (PowerShell)"
+
+    ```powershell
+    python scripts\check_prereqs.py
+    ```
 
 Fix anything marked `[FAIL]`. A `[WARN]` is fine.
+
+## 6. Download the lab images (at the start of the workshop)
+
+The labs use about 3 GB of Docker images. Do **not** wait until each lab to download them, especially on conference Wi-Fi. **When the workshop starts, open a separate terminal, run this and leave it running while the slides are on.** It downloads and builds everything, in lab order:
+
+=== "macOS / Linux"
+
+    ```bash
+    python3 scripts/pull_images.py
+    ```
+
+=== "Windows (PowerShell)"
+
+    ```powershell
+    python scripts\pull_images.py
+    ```
+
+When it prints `All images are ready`, you are set. If the Wi-Fi drops, or a step fails, run it again. It only fetches what is missing. You need about 6 GB of free disk space.
 
 ## Stuck?
 

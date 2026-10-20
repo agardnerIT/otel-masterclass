@@ -11,6 +11,7 @@ A bare-bones OpAMP server (`server.py`, Python and FastAPI) and two kinds of age
 | `plain-collector.yaml` | Config for the `plain` collector |
 | `agent/` | The Supervisor image, its settings and the collector's local config |
 | `logs/file.log` | The log file the `agent` collector tails |
+| `lab.py` | Helper so the steps work on every OS: append a log line, switch the remote config, reset the lab |
 | `watch_collector.py` | Prints the collector's output as just `LEVEL message` |
 | `opamp/v1/` | Python code generated from the [OpAMP protobuf files](https://github.com/open-telemetry/opamp-spec/tree/main/proto/opamp/v1). Committed, so you do not need `protoc` |
 

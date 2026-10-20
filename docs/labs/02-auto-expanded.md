@@ -33,18 +33,30 @@ Neither file imports OpenTelemetry. Open them and check.
     `docker-compose.yaml` sets `OTEL_TRACES_EXPORTER=otlp`, the endpoint (`$DT_ENDPOINT/api/v2/otlp`), and the token header. These are the same variables as in Lab 01.
 
     ??? note "No Dynatrace tenant? Print spans in the console"
-        Add the console file. It turns the OTLP exporter into the console exporter. Spans then print in the container logs. The two values are dummies, because the main file needs them to be set:
+        Add the console file. It turns the OTLP exporter into the console exporter. Spans then print in the container logs. You do not need a `.env` file:
 
         ```bash
-        export DT_ENDPOINT=x DT_API_TOKEN=x
         docker compose -f docker-compose.yaml -f docker-compose.console.yaml up --build
         ```
 
 4. In a second terminal, order a product:
-   ```bash
-   curl localhost:9000/order/1
-   ```
-   You get JSON back. Look at the field `traceparent_sent`.
+
+    === "macOS / Linux"
+
+        ```bash
+        curl localhost:9000/order/1
+        ```
+
+    === "Windows (PowerShell)"
+
+        Type `curl.exe`. In PowerShell, plain `curl` is a different command.
+
+        ```powershell
+        curl.exe localhost:9000/order/1
+        ```
+
+    You get JSON back. Look at the field `traceparent_sent`.
+
 5. Read the logs. The frontend prints `frontend sent traceparent: ...`. The backend prints `backend received traceparent: ...`. They are the **same value**.
 6. Find the trace. In Dynatrace, open **Distributed Tracing** and filter by service `frontend-lab02`. (In console mode, look at the `trace_id` in every span, in both services.)
 
@@ -89,9 +101,20 @@ docker compose --env-file ../../.env \
 
 Call the app again. You get the same trace:
 
-```bash
-curl localhost:9000/order/1
-```
+=== "macOS / Linux"
+
+    ```bash
+    curl localhost:9000/order/1
+    ```
+
+=== "Windows (PowerShell)"
+
+    Type `curl.exe`. In PowerShell, plain `curl` is a different command.
+
+    ```powershell
+    curl.exe localhost:9000/order/1
+    ```
+
 
 | | Agent (`opentelemetry-instrument`) | In code |
 |---|---|---|
@@ -137,15 +160,39 @@ All of them have the same trace ID. The backend span is a child of the frontend'
 Exercise: **find an error in a trace.**
 
 1. Call product 13. The backend raises an exception for it:
-   ```bash
-   curl -i localhost:9000/order/13
-   ```
+
+    === "macOS / Linux"
+
+        ```bash
+        curl -i localhost:9000/order/13
+        ```
+
+    === "Windows (PowerShell)"
+
+        Type `curl.exe`. In PowerShell, plain `curl` is a different command.
+
+        ```powershell
+        curl.exe -i localhost:9000/order/13
+        ```
+
 2. Find this trace. Which span has the error? The backend server span has status `ERROR` and an exception event. The frontend returns `502`.
 3. Call product 99:
-   ```bash
-   curl -i localhost:9000/order/99
-   ```
-   This is a `404`. Compare it: is any span marked as an error? (Remember Lab 01: a 4xx is not a server error.)
+
+    === "macOS / Linux"
+
+        ```bash
+        curl -i localhost:9000/order/99
+        ```
+
+    === "Windows (PowerShell)"
+
+        Type `curl.exe`. In PowerShell, plain `curl` is a different command.
+
+        ```powershell
+        curl.exe -i localhost:9000/order/99
+        ```
+
+    This is a `404`. Compare it: is any span marked as an error? (Remember Lab 01: a 4xx is not a server error.)
 
 Exercise: **add a third hop.**
 
@@ -180,7 +227,19 @@ The folder `inventory/` is ready. It is a third FastAPI service with `GET /stock
    ```bash
    docker compose --env-file ../../.env up --build
    ```
-   ```bash
-   curl localhost:9000/order/1
-   ```
+
+    === "macOS / Linux"
+
+        ```bash
+        curl localhost:9000/order/1
+        ```
+
+    === "Windows (PowerShell)"
+
+        Type `curl.exe`. In PowerShell, plain `curl` is a different command.
+
+        ```powershell
+        curl.exe localhost:9000/order/1
+        ```
+
 6. Check the result. The response has `in_stock`. The logs of all three services show the **same trace ID** in the `traceparent`. The parent span ID is different in each, because each hop makes a new client span. In Dynatrace, you see `inventory-lab02` as a third service in the trace.

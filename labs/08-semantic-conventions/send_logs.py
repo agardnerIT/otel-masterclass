@@ -1,22 +1,34 @@
 """Send a log file to Dynatrace as OpenTelemetry logs.
 
-Usage: python3 send_logs.py messy.log
-       python3 send_logs.py standardised.log
+Usage: python send_logs.py messy.log
+       python send_logs.py standardised.log
 
 messy.log:        each line is sent as plain text, as most teams do today.
 standardised.log: each key=value pair becomes an attribute on the log record.
 
-Needs DT_ENDPOINT and DT_API_TOKEN (see docs/setup.md). Token scope: logs.ingest
+Needs DT_ENDPOINT and DT_API_TOKEN (see docs/setup.md). They are read from the .env file
+in the repo root, or from the environment. Token scope: logs.ingest
 """
 import logging
 import os
 import sys
 import time
+from pathlib import Path
 
 from opentelemetry.exporter.otlp.proto.http._log_exporter import OTLPLogExporter
 from opentelemetry.sdk._logs import LoggerProvider, LoggingHandler
 from opentelemetry.sdk._logs.export import LogRecordExportResult, SimpleLogRecordProcessor
 from opentelemetry.sdk.resources import Resource
+
+# Load DT_ENDPOINT and DT_API_TOKEN from the repo's .env file (works the same on every OS).
+for d in Path(__file__).resolve().parents:
+    if (d / ".env").is_file():
+        for entry in (d / ".env").read_text(encoding="utf-8-sig").splitlines():
+            entry = entry.strip()
+            if entry and not entry.startswith("#") and "=" in entry:
+                k, v = entry.split("=", 1)
+                os.environ.setdefault(k.strip(), v.strip().strip("\"'"))
+        break
 
 path = sys.argv[1]
 service = "semconv-" + os.path.basename(path).removesuffix(".log")
@@ -45,7 +57,8 @@ logger = logging.getLogger("semconv")
 logger.setLevel(logging.INFO)
 logger.addHandler(LoggingHandler(logger_provider=provider))
 
-for line in open(path).read().splitlines():
+lines = Path(path).read_text(encoding="utf-8").splitlines()
+for line in lines:
     attrs = {}
     if parse:
         attrs = dict(pair.split("=", 1) for pair in line.split())
@@ -55,7 +68,7 @@ for line in open(path).read().splitlines():
 
 provider.shutdown()
 time.sleep(1)
-total = len(open(path).read().splitlines())
+total = len(lines)
 if failures:
     sys.exit(f"FAILED: {len(failures)} of {total} logs were rejected. Check DT_ENDPOINT and the logs.ingest scope.")
 print(f"Sent {total} logs with service.name={service}")

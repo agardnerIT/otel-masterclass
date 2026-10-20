@@ -29,3 +29,6 @@ We start with the basics and move quickly. All code is open source, so you can r
 - Optional: a Dynatrace tenant and an API token. Without one, every lab has a console fallback.
 
 Check your setup on the [Setup page](setup.md).
+
+!!! tip "At the start of the workshop"
+    Run the image download from [Setup, step 6](setup.md#6-download-the-lab-images-at-the-start-of-the-workshop) in a spare terminal and leave it running. It fetches about 3 GB, so it is better done while the slides are on than at the first lab.
