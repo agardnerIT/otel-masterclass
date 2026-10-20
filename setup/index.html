@@ -1622,7 +1622,8 @@
 </div>
 </div>
 </div>
-<p>Fix anything marked <code>[FAIL]</code>. A <code>[WARN]</code> is fine.</p>
+<p>The check tests more than "is it installed". It also tries the things that go wrong on company laptops: whether Docker can really download from Docker Hub, <code>ghcr.io</code> and <code>gcr.io</code>, whether a firewall or proxy blocks PyPI, whether PowerShell will run the activation script, whether the lab ports are free, and whether git changed the line endings. It downloads about 65 MB. Add <code>--quick</code> to skip that download test.</p>
+<p>Fix anything marked <code>[FAIL]</code>. A <code>[WARN]</code> is fine, but read it: it usually tells you what will go wrong in a later lab. Run the check <strong>before</strong> the workshop. If something fails and you cannot fix it (for example, your company blocks Docker downloads), tell the instructor in advance.</p>
 <h2 id="6-download-the-lab-images-at-the-start-of-the-workshop">6. Download the lab images (at the start of the workshop)<a class="headerlink" href="#6-download-the-lab-images-at-the-start-of-the-workshop" title="Permanent link">&para;</a></h2>
 <p>The labs use about 3 GB of Docker images. Do <strong>not</strong> wait until each lab to download them, especially on conference Wi-Fi. <strong>When the workshop starts, open a separate terminal, run this and leave it running while the slides are on.</strong> It downloads and builds everything, in lab order:</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="4:2"><input checked="checked" id="__tabbed_4_1" name="__tabbed_4" type="radio" /><input id="__tabbed_4_2" name="__tabbed_4" type="radio" /><div class="tabbed-labels"><label for="__tabbed_4_1">macOS / Linux</label><label for="__tabbed_4_2">Windows (PowerShell)</label></div>
